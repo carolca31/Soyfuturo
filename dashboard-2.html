@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOY FUTURO — Panel de Administración</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a1f5e;
+  --purple: #6c3eb6;
+  --teal: #00c4b4;
+  --coral: #ff5e6c;
+  --yellow: #ffd93d;
+  --light: #f4f6ff;
+  --gray: #8b92a5;
+  --green: #22c55e;
+  --white: #ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--light);min-height:100vh;color:var(--navy);}
+
+/* LOGIN SCREEN */
+#login-screen{
+  position:fixed;inset:0;background:linear-gradient(135deg,#0d1147,#1a1f5e,#2d1b69);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.login-box{
+  background:white;border-radius:28px;padding:48px 40px;max-width:420px;width:90%;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+}
+.login-logo{font-size:3rem;margin-bottom:8px;}
+.login-box h1{font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.login-box h1 span{color:var(--teal);}
+.login-box p{color:var(--gray);font-size:0.9rem;margin-bottom:32px;line-height:1.6;}
+.btn-google{
+  display:flex;align-items:center;justify-content:center;gap:14px;width:100%;
+  padding:16px 24px;border-radius:14px;border:2px solid #e0e4f0;background:white;
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);
+  cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.08);
+}
+.btn-google:hover{border-color:var(--purple);box-shadow:0 8px 24px rgba(108,62,182,0.2);transform:translateY(-2px);}
+.btn-google svg{width:24px;height:24px;}
+#login-error{color:var(--coral);font-size:0.85rem;font-weight:700;margin-top:16px;display:none;}
+
+/* MAIN APP */
+#app{display:none;}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,var(--navy),var(--purple));
+  padding:16px 28px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:16px;}
+.header h1{font-size:1.4rem;font-weight:900;color:white;}
+.header h1 span{color:var(--teal);}
+.header-sub{color:rgba(255,255,255,0.6);font-size:0.75rem;margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.user-badge{
+  display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);
+  border-radius:100px;padding:7px 14px;color:white;font-size:0.82rem;font-weight:800;
+}
+.user-avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--teal);}
+.btn-logout{
+  background:rgba(255,255,255,0.15);color:white;border:none;padding:8px 14px;
+  border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;
+}
+.btn-logout:hover{background:rgba(255,255,255,0.25);}
+
+/* NAV TABS */
+.nav-tabs{
+  background:var(--navy);border-bottom:3px solid #2a3070;
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{
+  padding:14px 22px;color:rgba(255,255,255,0.6);cursor:pointer;
+  font-size:0.85rem;font-weight:800;white-space:nowrap;border:none;background:none;
+  font-family:'Nunito',sans-serif;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all 0.2s;
+}
+.nav-tab:hover{color:white;background:rgba(255,255,255,0.07);}
+.nav-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* MAIN LAYOUT */
+.main-layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 110px);}
+.sidebar{
+  background:white;border-right:2px solid #e8eaf6;display:flex;flex-direction:column;
+}
+.content-area{overflow-y:auto;}
+
+/* SIDEBAR */
+.sidebar-header{
+  padding:18px 18px 14px;border-bottom:2px solid #e8eaf6;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-header h2{font-size:0.88rem;font-weight:900;color:var(--navy);}
+.count-badge{background:var(--purple);color:white;border-radius:100px;padding:3px 10px;font-size:0.75rem;font-weight:900;}
+.search-box{padding:10px 14px;border-bottom:2px solid #e8eaf6;}
+.search-box input{
+  width:100%;padding:9px 14px;border:2px solid #e0e4f0;border-radius:10px;
+  font-family:'Nunito',sans-serif;font-size:0.83rem;font-weight:600;color:var(--navy);transition:border-color 0.2s;
+}
+.search-box input:focus{outline:none;border-color:var(--purple);}
+.filter-row{padding:8px 12px;border-bottom:2px solid #e8eaf6;display:flex;gap:5px;flex-wrap:wrap;}
+.chip{
+  padding:4px 10px;border-radius:100px;border:2px solid #e0e4f0;
+  font-size:0.7rem;font-weight:800;color:var(--gray);background:white;cursor:pointer;transition:all 0.15s;
+}
+.chip:hover,.chip.active{background:var(--purple);color:white;border-color:var(--purple);}
+.students-list{flex:1;overflow-y:auto;}
+.student-item{
+  padding:12px 16px;border-bottom:1px solid #f0f4ff;cursor:pointer;
+  transition:all 0.15s;display:flex;align-items:center;gap:10px;
+}
+.student-item:hover{background:#f7f0ff;}
+.student-item.active{background:#f3eeff;border-left:4px solid var(--purple);}
+.student-avatar{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--navy),var(--purple));
+  display:grid;place-items:center;color:white;font-size:0.95rem;font-weight:900;flex-shrink:0;
+}
+.student-name{font-size:0.85rem;font-weight:800;color:var(--navy);margin-bottom:1px;}
+.student-meta{font-size:0.7rem;color:var(--gray);font-weight:600;}
+.student-token{font-size:0.67rem;font-weight:900;color:var(--purple);letter-spacing:0.5px;font-family:monospace;}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:auto;}
+.dot-completado{background:var(--green);}
+.dot-en_progreso{background:var(--yellow);animation:pulse 1.5s infinite;}
+.dot-activo{background:#94a3b8;}
+.dot-pausado{background:var(--coral);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* STATS BAR */
+.stats-bar{
+  background:var(--navy);padding:14px 28px;
+  display:flex;gap:20px;flex-wrap:wrap;border-bottom:2px solid #2a3070;
+}
+.stat-item{text-align:center;}
+.stat-num{font-size:1.5rem;font-weight:900;color:var(--teal);display:block;}
+.stat-label{font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.5px;}
+
+/* CONTENT PANEL */
+.panel{padding:24px;}
+
+/* WELCOME / DASHBOARD */
+.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+.kpi-card{
+  background:white;border-radius:16px;padding:20px;border:2px solid #e8eaf6;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:all 0.2s;
+}
+.kpi-card:hover{border-color:var(--purple);transform:translateY(-2px);}
+.kpi-icon{font-size:2rem;margin-bottom:8px;}
+.kpi-num{font-size:2rem;font-weight:900;color:var(--purple);}
+.kpi-label{font-size:0.78rem;font-weight:700;color:var(--gray);margin-top:4px;}
+
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.chart-card{background:white;border-radius:16px;padding:22px;border:2px solid #e8eaf6;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.chart-card h3{font-size:0.9rem;font-weight:900;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--teal);}
+
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.bar-label{font-size:0.72rem;font-weight:800;color:var(--navy);width:110px;flex-shrink:0;}
+.bar-bg{flex:1;background:#eef2ff;border-radius:100px;height:9px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;transition:width 0.6s;}
+.bar-teal{background:linear-gradient(90deg,var(--teal),#00e4d4);}
+.bar-purple{background:linear-gradient(90deg,var(--purple),#9b6ff0);}
+.bar-coral{background:linear-gradient(90deg,var(--coral),#ff8fa3);}
+.bar-pct{font-size:0.72rem;font-weight:900;color:var(--purple);width:34px;text-align:right;}
+
+/* TOKEN MANAGEMENT */
+.token-section{background:white;border-radius:16px;padding:24px;border:2px solid #e8eaf6;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.token-section h3{font-size:1rem;font-weight:900;color:var(--navy);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.btn-crear{
+  background:linear-gradient(135deg,var(--teal),#00a99a);color:white;border:none;
+  padding:12px 24px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:900;
+  cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-crear:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,196,180,0.4);}
+
+.crear-form{
+  background:#f4f6ff;border-radius:14px;padding:20px;margin-top:16px;
+  border:2px solid #e0e4f0;display:none;
+}
+.crear-form.show{display:block;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.form-field label{font-size:0.78rem;font-weight:800;color:var(--gray);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;}
+.form-field input,.form-field select{
+  width:100%;padding:10px 14px;border:2px solid #e0e4f0;border-radius:10px;
+  font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:600;color:var(--navy);
+  background:white;transition:border-color 0.2s;
+}
+.form-field input:focus,.form-field select:focus{outline:none;border-color:var(--purple);}
+
+.token-table-wrap{overflow-x:auto;margin-top:20px;}
+.token-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.token-table th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-weight:800;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.3px;}
+.token-table td{padding:12px 14px;border-bottom:1px solid #e8eaf6;vertical-align:middle;}
+.token-table tr:hover td{background:#f7f0ff;}
+.token-code{font-family:monospace;font-size:0.9rem;font-weight:900;color:var(--purple);letter-spacing:1px;}
+.status-pill{padding:4px 10px;border-radius:100px;font-size:0.72rem;font-weight:900;white-space:nowrap;}
+.pill-activo{background:#f0f4ff;color:var(--navy);}
+.pill-en_progreso{background:#fef9c3;color:#854d0e;}
+.pill-completado{background:#dcfce7;color:#16a34a;}
+.pill-pausado{background:#fee2e2;color:#991b1b;}
+.link-cell{font-size:0.75rem;color:var(--teal);word-break:break-all;max-width:200px;}
+.btn-action{
+  background:none;border:1.5px solid #e0e4f0;border-radius:8px;padding:5px 10px;
+  font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:800;cursor:pointer;transition:all 0.15s;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.btn-action:hover{border-color:var(--purple);color:var(--purple);}
+.btn-action.danger:hover{border-color:var(--coral);color:var(--coral);}
+.btn-action.success:hover{border-color:var(--green);color:var(--green);}
+
+/* STUDENT DETAIL */
+.detail-header{
+  background:white;border-radius:16px;padding:22px 26px;
+  display:flex;align-items:center;gap:18px;margin-bottom:18px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);border:2px solid #e8eaf6;
+}
+.detail-avatar{
+  width:60px;height:60px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--navy),var(--purple));
+  display:grid;place-items:center;font-size:1.4rem;font-weight:900;color:white;
+}
+.detail-name{font-size:1.2rem;font-weight:900;color:var(--navy);}
+.detail-sub{color:var(--gray);font-size:0.82rem;font-weight:600;margin-top:3px;}
+.detail-token-badge{
+  background:var(--navy);color:var(--teal);font-family:monospace;
+  font-size:0.85rem;font-weight:900;padding:5px 12px;border-radius:8px;letter-spacing:1px;
+  margin-top:7px;display:inline-block;
+}
+.status-badge{padding:6px 14px;border-radius:100px;font-size:0.78rem;font-weight:900;margin-left:auto;flex-shrink:0;}
+.status-completado{background:#dcfce7;color:#16a34a;}
+.status-pendiente,.status-activo{background:#f0f4ff;color:var(--navy);}
+.status-en_progreso{background:#fef9c3;color:#854d0e;}
+
+.results-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.result-card{
+  background:white;border-radius:14px;padding:20px;
+  border:2px solid #e8eaf6;box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+.result-card h3{font-size:0.86rem;font-weight:900;color:var(--navy);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--teal);}
+.top-tag{font-size:0.65rem;font-weight:900;background:var(--teal);color:white;border-radius:100px;padding:1px 7px;margin-left:4px;}
+
+.notes-section{background:white;border-radius:14px;padding:20px;border:2px solid #e8eaf6;box-shadow:0 4px 12px rgba(0,0,0,0.06);margin-bottom:18px;}
+.notes-section h3{font-size:0.88rem;font-weight:900;color:var(--navy);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e8eaf6;}
+.notes-textarea{
+  width:100%;border:2px solid #e0e4f0;border-radius:10px;padding:12px 16px;
+  font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:600;color:var(--navy);
+  resize:vertical;min-height:80px;transition:border-color 0.2s;
+}
+.notes-textarea:focus{outline:none;border-color:var(--purple);}
+.btn-save-notes{
+  margin-top:10px;background:var(--purple);color:white;border:none;padding:10px 22px;
+  border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;
+}
+.btn-save-notes:hover{background:#5a32a0;transform:translateY(-1px);}
+
+.conclusion-box{background:#f9f6ff;border-radius:10px;padding:12px 16px;border-left:4px solid var(--purple);font-size:0.85rem;color:var(--navy);font-weight:600;line-height:1.6;margin-top:8px;}
+.fortaleza-item{background:#f0fdf4;padding:9px 14px;margin:5px 0;border-radius:8px;font-weight:700;font-size:0.83rem;color:#166534;border-left:3px solid var(--green);}
+.coherencia-alta{color:#16a34a;font-weight:800;font-size:0.83rem;}
+.coherencia-media{color:#d97706;font-weight:800;font-size:0.83rem;}
+
+/* RUTA FUTURA */
+.ruta-section{background:linear-gradient(135deg,#1a1f5e,#6c3eb6);border-radius:16px;padding:24px;color:white;margin-bottom:18px;}
+.ruta-section h3{font-size:1rem;font-weight:900;color:var(--teal);margin-bottom:16px;}
+.ruta-step{background:rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;margin-bottom:10px;border-left:4px solid var(--teal);}
+.ruta-step h4{font-size:0.82rem;font-weight:900;color:var(--yellow);margin-bottom:4px;}
+.ruta-step p{font-size:0.82rem;color:rgba(255,255,255,0.85);line-height:1.5;}
+
+/* SEGUIMIENTO */
+.seguimiento-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.estado-btn{
+  padding:8px 16px;border-radius:100px;border:2px solid #e0e4f0;background:white;
+  font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:800;color:var(--gray);cursor:pointer;transition:all 0.15s;
+}
+.estado-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+.estado-btn:hover:not(.active){border-color:var(--purple);color:var(--purple);}
+
+/* VALOR ITEM */
+.valor-item{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.valor-medal{font-size:1rem;width:22px;text-align:center;}
+.valor-name{font-size:0.8rem;font-weight:700;color:var(--navy);flex:1;}
+.valor-pts{font-size:0.78rem;font-weight:900;color:var(--purple);}
+
+/* HOLLAND */
+.holland-clave-box{background:linear-gradient(135deg,var(--navy),var(--purple));border-radius:12px;padding:14px 18px;color:white;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
+.clave-text{font-size:1.8rem;font-weight:900;letter-spacing:3px;color:var(--teal);}
+.clave-sub{font-size:0.75rem;opacity:0.7;}
+
+/* EXPORT BUTTONS */
+.export-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.btn-export{
+  display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:10px;border:none;
+  font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;
+}
+.btn-export:hover{transform:translateY(-1px);}
+.btn-purple{background:var(--purple);color:white;}
+.btn-teal{background:var(--teal);color:white;}
+.btn-green{background:var(--green);color:white;}
+.btn-coral{background:var(--coral);color:white;}
+.btn-whatsapp{background:#25D366;color:white;}
+.btn-navy{background:var(--navy);color:white;}
+
+/* LOADING & TOASTER */
+.loading-state{padding:40px;text-align:center;color:var(--gray);}
+.spinner{font-size:2rem;animation:spin 1s linear infinite;display:inline-block;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.empty-state{padding:40px 20px;text-align:center;}
+.empty-state .icon{font-size:2.5rem;display:block;margin-bottom:10px;}
+.empty-state p{font-size:0.84rem;color:var(--gray);font-weight:600;line-height:1.6;}
+.toaster{position:fixed;bottom:24px;right:24px;background:var(--navy);color:white;padding:12px 18px;border-radius:12px;font-weight:800;font-size:0.84rem;z-index:9999;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.3);align-items:center;gap:8px;}
+.toaster.show{display:flex;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-overlay.active{display:flex;}
+.modal-box{background:white;border-radius:20px;padding:32px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+.modal-box h3{font-size:1.1rem;font-weight:900;color:var(--navy);margin-bottom:16px;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .main-layout{grid-template-columns:1fr;}
+  .sidebar{max-height:300px;}
+  .results-grid-2,.chart-row,.form-grid{grid-template-columns:1fr;}
+}
+
+/* WELCOME CARD */
+.welcome-card{background:linear-gradient(135deg,var(--navy),var(--purple));border-radius:20px;padding:30px;color:white;text-align:center;margin-bottom:24px;}
+.welcome-card h2{font-size:1.3rem;font-weight:900;margin-bottom:8px;}
+.welcome-card p{opacity:0.75;font-size:0.88rem;line-height:1.6;}
+
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.section-header h2{font-size:1.1rem;font-weight:900;color:var(--navy);}
+
+.progress-ring-wrap{display:inline-flex;align-items:center;gap:14px;background:#f0f4ff;border-radius:14px;padding:14px 20px;margin-bottom:18px;}
+.progress-text{font-size:1.4rem;font-weight:900;color:var(--purple);}
+.progress-label{font-size:0.78rem;font-weight:700;color:var(--gray);}
+
+.tag{display:inline-block;padding:3px 9px;border-radius:100px;font-size:0.72rem;font-weight:800;background:#e8f0ff;color:var(--purple);margin:2px;}
+</style>
+</head>
+<body>
+
+<div id="toaster" class="toaster"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🚀</div>
+    <h1>SOY <span>FUTURO</span></h1>
+    <p>Panel de Administración Profesional<br>Solo acceso para orientadoras autorizadas</p>
+    <button class="btn-google" onclick="loginGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Iniciar sesión con Google
+    </button>
+    <div id="login-error">⛔ Acceso denegado. Solo carolca31@gmail.com puede acceder.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div>
+        <h1>🚀 SOY <span>FUTURO</span></h1>
+        <div class="header-sub">Panel de Orientadora · Sistema Vocacional</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="user-badge">
+        <img id="user-avatar" class="user-avatar" src="" alt="" style="display:none;">
+        <span id="user-name">👩‍💼 Carol</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Salir 👋</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-tab" onclick="switchTab('tokens',this)">🔑 Tokens / Evaluaciones</button>
+    <button class="nav-tab" onclick="switchTab('estudiantes',this)">👥 Estudiantes</button>
+    <button class="nav-tab" onclick="switchTab('estadisticas',this)">📈 Estadísticas</button>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>📋 Estudiantes</h2>
+        <span class="count-badge" id="total-count">0</span>
+      </div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="🔍 Buscar nombre o token..." oninput="renderLista()">
+      </div>
+      <div class="filter-row">
+        <button class="chip active" onclick="setFiltro('todos',this)">Todos</button>
+        <button class="chip" onclick="setFiltro('completado',this)">✅</button>
+        <button class="chip" onclick="setFiltro('en_progreso',this)">🟡</button>
+        <button class="chip" onclick="setFiltro('activo',this)">⬜</button>
+      </div>
+      <div class="students-list" id="students-list">
+        <div class="loading-state"><span class="spinner">⏳</span><br><br>Cargando...</div>
+      </div>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="content-area">
+
+      <!-- STATS BAR -->
+      <div class="stats-bar">
+        <div class="stat-item"><span class="stat-num" id="stat-total">0</span><span class="stat-label">Total</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat-completados">0</span><span class="stat-label">Completados</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat-progreso">0</span><span class="stat-label">En Progreso</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat-activos">0</span><span class="stat-label">Activos</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat-hoy">0</span><span class="stat-label">Hoy</span></div>
+      </div>
+
+      <!-- PANEL CONTENT -->
+      <div class="panel">
+
+        <!-- ===== TAB: DASHBOARD ===== -->
+        <div id="tab-dashboard">
+          <div class="welcome-card">
+            <div style="font-size:2.5rem;margin-bottom:10px;">🚀</div>
+            <h2>Bienvenida, Carol 💜</h2>
+            <p>Panel de control de SOY FUTURO. Gestiona evaluaciones, monitorea progreso y genera informes profesionales.</p>
+          </div>
+          <div class="dashboard-grid" id="kpi-grid">
+            <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-num" id="kpi-total">0</div><div class="kpi-label">Evaluaciones Totales</div></div>
+            <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-num" id="kpi-comp">0</div><div class="kpi-label">Completadas</div></div>
+            <div class="kpi-card"><div class="kpi-icon">🟡</div><div class="kpi-num" id="kpi-prog">0</div><div class="kpi-label">En Progreso</div></div>
+            <div class="kpi-card"><div class="kpi-icon">⚡</div><div class="kpi-num" id="kpi-activo">0</div><div class="kpi-label">Activos / Pendientes</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>🎓 Carreras Más Elegidas</h3>
+              <div id="chart-carreras"></div>
+            </div>
+            <div class="chart-card">
+              <h3>🌀 Holland Predominante</h3>
+              <div id="chart-holland"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>📊 Intereses Predominantes</h3>
+              <div id="chart-intereses"></div>
+            </div>
+            <div class="chart-card">
+              <h3>🧠 Aptitudes Predominantes</h3>
+              <div id="chart-aptitudes"></div>
+            </div>
+          </div>
+          <div class="chart-card" style="margin-bottom:16px;">
+            <h3>📅 Evaluaciones por Fecha</h3>
+            <div id="chart-fechas"></div>
+          </div>
+        </div>
+
+        <!-- ===== TAB: TOKENS ===== -->
+        <div id="tab-tokens" style="display:none;">
+          <div class="token-section">
+            <div class="section-header">
+              <h3>🔑 Gestión de Evaluaciones y Tokens</h3>
+              <button class="btn-crear" onclick="toggleCrearForm()">➕ Crear Evaluación</button>
+            </div>
+
+            <!-- CREAR FORM -->
+            <div class="crear-form" id="crear-form">
+              <h4 style="font-size:0.9rem;font-weight:900;color:var(--navy);margin-bottom:14px;">📝 Nueva Evaluación</h4>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Nombre del Estudiante *</label>
+                  <input type="text" id="nuevo-nombre" placeholder="Nombre completo">
+                </div>
+                <div class="form-field">
+                  <label>Colegio / Grupo</label>
+                  <input type="text" id="nuevo-grupo" placeholder="Ej: U.E. La Esperanza · 5to A">
+                </div>
+                <div class="form-field">
+                  <label>Correo del Estudiante</label>
+                  <input type="email" id="nuevo-correo" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="form-field">
+                  <label>Teléfono (WhatsApp)</label>
+                  <input type="text" id="nuevo-telefono" placeholder="+58 412 0000000">
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn-crear" onclick="crearToken()">🎯 Generar Token y Enlace</button>
+                <button class="btn-export btn-navy" onclick="toggleCrearForm()">Cancelar</button>
+              </div>
+            </div>
+
+            <!-- TOKEN TABLE -->
+            <div class="token-table-wrap">
+              <table class="token-table" id="token-table">
+                <thead>
+                  <tr>
+                    <th>Token</th>
+                    <th>Estudiante</th>
+                    <th>Colegio</th>
+                    <th>Estado</th>
+                    <th>Enlace</th>
+                    <th>Creado</th>
+                    <th>Progreso</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="token-tbody">
+                  <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gray);">Cargando tokens...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB: ESTUDIANTES (Detail) ===== -->
+        <div id="tab-estudiantes" style="display:none;">
+          <div id="welcome-estudiantes">
+            <div class="welcome-card">
+              <div style="font-size:2rem;margin-bottom:10px;">👥</div>
+              <h2>Perfil del Estudiante</h2>
+              <p>Selecciona un estudiante de la lista para ver su perfil vocacional completo.</p>
+            </div>
+            <div id="recent-list"></div>
+          </div>
+          <div id="student-detail" style="display:none;">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+        <!-- ===== TAB: ESTADÍSTICAS ===== -->
+        <div id="tab-estadisticas" style="display:none;">
+          <div class="section-header">
+            <h2>📈 Estadísticas Detalladas</h2>
+            <button class="btn-export btn-teal" onclick="exportarExcelGlobal()">📊 Exportar Excel</button>
+          </div>
+          <div class="dashboard-grid">
+            <div class="kpi-card"><div class="kpi-icon">🎓</div><div class="kpi-num" id="est-total">0</div><div class="kpi-label">Estudiantes Evaluados</div></div>
+            <div class="kpi-card"><div class="kpi-icon">🏫</div><div class="kpi-num" id="est-colegios">0</div><div class="kpi-label">Colegios Distintos</div></div>
+            <div class="kpi-card"><div class="kpi-icon">📅</div><div class="kpi-num" id="est-esta-semana">0</div><div class="kpi-label">Esta Semana</div></div>
+            <div class="kpi-card"><div class="kpi-icon">⭐</div><div class="kpi-num" id="est-top-carrera">—</div><div class="kpi-label">Carrera Más Elegida</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>🏆 Top 10 Carreras Preferidas</h3>
+              <div id="est-chart-carreras"></div>
+            </div>
+            <div class="chart-card">
+              <h3>💎 Valores Más Importantes</h3>
+              <div id="est-chart-valores"></div>
+            </div>
+          </div>
+          <div class="chart-card" style="margin-bottom:16px;">
+            <h3>🌀 Distribución Holland (RIASEC)</h3>
+            <div id="est-chart-holland"></div>
+          </div>
+          <div class="chart-card">
+            <h3>📋 Tabla Resumen — Todos los Estudiantes</h3>
+            <div style="overflow-x:auto;margin-top:12px;">
+              <table class="token-table" id="tabla-resumen">
+                <thead><tr><th>Nombre</th><th>Colegio</th><th>Token</th><th>Holland</th><th>Top Interés</th><th>Top Aptitud</th><th>Estado</th><th>Fecha</th></tr></thead>
+                <tbody id="resumen-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end panel -->
+    </div><!-- end content-area -->
+  </div><!-- end main-layout -->
+</div><!-- end app -->
+
+<!-- TOKEN CREATED MODAL -->
+<div class="modal-overlay" id="token-modal">
+  <div class="modal-box">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:3rem;">🎉</div>
+      <h3>¡Evaluación Creada!</h3>
+      <p style="color:var(--gray);font-size:0.85rem;margin-top:6px;">Comparte este enlace con el estudiante</p>
+    </div>
+    <div style="background:#f4f6ff;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:0.75rem;font-weight:800;color:var(--gray);margin-bottom:6px;text-transform:uppercase;">Token</div>
+      <div id="modal-token-display" style="font-family:monospace;font-size:1.4rem;font-weight:900;color:var(--purple);letter-spacing:3px;"></div>
+    </div>
+    <div style="background:#e0f7fa;border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:0.75rem;font-weight:800;color:#006b64;margin-bottom:6px;">Enlace de Evaluación:</div>
+      <div id="modal-link-display" style="font-size:0.82rem;color:#006b64;font-weight:700;word-break:break-all;"></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-export btn-teal" onclick="copiarEnlace()">📋 Copiar Enlace</button>
+      <button class="btn-export btn-whatsapp" onclick="compartirWhatsApp()">📲 WhatsApp</button>
+      <button class="btn-export btn-navy" onclick="cerrarModal()">✓ Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE + AUTH -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const AUTHORIZED_EMAIL = 'carolca31@gmail.com';
+const BASE_URL = 'https://soyfuturo.com/evaluacion/';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBASZAS-aEDtdq9Kgo9Pw-XkdGvHLw6zic",
+  authDomain: "soyfuturo-c2c95.firebaseapp.com",
+  projectId: "soyfuturo-c2c95",
+  storageBucket: "soyfuturo-c2c95.firebasestorage.app",
+  messagingSenderId: "925550832603",
+  appId: "1:925550832603:web:2e3f6e4ef49e2f13ac15fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+const CAT_NAMES = ['Servicio Social','Ejecutivo Persuasivo','Verbal','Artístico-Plástico','Musical','Organización','Científico','Cálculo','Mecánico-Constructivo','Aire Libre/Destreza'];
+const VALORES_LIST = ['Ser rico(a)','Tener amistades duraderas','Tener vida sexual','Tener un buen nombre','Ser recordado(a) favorablemente','Tener un amor romántico','Ser un(a) gran líder','Tener salud','Ser héroe/heroína','Ser muy útil a los demás','Ser famoso(a)','Ser físicamente atractivo(a)','Ser un(a) genio intelectual','Encontrar aventuras','Ser feliz','Entender el misterio de la vida','Cumplir metas religiosas','Tener paz mental','Lograr aceptación social','Lograr identidad personal'];
+const HOLLAND_NAMES = {R:'Realista',I:'Investigador',A:'Artístico',S:'Social',E:'Emprendedor',O:'Organizador'};
+const HOLLAND_COLORS = {R:'#22c55e',I:'#3b82f6',A:'#a855f7',S:'#f59e0b',E:'#ef4444',O:'#06b6d4'};
+
+const CAREER_RECS = {
+  'Social':['Psicología','Educación','Trabajo Social','Orientación Educativa','Enfermería','Medicina','Comunicación Social'],
+  'Científico':['Medicina','Bioanálisis','Farmacia','Biología','Química','Ing. en Alimentos','Odontología'],
+  'Cálculo':['Actuaría','Ing. en Sistemas','Matemáticas','Economía','Contaduría','Estadística','Finanzas'],
+  'Mecánico-Constructivo':['Ing. Mecánica','Ing. Civil','Arquitectura','Ing. Eléctrica','Diseño Industrial','Ing. de Producción'],
+  'Artístico-Plástico':['Diseño Gráfico','Arquitectura','Artes Visuales','Comunicación Social','Fotografía','Diseño Industrial'],
+  'Organización':['Administración','Contaduría','Informática','Ing. Industrial','Secretariado Ejecutivo','RRHH'],
+  'Verbal':['Derecho','Letras','Periodismo','Comunicación Social','Idiomas Modernos','Educación'],
+  'Ejecutivo Persuasivo':['Administración','Mercadeo','Derecho','Ciencias Políticas','Relaciones Industriales','Economía'],
+  'Aire Libre/Destreza':['Ing. Agronómica','Veterinaria','Turismo','Educación Física','Ing. Forestal','Biología'],
+  'Musical':['Educación Musical','Artes Musicales','Comunicación Social','Educación','Cultura y Arte'],
+};
+
+let allEvaluaciones = [];
+let filtroEstado = 'todos';
+let activeDocId = null;
+let currentTab = 'dashboard';
+let newTokenData = {};
+
+// AUTH
+window.loginGoogle = async function() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const email = result.user.email;
+    if (email !== AUTHORIZED_EMAIL) {
+      await signOut(auth);
+      document.getElementById('login-error').style.display = 'block';
+    }
+  } catch(e) {
+    toast('❌ Error al iniciar sesión: ' + e.message);
+  }
+};
+
+window.logout = async function() {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, user => {
+  if (user && user.email === AUTHORIZED_EMAIL) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    if (user.photoURL) {
+      const av = document.getElementById('user-avatar');
+      av.src = user.photoURL; av.style.display = 'block';
+    }
+    document.getElementById('user-name').textContent = user.displayName || 'Carol';
+    cargarTodo();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+});
+
+// LOAD ALL
+async function cargarTodo() {
+  try {
+    const q = query(collection(db, "evaluaciones"), orderBy("fechaRegistro", "desc"));
+    const snap = await getDocs(q);
+    allEvaluaciones = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    actualizarStats();
+    renderLista();
+    renderRecientes();
+    renderDashboardCharts();
+    renderTokenTable();
+    renderEstadisticas();
+    toast('✅ ' + allEvaluaciones.length + ' evaluaciones cargadas');
+  } catch(e) {
+    console.error(e);
+    toast('❌ Error: ' + e.message);
+  }
+}
+window.cargarTodo = cargarTodo;
+
+function actualizarStats() {
+  const hoy = new Date().toLocaleDateString('es-VE');
+  const comp = allEvaluaciones.filter(e=>e.estado==='completado').length;
+  const prog = allEvaluaciones.filter(e=>e.estado==='en_progreso').length;
+  const activo = allEvaluaciones.filter(e=>!e.estado||e.estado==='activo').length;
+  const deHoy = allEvaluaciones.filter(e=>e.fechaTexto===hoy).length;
+
+  document.getElementById('stat-total').textContent = allEvaluaciones.length;
+  document.getElementById('stat-completados').textContent = comp;
+  document.getElementById('stat-progreso').textContent = prog;
+  document.getElementById('stat-activos').textContent = activo;
+  document.getElementById('stat-hoy').textContent = deHoy;
+  document.getElementById('total-count').textContent = allEvaluaciones.length;
+
+  document.getElementById('kpi-total').textContent = allEvaluaciones.length;
+  document.getElementById('kpi-comp').textContent = comp;
+  document.getElementById('kpi-prog').textContent = prog;
+  document.getElementById('kpi-activo').textContent = activo;
+}
+
+function renderLista() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const filtered = allEvaluaciones.filter(e => {
+    const matchE = filtroEstado==='todos' || (e.estado||'activo')===filtroEstado;
+    const matchS = !search || (e.nombre||'').toLowerCase().includes(search) || (e.token||'').toLowerCase().includes(search) || (e.grupo||'').toLowerCase().includes(search);
+    return matchE && matchS;
+  });
+  const list = document.getElementById('students-list');
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty-state"><span class="icon">🔍</span><p>No se encontraron estudiantes.</p></div>';
+    return;
+  }
+  list.innerHTML = filtered.map(e => {
+    const inicial = (e.nombre||'?').charAt(0).toUpperCase();
+    const estado = e.estado || 'activo';
+    return `<div class="student-item${activeDocId===e.id?' active':''}" onclick="verEstudiante('${e.id}')">
+      <div class="student-avatar">${inicial}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="student-name">${e.nombre||'Sin nombre'}</div>
+        <div class="student-meta">${e.grupo||'—'} · ${e.fechaTexto||''}</div>
+        <div class="student-token">${e.token||'—'}</div>
+      </div>
+      <div class="status-dot dot-${estado}"></div>
+    </div>`;
+  }).join('');
+}
+
+function renderRecientes() {
+  const recent = allEvaluaciones.slice(0,6);
+  const cont = document.getElementById('recent-list');
+  if (!recent.length) { cont.innerHTML = ''; return; }
+  cont.innerHTML = `<div style="font-size:0.9rem;font-weight:900;color:var(--navy);margin-bottom:14px;">📋 Últimas evaluaciones</div>` +
+    recent.map(e=>`<div style="background:white;border-radius:12px;padding:13px 16px;margin-bottom:8px;border:2px solid #e8eaf6;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;" onclick="verEstudiante('${e.id}')" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='#e8eaf6'">
+      <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--purple));display:grid;place-items:center;color:white;font-weight:900;font-size:0.95rem;">${(e.nombre||'?').charAt(0).toUpperCase()}</div>
+      <div style="flex:1;"><div style="font-weight:900;color:var(--navy);font-size:0.88rem;">${e.nombre||'Sin nombre'}</div><div style="font-size:0.72rem;color:var(--gray);font-weight:600;">${e.grupo||'—'} · ${e.fechaTexto||''}</div></div>
+      <span style="font-family:monospace;font-size:0.75rem;font-weight:900;color:var(--purple);">${e.token||''}</span>
+    </div>`).join('');
+}
+
+function renderDashboardCharts() {
+  const completados = allEvaluaciones.filter(e=>e.estado==='completado');
+
+  // Carreras
+  const carreraCount = {};
+  completados.forEach(e => {
+    if (e.carrerasInteres) {
+      e.carrerasInteres.split(/[,\n;]+/).map(s=>s.trim()).filter(Boolean).forEach(c => {
+        carreraCount[c] = (carreraCount[c]||0)+1;
+      });
+    }
+  });
+  renderBarChart('chart-carreras', carreraCount, 'bar-teal', 6);
+
+  // Holland
+  const hollandCount = {};
+  completados.forEach(e => {
+    if (e.holland?.clave) {
+      const top = e.holland.clave.charAt(0);
+      if (top && HOLLAND_NAMES[top]) hollandCount[HOLLAND_NAMES[top]] = (hollandCount[HOLLAND_NAMES[top]]||0)+1;
+    }
+  });
+  renderBarChart('chart-holland', hollandCount, 'bar-purple', 6);
+
+  // Intereses
+  const iCount = Array(10).fill(0);
+  completados.forEach(e => {
+    if (e.intereses?.sumas) {
+      const max = Math.max(...e.intereses.sumas);
+      const topIdx = e.intereses.sumas.indexOf(max);
+      if (topIdx >= 0) iCount[topIdx]++;
+    }
+  });
+  const iObj = {}; iCount.forEach((v,i) => { if(v) iObj[CAT_NAMES[i]] = v; });
+  renderBarChart('chart-intereses', iObj, 'bar-teal', 8);
+
+  // Aptitudes
+  const aCount = Array(10).fill(0);
+  completados.forEach(e => {
+    if (e.aptitudes?.sumas) {
+      const max = Math.max(...e.aptitudes.sumas);
+      const topIdx = e.aptitudes.sumas.indexOf(max);
+      if (topIdx >= 0) aCount[topIdx]++;
+    }
+  });
+  const aObj = {}; aCount.forEach((v,i) => { if(v) aObj[CAT_NAMES[i]] = v; });
+  renderBarChart('chart-aptitudes', aObj, 'bar-coral', 8);
+
+  // Fechas
+  const fechasCount = {};
+  allEvaluaciones.forEach(e => { if(e.fechaTexto) fechasCount[e.fechaTexto] = (fechasCount[e.fechaTexto]||0)+1; });
+  const sorted = Object.entries(fechasCount).sort((a,b)=>a[0].localeCompare(b[0])).slice(-10);
+  const sortedObj = Object.fromEntries(sorted);
+  renderBarChart('chart-fechas', sortedObj, 'bar-purple', 10);
+}
+
+function renderBarChart(containerId, dataObj, barClass, limit=8) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const sorted = Object.entries(dataObj).sort((a,b)=>b[1]-a[1]).slice(0,limit);
+  if (!sorted.length) { el.innerHTML = '<div style="color:var(--gray);font-size:0.82rem;font-weight:600;padding:10px;">Sin datos suficientes.</div>'; return; }
+  const max = sorted[0][1];
+  el.innerHTML = sorted.map(([label,val]) => `<div class="bar-row">
+    <div class="bar-label" style="font-size:0.68rem;">${label}</div>
+    <div class="bar-bg"><div class="bar-fill ${barClass}" style="width:${Math.round(val/max*100)}%"></div></div>
+    <span class="bar-pct">${val}</span>
+  </div>`).join('');
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('token-tbody');
+  if (!allEvaluaciones.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gray);">No hay evaluaciones. Crea una con el botón de arriba.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allEvaluaciones.map(e => {
+    const estado = e.estado || 'activo';
+    const link = BASE_URL + (e.token||'');
+    const progreso = calcularProgreso(e);
+    return `<tr>
+      <td><span class="token-code">${e.token||'—'}</span></td>
+      <td style="font-weight:700;color:var(--navy);">${e.nombre||'—'}</td>
+      <td style="font-size:0.78rem;color:var(--gray);">${e.grupo||'—'}</td>
+      <td><span class="status-pill pill-${estado}">${estadoLabel(estado)}</span></td>
+      <td><div class="link-cell">${link}</div></td>
+      <td style="font-size:0.78rem;color:var(--gray);">${e.fechaTexto||'—'}</td>
+      <td><div style="background:#eef2ff;border-radius:100px;height:7px;overflow:hidden;width:70px;"><div style="height:100%;width:${progreso}%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:100px;"></div></div><span style="font-size:0.72rem;color:var(--purple);font-weight:800;">${progreso}%</span></td>
+      <td>
+        <button class="btn-action" onclick="copiarLink('${link}')" title="Copiar enlace">📋</button>
+        <button class="btn-action success" onclick="verEstudiante('${e.id}');switchTab('estudiantes',document.querySelectorAll('.nav-tab')[2])" title="Ver perfil">👁</button>
+        <button class="btn-action" onclick="togglePausar('${e.id}','${estado}')" title="Pausar/Activar">${estado==='pausado'?'▶':'⏸'}</button>
+        <button class="btn-action danger" onclick="eliminarToken('${e.id}')" title="Eliminar">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function calcularProgreso(e) {
+  if (e.estado === 'completado') return 100;
+  let done = 0;
+  if (e.intereses?.sumas?.some(v=>v>0)) done += 25;
+  if (e.aptitudes?.sumas?.some(v=>v>0)) done += 25;
+  if (e.valores?.puntajes?.some(v=>v>0)) done += 25;
+  if (e.holland?.clave) done += 25;
+  return done;
+}
+
+function estadoLabel(s) {
+  return {completado:'✅ Completado',en_progreso:'🟡 En Progreso',activo:'⬜ Activo',pausado:'⏸ Pausado'}[s]||s;
+}
+
+function renderEstadisticas() {
+  const completados = allEvaluaciones.filter(e=>e.estado==='completado');
+  document.getElementById('est-total').textContent = completados.length;
+
+  const colegios = new Set(allEvaluaciones.map(e=>e.grupo).filter(Boolean));
+  document.getElementById('est-colegios').textContent = colegios.size;
+
+  const semana = new Date(); semana.setDate(semana.getDate()-7);
+  const estaSemana = allEvaluaciones.filter(e=>{
+    if (!e.fechaRegistro?.seconds) return false;
+    return new Date(e.fechaRegistro.seconds*1000) > semana;
+  }).length;
+  document.getElementById('est-esta-semana').textContent = estaSemana;
+
+  // Top carrera
+  const carreraCount = {};
+  completados.forEach(e => {
+    if (e.carrerasInteres) {
+      e.carrerasInteres.split(/[,\n;]+/).map(s=>s.trim()).filter(Boolean).forEach(c => {
+        carreraCount[c] = (carreraCount[c]||0)+1;
+      });
+    }
+  });
+  const topC = Object.entries(carreraCount).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('est-top-carrera').textContent = topC ? topC[0].substring(0,10)+'…' : '—';
+
+  renderBarChart('est-chart-carreras', carreraCount, 'bar-teal', 10);
+
+  // Valores
+  const vCount = Array(20).fill(0);
+  completados.forEach(e => {
+    if (e.valores?.puntajes) {
+      const topV = e.valores.puntajes.indexOf(Math.max(...e.valores.puntajes));
+      if (topV>=0) vCount[topV]++;
+    }
+  });
+  const vObj = {}; vCount.forEach((v,i)=>{ if(v) vObj[VALORES_LIST[i]] = v; });
+  renderBarChart('est-chart-valores', vObj, 'bar-purple', 8);
+
+  // Holland dist
+  const hDist = {R:0,I:0,A:0,S:0,E:0,O:0};
+  completados.forEach(e => {
+    if (e.holland?.clave) {
+      const top = e.holland.clave.charAt(0);
+      if (hDist[top]!==undefined) hDist[top]++;
+    }
+  });
+  const hObj = {};
+  Object.entries(hDist).forEach(([k,v])=>{ if(v) hObj[`[${k}] ${HOLLAND_NAMES[k]}`]=v; });
+  renderBarChart('est-chart-holland', hObj, 'bar-coral', 6);
+
+  // Tabla resumen
+  const tbody = document.getElementById('resumen-tbody');
+  tbody.innerHTML = allEvaluaciones.map(e => {
+    const topI = e.intereses?.sumas ? CAT_NAMES[e.intereses.sumas.indexOf(Math.max(...e.intereses.sumas))] : '—';
+    const topA = e.aptitudes?.sumas ? CAT_NAMES[e.aptitudes.sumas.indexOf(Math.max(...e.aptitudes.sumas))] : '—';
+    return `<tr>
+      <td style="font-weight:800;">${e.nombre||'—'}</td>
+      <td style="font-size:0.78rem;">${e.grupo||'—'}</td>
+      <td><span style="font-family:monospace;color:var(--purple);font-weight:900;font-size:0.78rem;">${e.token||'—'}</span></td>
+      <td style="font-weight:800;color:var(--navy);">${e.holland?.clave||'—'}</td>
+      <td style="font-size:0.78rem;">${topI}</td>
+      <td style="font-size:0.78rem;">${topA}</td>
+      <td><span class="status-pill pill-${e.estado||'activo'}">${estadoLabel(e.estado||'activo')}</span></td>
+      <td style="font-size:0.78rem;color:var(--gray);">${e.fechaTexto||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// TOKEN ACTIONS
+window.toggleCrearForm = function() {
+  const f = document.getElementById('crear-form');
+  f.classList.toggle('show');
+};
+
+window.crearToken = async function() {
+  const nombre = document.getElementById('nuevo-nombre').value.trim();
+  if (!nombre) { toast('⚠️ Escribe el nombre del estudiante'); return; }
+  const grupo = document.getElementById('nuevo-grupo').value.trim();
+  const correo = document.getElementById('nuevo-correo').value.trim();
+  const telefono = document.getElementById('nuevo-telefono').value.trim();
+
+  try {
+    const año = new Date().getFullYear();
+    const num = allEvaluaciones.length + 1;
+    const token = `SF-${año}-${String(num).padStart(4,'0')}`;
+    const link = BASE_URL + token;
+
+    const docData = {
+      token, nombre, grupo, correo, telefono,
+      orientador: 'Carol',
+      estado: 'activo',
+      fechaRegistro: serverTimestamp(),
+      fechaTexto: new Date().toLocaleDateString('es-VE'),
+      intereses:{sumas:Array(10).fill(0)},
+      aptitudes:{sumas:Array(10).fill(0)},
+      valores:{puntajes:Array(20).fill(0)},
+      holland:{puntajes:{},clave:''},
+      conclusion:'', carrerasInteres:'',
+      observaciones:'', recomendaciones:'', seguimiento: 'Primera entrevista'
+    };
+
+    const ref = await addDoc(collection(db,'evaluaciones'), docData);
+    allEvaluaciones.unshift({id: ref.id, ...docData});
+    newTokenData = {token, link, nombre};
+
+    actualizarStats(); renderLista(); renderTokenTable(); renderEstadisticas(); renderDashboardCharts();
+
+    document.getElementById('modal-token-display').textContent = token;
+    document.getElementById('modal-link-display').textContent = link;
+    document.getElementById('token-modal').classList.add('active');
+    document.getElementById('nuevo-nombre').value = '';
+    document.getElementById('nuevo-grupo').value = '';
+    document.getElementById('nuevo-correo').value = '';
+    document.getElementById('nuevo-telefono').value = '';
+    document.getElementById('crear-form').classList.remove('show');
+
+    toast('🎯 Token ' + token + ' creado');
+  } catch(e) {
+    toast('❌ Error: ' + e.message);
+  }
+};
+
+window.copiarEnlace = function() {
+  navigator.clipboard.writeText(document.getElementById('modal-link-display').textContent);
+  toast('📋 Enlace copiado');
+};
+window.copiarLink = function(link) {
+  navigator.clipboard.writeText(link);
+  toast('📋 Enlace copiado');
+};
+window.compartirWhatsApp = function() {
+  const link = document.getElementById('modal-link-display').textContent;
+  const msg = encodeURIComponent(`Hola ${newTokenData.nombre} 👋\nTe comparto tu evaluación SOY FUTURO 🚀\n📎 ${link}\nTu código: *${newTokenData.token}*\n¡Completa la evaluación desde tu dispositivo!`);
+  window.open('https://wa.me/?text=' + msg, '_blank');
+};
+window.cerrarModal = function() {
+  document.getElementById('token-modal').classList.remove('active');
+};
+
+window.togglePausar = async function(docId, estadoActual) {
+  const nuevoEstado = estadoActual === 'pausado' ? 'activo' : 'pausado';
+  try {
+    await updateDoc(doc(db,'evaluaciones',docId), {estado: nuevoEstado});
+    const idx = allEvaluaciones.findIndex(e=>e.id===docId);
+    if (idx>=0) allEvaluaciones[idx].estado = nuevoEstado;
+    renderLista(); renderTokenTable();
+    toast('✅ Estado actualizado: ' + nuevoEstado);
+  } catch(e) { toast('❌ Error: '+e.message); }
+};
+
+window.eliminarToken = async function(docId) {
+  if (!confirm('¿Seguro que deseas eliminar esta evaluación? Esta acción no se puede deshacer.')) return;
+  try {
+    await deleteDoc(doc(db,'evaluaciones',docId));
+    allEvaluaciones = allEvaluaciones.filter(e=>e.id!==docId);
+    actualizarStats(); renderLista(); renderTokenTable(); renderEstadisticas(); renderDashboardCharts();
+    toast('🗑 Evaluación eliminada');
+    if (activeDocId === docId) {
+      activeDocId = null;
+      document.getElementById('student-detail').style.display = 'none';
+      document.getElementById('welcome-estudiantes').style.display = 'block';
+    }
+  } catch(e) { toast('❌ Error: '+e.message); }
+};
+
+// STUDENT DETAIL
+window.verEstudiante = function(docId) {
+  const ev = allEvaluaciones.find(e=>e.id===docId);
+  if (!ev) return;
+  activeDocId = docId;
+  renderLista();
+  switchTab('estudiantes', document.querySelectorAll('.nav-tab')[2]);
+
+  document.getElementById('welcome-estudiantes').style.display = 'none';
+  const det = document.getElementById('student-detail');
+  det.style.display = 'block';
+
+  const link = BASE_URL + (ev.token||'');
+  const waMsg = encodeURIComponent(`Hola ${ev.nombre||''} 👋\nTe comparto tu evaluación SOY FUTURO 🚀\n📎 ${link}\nCódigo: *${ev.token||''}*`);
+  const estado = ev.estado||'activo';
+
+  const iSumas = ev.intereses?.sumas || Array(10).fill(0);
+  const aSumas = ev.aptitudes?.sumas || Array(10).fill(0);
+  const vPuntajes = ev.valores?.puntajes || Array(20).fill(0);
+  const hPuntajes = ev.holland?.puntajes || {};
+  const hClave = ev.holland?.clave || '—';
+
+  const iSorted = iSumas.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  const aSorted = aSumas.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  const vSorted = vPuntajes.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,5);
+  const hEntries = Object.entries(hPuntajes).sort((a,b)=>b[1]-a[1]);
+
+  const topI = iSorted[0] ? CAT_NAMES[iSorted[0].i] : '—';
+  const topA = aSorted[0] ? CAT_NAMES[aSorted[0].i] : '—';
+  const topH = hEntries[0] ? `${HOLLAND_NAMES[hEntries[0][0]]||''} (${hEntries[0][0]})` : '—';
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const HOLLAND_COLORS_MAP = {R:'#22c55e',I:'#3b82f6',A:'#a855f7',S:'#f59e0b',E:'#ef4444',O:'#06b6d4'};
+
+  const coherencia = iSorted[0]?.i === aSorted[0]?.i
+    ? `<div class="coherencia-alta">🟢 Alta Coherencia — Su interés y aptitud más fuertes coinciden en <strong>${topI}</strong>. Señal muy positiva.</div>`
+    : `<div class="coherencia-media">🟡 Coherencia Media — Mayor interés en <strong>${topI}</strong> pero mayor aptitud en <strong>${topA}</strong>. Explorar carreras que integren ambas.</div>`;
+
+  // Auto career recs
+  const recCarreras = CAREER_RECS[topI] || CAREER_RECS[topA] || ['Consulta con la orientadora'];
+
+  // Ruta futura
+  const rutaSteps = [
+    {title:'1️⃣ Quién soy', text: `${ev.nombre||'El estudiante'}, con un perfil vocacional ${topH}`},
+    {title:'2️⃣ Qué me interesa', text: `Área de mayor interés: <strong>${topI}</strong>. Seguido de ${iSorted[1]?CAT_NAMES[iSorted[1].i]:'—'} y ${iSorted[2]?CAT_NAMES[iSorted[2].i]:'—'}`},
+    {title:'3️⃣ En qué soy bueno/a', text: `Aptitud destacada: <strong>${topA}</strong>. También muestra capacidades en ${aSorted[1]?CAT_NAMES[aSorted[1].i]:'—'}`},
+    {title:'4️⃣ Qué valoro', text: vSorted.filter(x=>x.v>0).slice(0,3).map(x=>VALORES_LIST[x.i]).join(', ') || '—'},
+    {title:'5️⃣ Carreras Recomendadas', text: recCarreras.slice(0,5).join(' · ')},
+    {title:'6️⃣ Próximos Pasos', text: 'Investigar las carreras recomendadas, visitar universidades, hablar con profesionales del área, y completar el proceso OPSU si aplica.'},
+  ];
+
+  const seguimientoEstados = ['Primera entrevista','Evaluado','Informe entregado','Seguimiento','Finalizado'];
+  const seguimientoActual = ev.seguimiento || 'Primera entrevista';
+
+  det.innerHTML = `
+    <!-- HEADER -->
+    <div class="detail-header">
+      <div class="detail-avatar">${(ev.nombre||'?').charAt(0).toUpperCase()}</div>
+      <div style="flex:1;">
+        <div class="detail-name">${ev.nombre||'Sin nombre'}</div>
+        <div class="detail-sub">${ev.grupo||'—'} · ${ev.fechaTexto||''}</div>
+        <div class="detail-token-badge">${ev.token||'—'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <span class="status-badge status-${estado}">${estadoLabel(estado)}</span>
+        <a href="https://wa.me/?text=${waMsg}" target="_blank" class="btn-export btn-whatsapp" style="font-size:0.8rem;padding:8px 14px;">📲 WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- EXPORT BAR -->
+    <div class="export-bar">
+      <button class="btn-export btn-purple" onclick="exportarInformeWord('${docId}')">📄 Informe Word</button>
+      <button class="btn-export btn-teal" onclick="exportarCSV('${docId}')">📊 CSV</button>
+    </div>
+
+    <!-- SEGUIMIENTO -->
+    <div class="notes-section">
+      <h3>📌 Seguimiento del Proceso</h3>
+      <div class="seguimiento-bar">
+        ${seguimientoEstados.map(s=>`<button class="estado-btn${s===seguimientoActual?' active':''}" onclick="cambiarSeguimiento('${docId}','${s}',this)">${s}</button>`).join('')}
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-grid-2">
+      <div class="result-card">
+        <h3>📊 Intereses</h3>
+        ${iSorted.map((item,rank) => `<div class="bar-row"><div class="bar-label" style="font-size:0.67rem;">${CAT_NAMES[item.i]}${rank===0?'<span class="top-tag">🥇</span>':''}</div><div class="bar-bg"><div class="bar-fill bar-teal" style="width:${Math.round(item.v/24*100)}%"></div></div><span class="bar-pct">${Math.round(item.v/24*100)}%</span></div>`).join('')}
+      </div>
+      <div class="result-card">
+        <h3>🧠 Aptitudes</h3>
+        ${aSorted.map((item,rank) => `<div class="bar-row"><div class="bar-label" style="font-size:0.67rem;">${CAT_NAMES[item.i]}${rank===0?'<span class="top-tag">🥇</span>':''}</div><div class="bar-bg"><div class="bar-fill bar-coral" style="width:${Math.round(item.v/24*100)}%"></div></div><span class="bar-pct">${Math.round(item.v/24*100)}%</span></div>`).join('')}
+      </div>
+      <div class="result-card">
+        <h3>💎 Valores Principales</h3>
+        ${vSorted.map((item,rank) => `<div class="valor-item"><span class="valor-medal">${medals[rank]}</span><span class="valor-name">${VALORES_LIST[item.i]}</span><span class="valor-pts">${item.v}pts</span></div>`).join('')}
+      </div>
+      <div class="result-card">
+        <h3>🌀 Holland RIASEC</h3>
+        <div class="holland-clave-box"><div><div class="clave-text">${hClave}</div><div class="clave-sub">Clave RIASEC</div></div></div>
+        ${hEntries.map(([key,score]) => `<div class="bar-row"><div class="bar-label" style="font-size:0.67rem;">[${key}] ${HOLLAND_NAMES[key]||key}</div><div class="bar-bg"><div class="bar-fill" style="width:${Math.round(score/8*100)}%;background:${HOLLAND_COLORS_MAP[key]||'#6c3eb6'};"></div></div><span class="bar-pct" style="color:${HOLLAND_COLORS_MAP[key]||'#6c3eb6'};">${Math.round(score/8*100)}%</span></div>`).join('')}
+      </div>
+    </div>
+
+    <!-- FORTALEZAS -->
+    <div class="notes-section">
+      <h3>💪 Fortalezas & Coherencia Vocacional</h3>
+      <div class="fortaleza-item">✅ Interés destacado en: <strong>${topI}</strong></div>
+      <div class="fortaleza-item">✅ Aptitud sobresaliente en: <strong>${topA}</strong></div>
+      <div class="fortaleza-item">✅ Perfil vocacional: <strong>${topH}</strong></div>
+      <div style="margin-top:10px;">${coherencia}</div>
+    </div>
+
+    <!-- CONCLUSIÓN -->
+    <div class="notes-section">
+      <h3>✏️ Conclusión Personal del Estudiante</h3>
+      <div class="conclusion-box">${ev.conclusion || 'El estudiante no escribió una reflexión aún.'}</div>
+      <div style="margin-top:10px;">
+        <strong style="font-size:0.8rem;color:var(--gray);text-transform:uppercase;">Carreras de interés declaradas:</strong>
+        <div class="conclusion-box" style="margin-top:6px;background:#f0f4ff;">${ev.carrerasInteres || '—'}</div>
+      </div>
+    </div>
+
+    <!-- CARRERAS RECOMENDADAS -->
+    <div class="notes-section">
+      <h3>🎓 Carreras Recomendadas (automático)</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        ${recCarreras.map(c=>`<span class="tag">${c}</span>`).join('')}
+      </div>
+    </div>
+
+    <!-- RUTA FUTURA -->
+    <div class="ruta-section">
+      <h3>🗺️ MI RUTA FUTURA</h3>
+      ${rutaSteps.map(s=>`<div class="ruta-step"><h4>${s.title}</h4><p>${s.text}</p></div>`).join('')}
+    </div>
+
+    <!-- NOTAS ORIENTADORA -->
+    <div class="notes-section">
+      <h3>📝 Notas y Observaciones de la Orientadora</h3>
+      <label style="font-size:0.78rem;font-weight:800;color:var(--gray);display:block;margin-bottom:6px;">Observaciones:</label>
+      <textarea class="notes-textarea" id="d-observaciones" placeholder="Observaciones sobre este estudiante...">${ev.observaciones||''}</textarea>
+      <label style="font-size:0.78rem;font-weight:800;color:var(--gray);display:block;margin:12px 0 6px;">Recomendaciones:</label>
+      <textarea class="notes-textarea" id="d-recomendaciones" placeholder="Carreras recomendadas, próximos pasos, seguimiento...">${ev.recomendaciones||''}</textarea>
+      <div style="display:flex;align-items:center;margin-top:12px;gap:10px;">
+        <button class="btn-save-notes" onclick="guardarNotas('${docId}')">💾 Guardar Notas</button>
+        <span id="saved-note-msg" style="color:#16a34a;font-size:0.8rem;font-weight:800;display:none;">✅ ¡Guardado!</span>
+      </div>
+    </div>
+  `;
+};
+
+window.guardarNotas = async function(docId) {
+  const obs = document.getElementById('d-observaciones')?.value || '';
+  const rec = document.getElementById('d-recomendaciones')?.value || '';
+  try {
+    await updateDoc(doc(db,'evaluaciones',docId), {observaciones:obs, recomendaciones:rec});
+    const idx = allEvaluaciones.findIndex(e=>e.id===docId);
+    if (idx>=0) { allEvaluaciones[idx].observaciones=obs; allEvaluaciones[idx].recomendaciones=rec; }
+    const msg = document.getElementById('saved-note-msg');
+    if (msg) { msg.style.display='inline'; setTimeout(()=>msg.style.display='none',2500); }
+    toast('💾 Notas guardadas');
+  } catch(e) { toast('❌ Error: '+e.message); }
+};
+
+window.cambiarSeguimiento = async function(docId, nuevoEstado, btn) {
+  try {
+    await updateDoc(doc(db,'evaluaciones',docId), {seguimiento: nuevoEstado});
+    const idx = allEvaluaciones.findIndex(e=>e.id===docId);
+    if (idx>=0) allEvaluaciones[idx].seguimiento = nuevoEstado;
+    document.querySelectorAll('.estado-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    toast('📌 Seguimiento: ' + nuevoEstado);
+  } catch(e) { toast('❌ Error: '+e.message); }
+};
+
+// EXPORTS
+window.exportarInformeWord = function(docId) {
+  const ev = allEvaluaciones.find(e=>e.id===docId);
+  if (!ev) return;
+  const nombre = ev.nombre || 'Estudiante';
+  const iSumas = ev.intereses?.sumas || Array(10).fill(0);
+  const aSumas = ev.aptitudes?.sumas || Array(10).fill(0);
+  const vPuntajes = ev.valores?.puntajes || Array(20).fill(0);
+  const iTop = iSumas.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+  const aTop = aSumas.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+  const vTop = vPuntajes.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,5);
+  const hClave = ev.holland?.clave || '—';
+  const hEntries = Object.entries(ev.holland?.puntajes||{}).sort((a,b)=>b[1]-a[1]);
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+body{font-family:Arial,sans-serif;margin:40px;color:#1a1f5e;font-size:11pt;}
+h1{color:#6c3eb6;font-size:20pt;border-bottom:4px solid #00c4b4;padding-bottom:10px;margin-bottom:20px;}
+h2{color:#1a1f5e;font-size:13pt;margin-top:26px;border-left:5px solid #6c3eb6;padding-left:12px;}
+h3{color:#6c3eb6;font-size:11pt;margin-top:14px;}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:10pt;}
+th{background:#1a1f5e;color:white;padding:8px;text-align:center;}
+td{padding:7px 8px;border:1px solid #ddd;text-align:center;}
+tr:nth-child(even) td{background:#f0f4ff;}
+.info{background:#f4f6ff;padding:14px;border-radius:8px;margin-bottom:24px;font-size:10pt;}
+.label{font-weight:bold;color:#6c3eb6;}
+.highlight{background:#e0f7fa;font-weight:bold;}
+.ruta{background:#f0f0ff;padding:12px;border-radius:8px;border-left:4px solid #6c3eb6;margin:8px 0;}
+.footer{margin-top:40px;padding-top:12px;border-top:2px solid #e0e4f0;color:#8b92a5;font-size:9pt;}
+</style></head><body>
+<h1>🚀 SOY FUTURO — Informe Vocacional Profesional</h1>
+<div class="info">
+<p><span class="label">Estudiante:</span> ${nombre} &nbsp;&nbsp; <span class="label">Colegio:</span> ${ev.grupo||'—'} &nbsp;&nbsp; <span class="label">Fecha:</span> ${ev.fechaTexto||'—'} &nbsp;&nbsp; <span class="label">Token:</span> ${ev.token||'—'}</p>
+<p><span class="label">Orientadora:</span> ${ev.orientador||'Carol'} &nbsp;&nbsp; <span class="label">Seguimiento:</span> ${ev.seguimiento||'—'}</p>
+</div>
+
+<h2>📊 Perfil de Intereses</h2>
+<table><tr><th>Categoría</th>${CAT_NAMES.map(c=>`<th>${c}</th>`).join('')}</tr>
+<tr><td>Puntaje</td>${iSumas.map(v=>`<td>${v}</td>`).join('')}</tr>
+<tr><td>%</td>${iSumas.map(v=>`<td>${Math.round(v/24*100)}%</td>`).join('')}</tr></table>
+<p><strong>Top Intereses:</strong> ${iTop.map((x,r)=>['🥇','🥈','🥉'][r]+' '+CAT_NAMES[x.i]).join(' | ')}</p>
+
+<h2>🧠 Perfil de Aptitudes</h2>
+<table><tr><th>Categoría</th>${CAT_NAMES.map(c=>`<th>${c}</th>`).join('')}</tr>
+<tr><td>Puntaje</td>${aSumas.map(v=>`<td>${v}</td>`).join('')}</tr>
+<tr><td>%</td>${aSumas.map(v=>`<td>${Math.round(v/24*100)}%</td>`).join('')}</tr></table>
+<p><strong>Top Aptitudes:</strong> ${aTop.map((x,r)=>['🥇','🥈','🥉'][r]+' '+CAT_NAMES[x.i]).join(' | ')}</p>
+
+<h2>💎 Valores Más Importantes</h2>
+<ol>${vTop.map(x=>`<li>${VALORES_LIST[x.i]} (${x.v} pts)</li>`).join('')}</ol>
+
+<h2>🌀 Perfil Holland (RIASEC)</h2>
+<p><strong>Clave Holland: ${hClave}</strong></p>
+<table><tr><th>Tipo</th><th>Nombre</th><th>Puntaje /8</th><th>%</th></tr>
+${hEntries.map(([k,s])=>`<tr><td>${k}</td><td>${HOLLAND_NAMES[k]||k}</td><td>${s}</td><td>${Math.round(s/8*100)}%</td></tr>`).join('')}</table>
+
+<h2>💪 Fortalezas y Coherencia</h2>
+<p>✅ Mayor interés: <strong>${CAT_NAMES[iSumas.indexOf(Math.max(...iSumas))]}</strong></p>
+<p>✅ Mayor aptitud: <strong>${CAT_NAMES[aSumas.indexOf(Math.max(...aSumas))]}</strong></p>
+<p>✅ Perfil Holland: <strong>${hClave}</strong></p>
+
+<h2>✏️ Conclusión Personal del Estudiante</h2>
+<p>${ev.conclusion||'—'}</p>
+<p><strong>Carreras de interés declaradas:</strong> ${ev.carrerasInteres||'—'}</p>
+
+<h2>📝 Notas de la Orientadora</h2>
+<p><strong>Observaciones:</strong> ${ev.observaciones||'—'}</p>
+<p><strong>Recomendaciones:</strong> ${ev.recomendaciones||'—'}</p>
+
+<h2>🗺️ MI RUTA FUTURA</h2>
+<div class="ruta"><strong>Quién soy:</strong> ${nombre}, perfil ${HOLLAND_NAMES[hClave?.charAt(0)]||hClave}</div>
+<div class="ruta"><strong>Qué me interesa:</strong> ${CAT_NAMES[iSumas.indexOf(Math.max(...iSumas))]}</div>
+<div class="ruta"><strong>En qué soy bueno/a:</strong> ${CAT_NAMES[aSumas.indexOf(Math.max(...aSumas))]}</div>
+<div class="ruta"><strong>Qué valoro:</strong> ${vTop.slice(0,3).map(x=>VALORES_LIST[x.i]).join(', ')}</div>
+
+<div class="footer">
+  <p>Generado por SOY FUTURO — Plataforma de Orientación Vocacional Profesional · ${new Date().toLocaleDateString('es-VE')}</p>
+  <p>Orientadora: Carol · carolca31@gmail.com</p>
+</div>
+</body></html>`;
+
+  const blob = new Blob(['\ufeff'+html],{type:'application/msword'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `SOY_FUTURO_${nombre.replace(/ /g,'_')}_Informe.doc`; a.click();
+  toast('📄 Informe descargado');
+};
+
+window.exportarCSV = function(docId) {
+  const ev = allEvaluaciones.find(e=>e.id===docId);
+  if (!ev) return;
+  const iSumas = ev.intereses?.sumas || Array(10).fill(0);
+  const aSumas = ev.aptitudes?.sumas || Array(10).fill(0);
+  let csv = `SOY FUTURO — Resultados\nNombre,${ev.nombre||''}\nColegio,${ev.grupo||''}\nFecha,${ev.fechaTexto||''}\nToken,${ev.token||''}\n\n`;
+  csv += `INTERESES\n${CAT_NAMES.join(',')}\n${iSumas.join(',')}\n\n`;
+  csv += `APTITUDES\n${CAT_NAMES.join(',')}\n${aSumas.join(',')}\n\n`;
+  csv += `HOLLAND\nClave,${ev.holland?.clave||''}\n`;
+  Object.entries(ev.holland?.puntajes||{}).forEach(([k,v])=>{ csv+=`${k},${HOLLAND_NAMES[k]},${v}\n`; });
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`SOY_FUTURO_${(ev.nombre||'estudiante').replace(/ /g,'_')}.csv`; a.click();
+};
+
+window.exportarExcelGlobal = function() {
+  let csv = 'SOY FUTURO — Resumen Global\n';
+  csv += 'Nombre,Colegio,Token,Estado,Holland,Top Interés,Top Aptitud,Fecha\n';
+  allEvaluaciones.forEach(e => {
+    const iSumas = e.intereses?.sumas || Array(10).fill(0);
+    const aSumas = e.aptitudes?.sumas || Array(10).fill(0);
+    const topI = CAT_NAMES[iSumas.indexOf(Math.max(...iSumas))] || '—';
+    const topA = CAT_NAMES[aSumas.indexOf(Math.max(...aSumas))] || '—';
+    csv += `"${e.nombre||''}","${e.grupo||''}","${e.token||''}","${e.estado||''}","${e.holland?.clave||''}","${topI}","${topA}","${e.fechaTexto||''}"\n`;
+  });
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='SOY_FUTURO_Estadisticas_Global.csv'; a.click();
+  toast('📊 Excel descargado');
+};
+
+// UI HELPERS
+window.switchTab = function(tab, btnEl) {
+  currentTab = tab;
+  document.querySelectorAll('[id^="tab-"]').forEach(el=>el.style.display='none');
+  document.getElementById('tab-'+tab).style.display = 'block';
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+};
+
+window.setFiltro = function(estado, btn) {
+  filtroEstado = estado;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderLista();
+};
+
+function toast(msg) {
+  const t = document.getElementById('toaster');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+window.toast = toast;
+</script>
+
+</body>
+</html>

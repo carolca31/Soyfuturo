@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOY FUTURO — Orientación Vocacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a1f5e;
+  --purple: #6c3eb6;
+  --teal: #00c4b4;
+  --coral: #ff5e6c;
+  --yellow: #ffd93d;
+  --pink: #ff84a1;
+  --light: #f4f6ff;
+  --white: #ffffff;
+  --gray: #8b92a5;
+  --card-bg: rgba(255,255,255,0.92);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #0d1147 0%, #1a1f5e 40%, #2d1b69 100%);
+  min-height: 100vh;
+  color: var(--navy);
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--navy), var(--purple));
+  padding: 28px 24px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.header h1 {
+  font-size: 2rem; font-weight: 900; color: white; letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.header h1 span { color: var(--teal); }
+.header p { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-top: 4px; }
+.rocket { font-size: 2rem; display: inline-block; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* NAV TABS */
+.tabs {
+  display: flex; overflow-x: auto; gap: 4px; padding: 16px 16px 0;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; padding: 10px 18px; border-radius: 12px 12px 0 0;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  cursor: pointer; font-size: 0.85rem; font-weight: 700; border: none;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tab:hover { background: rgba(255,255,255,0.2); color: white; }
+.tab.active { background: var(--white); color: var(--navy); }
+
+/* MAIN CONTAINER */
+.container {
+  background: var(--light); border-radius: 0 16px 16px 16px;
+  margin: 0 16px 24px; padding: 24px; min-height: 60vh;
+}
+
+/* STUDENT INFO */
+.info-bar {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+  background: var(--navy); padding: 16px; border-radius: 14px;
+}
+.info-bar label { color: rgba(255,255,255,0.7); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+.info-bar input {
+  width: 100%; padding: 8px 12px; border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.1);
+  color: white; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600;
+}
+.info-bar input::placeholder { color: rgba(255,255,255,0.35); }
+.info-bar input:focus { outline: none; border-color: var(--teal); }
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 1.15rem; font-weight: 900; color: var(--navy);
+  display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+}
+.section-subtitle { color: var(--gray); font-size: 0.85rem; margin-bottom: 20px; }
+
+/* SCALE LEGEND */
+.scale-legend {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+  background: white; padding: 12px 16px; border-radius: 12px;
+  border: 2px solid #e8eaf6;
+}
+.scale-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; }
+.scale-badge { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 0.75rem; font-weight: 900; color: white; }
+.s4 { background: #22c55e; }
+.s3 { background: #84cc16; }
+.s2 { background: #f59e0b; }
+.s1 { background: #f97316; }
+.s0 { background: #ef4444; }
+
+/* QUESTIONNAIRE TABLE */
+.q-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.q-table thead th {
+  background: var(--navy); color: white; padding: 10px 6px; text-align: center;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.3px;
+}
+.q-table thead th:first-child { text-align: left; width: 38px; }
+.q-table thead th:nth-child(2) { text-align: left; min-width: 180px; }
+.cat-head { font-size: 0.65rem; display: block; font-weight: 600; opacity: 0.8; }
+.q-table tbody tr:nth-child(even) { background: #f0f4ff; }
+.q-table tbody tr:hover { background: #e8f4fd; }
+.q-table td { padding: 7px 5px; vertical-align: middle; }
+.q-table td:first-child { text-align: center; color: var(--gray); font-weight: 700; font-size: 0.75rem; }
+.q-table td.activity { font-weight: 600; color: #2d3561; }
+.q-table td.score-cell { text-align: center; }
+.score-input {
+  width: 38px; height: 34px; border: 2px solid #d0d8f0; border-radius: 8px;
+  text-align: center; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800;
+  color: var(--navy); background: white; transition: all 0.15s; -moz-appearance: textfield;
+}
+.score-input::-webkit-outer-spin-button,
+.score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.score-input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,196,180,0.2); }
+.score-input.disabled { background: #f0f4ff; color: #b0b8d0; cursor: not-allowed; }
+.score-input.has-val { border-color: var(--purple); background: #f3eeff; }
+
+/* TOTALS ROW */
+.totals-row { background: var(--navy) !important; }
+.totals-row td { color: white; font-weight: 900; font-size: 0.82rem; padding: 10px 5px; }
+.totals-row td.activity { color: var(--teal); }
+.pct-row { background: #eef2ff !important; }
+.pct-row td { font-weight: 800; color: var(--purple); font-size: 0.82rem; }
+
+/* RESULTS SECTION */
+.results-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px; margin-top: 20px;
+}
+.result-card {
+  background: white; border-radius: 14px; padding: 16px 12px;
+  text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 2px solid transparent; transition: all 0.2s; cursor: default;
+}
+.result-card.top { border-color: var(--teal); transform: scale(1.04); }
+.result-card.second { border-color: var(--yellow); }
+.result-card .cat-name { font-weight: 800; font-size: 0.78rem; color: var(--navy); margin-bottom: 6px; }
+.result-card .cat-code { font-size: 0.65rem; color: var(--gray); font-weight: 700; letter-spacing: 0.5px; }
+.bar-wrap { background: #eef2ff; border-radius: 100px; height: 10px; margin: 10px 0 6px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 100px; transition: width 0.6s ease; background: linear-gradient(90deg, var(--purple), var(--teal)); }
+.pct-num { font-size: 1.4rem; font-weight: 900; color: var(--purple); }
+.crown { font-size: 1rem; }
+
+/* HOLLAND */
+.holland-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.holland-card {
+  background: white; border-radius: 14px; padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07); border: 2px solid #e8eaf6;
+}
+.holland-card h3 { font-size: 0.85rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+.holland-card p { font-size: 0.78rem; color: var(--gray); line-height: 1.5; margin-bottom: 12px; }
+.holland-items { display: flex; flex-direction: column; gap: 8px; }
+.h-item { display: flex; align-items: center; gap: 8px; }
+.h-item label { font-size: 0.8rem; font-weight: 700; color: #2d3561; flex: 1; }
+.h-check { display: flex; gap: 4px; }
+.h-check label { 
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 7px; cursor: pointer;
+  font-size: 0.75rem; font-weight: 800; border: 2px solid #e0e4f0;
+  background: white; color: var(--gray); transition: all 0.15s;
+}
+.h-check input[type="radio"] { display: none; }
+.h-check input[type="radio"]:checked + label { background: var(--navy); color: white; border-color: var(--navy); }
+
+/* VALUES - PAIR COMPARISON */
+.valores-intro {
+  background: linear-gradient(135deg, #f3eeff, #e0f7fa);
+  border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;
+  border-left: 4px solid var(--purple);
+}
+.valores-intro p { font-size: 0.85rem; color: var(--navy); font-weight: 600; line-height: 1.6; }
+.valores-intro strong { color: var(--purple); }
+
+.valores-progress {
+  background: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+  border: 2px solid #e8eaf6; display: flex; align-items: center; gap: 14px;
+}
+.v-prog-label { font-size: 0.8rem; font-weight: 800; color: var(--gray); white-space: nowrap; }
+.v-prog-bar-bg { flex: 1; height: 10px; background: #eef2ff; border-radius: 100px; overflow: hidden; }
+.v-prog-bar { height: 100%; background: linear-gradient(90deg, var(--purple), var(--teal)); border-radius: 100px; transition: width 0.4s ease; width: 0%; }
+.v-prog-count { font-size: 0.85rem; font-weight: 900; color: var(--purple); white-space: nowrap; }
+
+.pair-card {
+  background: white; border-radius: 16px; padding: 20px;
+  border: 2px solid #e8eaf6; margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: all 0.2s;
+}
+.pair-card.answered { border-color: var(--teal); }
+.pair-num { font-size: 0.72rem; font-weight: 800; color: var(--gray); margin-bottom: 10px; letter-spacing: 0.5px; }
+.pair-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; }
+.pair-vs { text-align: center; font-size: 0.75rem; font-weight: 900; color: var(--gray); }
+.pair-btn {
+  border: 2px solid #e0e4f0; border-radius: 12px; padding: 12px 14px;
+  background: white; cursor: pointer; font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem; font-weight: 700; color: var(--navy); text-align: center;
+  transition: all 0.18s; line-height: 1.3;
+}
+.pair-btn:hover { border-color: var(--purple); background: #f3eeff; transform: translateY(-1px); }
+.pair-btn.selected { border-color: var(--teal); background: #e0f7fa; color: #006b64; font-weight: 900; }
+.pair-btn.other { opacity: 0.45; }
+
+.valores-ranking {
+  background: white; border-radius: 16px; padding: 20px;
+  border: 2px solid #e8eaf6; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.valores-ranking h4 { font-size: 0.9rem; font-weight: 900; color: var(--navy); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--teal); }
+.v-rank-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f4ff; }
+.v-rank-medal { font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
+.v-rank-name { font-size: 0.82rem; font-weight: 700; color: var(--navy); flex: 1; }
+.v-rank-score { font-size: 0.85rem; font-weight: 900; color: var(--purple); }
+.v-rank-bar-wrap { width: 80px; background: #eef2ff; border-radius: 100px; height: 7px; overflow: hidden; }
+.v-rank-bar { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--purple), var(--teal)); transition: width 0.5s ease; }
+
+/* UNIVERSITIES TAB */
+.uni-search-bar {
+  display: flex; gap: 10px; margin-bottom: 20px;
+}
+.uni-search-bar input {
+  flex: 1; padding: 10px 16px; border: 2px solid #e0e4f0; border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--navy);
+  transition: border-color 0.2s;
+}
+.uni-search-bar input:focus { outline: none; border-color: var(--purple); }
+.uni-search-bar select {
+  padding: 10px 14px; border: 2px solid #e0e4f0; border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700;
+  color: var(--navy); background: white; cursor: pointer;
+}
+.uni-search-bar select:focus { outline: none; border-color: var(--teal); }
+
+.uni-card {
+  background: white; border-radius: 14px; padding: 18px 20px;
+  border: 2px solid #e8eaf6; margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: all 0.2s;
+}
+.uni-card:hover { border-color: var(--purple); box-shadow: 0 6px 18px rgba(108,62,182,0.12); }
+.uni-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.uni-badge {
+  min-width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+  font-size: 0.65rem; font-weight: 900; text-align: center; color: white; line-height: 1.2;
+  padding: 4px;
+}
+.badge-publica { background: linear-gradient(135deg, var(--navy), var(--purple)); }
+.badge-privada { background: linear-gradient(135deg, var(--coral), #ff8fa3); }
+.badge-tecnica { background: linear-gradient(135deg, #22c55e, #00c4b4); }
+.uni-name { font-size: 0.88rem; font-weight: 900; color: var(--navy); line-height: 1.3; }
+.uni-meta { font-size: 0.75rem; color: var(--gray); font-weight: 600; margin-top: 2px; }
+.uni-tipo-badge {
+  display: inline-block; padding: 3px 9px; border-radius: 100px; font-size: 0.68rem; font-weight: 800;
+  margin-left: 8px; vertical-align: middle;
+}
+.tipo-publica { background: #e8f4fd; color: var(--navy); }
+.tipo-privada { background: #ffeef2; color: #c62828; }
+.tipo-tecnica { background: #e8fdf5; color: #1a7a4a; }
+
+.uni-carreras { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.carrera-pill {
+  background: #f0f4ff; border-radius: 100px; padding: 4px 10px;
+  font-size: 0.72rem; font-weight: 700; color: var(--navy);
+  border: 1px solid #d8dff5;
+}
+.uni-opsu-info {
+  background: #f9f6ff; border-radius: 10px; padding: 10px 14px; margin-top: 10px;
+  font-size: 0.78rem; color: var(--purple); font-weight: 700;
+  border-left: 3px solid var(--purple);
+}
+.uni-nota { font-size: 0.7rem; color: var(--gray); margin-top: 4px; }
+.uni-link { color: var(--teal); text-decoration: none; font-weight: 700; font-size: 0.75rem; }
+.uni-link:hover { text-decoration: underline; }
+
+.uni-filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filter-chip {
+  padding: 6px 14px; border-radius: 100px; border: 2px solid #e0e4f0;
+  font-size: 0.78rem; font-weight: 800; color: var(--gray); background: white;
+  cursor: pointer; transition: all 0.15s;
+}
+.filter-chip:hover { border-color: var(--purple); color: var(--purple); }
+.filter-chip.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+.uni-count-banner {
+  background: var(--navy); color: white; border-radius: 10px; padding: 10px 16px;
+  font-size: 0.8rem; font-weight: 700; margin-bottom: 16px; text-align: center;
+}
+.uni-count-banner span { color: var(--teal); font-weight: 900; font-size: 1rem; }
+
+.values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 24px; }
+.value-item {
+  display: flex; align-items: center; gap: 10px; background: white;
+  border-radius: 12px; padding: 10px 14px; border: 2px solid #e8eaf6;
+}
+.value-num { font-size: 1rem; font-weight: 900; color: var(--purple); width: 24px; flex-shrink: 0; }
+.value-name { font-size: 0.82rem; font-weight: 700; color: var(--navy); flex: 1; }
+.value-score {
+  width: 44px; height: 34px; border: 2px solid #d0d8f0; border-radius: 8px;
+  text-align: center; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800;
+  color: var(--navy); -moz-appearance: textfield;
+}
+.value-score::-webkit-outer-spin-button,
+.value-score::-webkit-inner-spin-button { -webkit-appearance: none; }
+.value-score:focus { outline: none; border-color: var(--teal); }
+
+/* REPORT / SUMMARY SECTION */
+.report-box {
+  background: white; border-radius: 16px; padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px;
+}
+.report-box h3 {
+  font-size: 1rem; font-weight: 900; color: var(--navy);
+  margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid var(--teal);
+}
+.report-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.report-label { font-size: 0.82rem; font-weight: 800; color: var(--gray); min-width: 140px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.4px; }
+.report-value { font-size: 0.9rem; font-weight: 700; color: var(--navy); flex: 1; }
+.report-textarea {
+  width: 100%; border: 2px solid #e0e4f0; border-radius: 10px;
+  padding: 10px 14px; font-family: 'Nunito', sans-serif; font-size: 0.88rem;
+  font-weight: 600; color: var(--navy); resize: vertical; min-height: 80px;
+  margin-top: 4px; transition: border-color 0.2s;
+}
+.report-textarea:focus { outline: none; border-color: var(--purple); }
+
+/* CAREERS TABLE */
+.careers-wrap { overflow-x: auto; margin-top: 16px; }
+.careers-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.careers-table th { background: var(--purple); color: white; padding: 10px 14px; text-align: left; font-weight: 800; }
+.careers-table td { padding: 8px 14px; border-bottom: 1px solid #e8eaf6; color: var(--navy); font-weight: 600; }
+.careers-table tr:nth-child(even) td { background: #f7f0ff; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 12px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-primary { background: var(--purple); color: white; }
+.btn-primary:hover { background: #5a32a0; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(108,62,182,0.4); }
+.btn-teal { background: var(--teal); color: white; }
+.btn-teal:hover { background: #00a99a; transform: translateY(-1px); }
+.btn-coral { background: var(--coral); color: white; }
+.btn-coral:hover { background: #e54d5a; transform: translateY(-1px); }
+.btn-yellow { background: var(--yellow); color: var(--navy); }
+.btn-yellow:hover { background: #f5c900; transform: translateY(-1px); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+/* BADGE MEDALS */
+.medal { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 800; }
+.medal-1 { background: var(--yellow); color: var(--navy); }
+.medal-2 { background: #e8eaf6; color: var(--navy); }
+.medal-3 { background: #ffe0b2; color: var(--navy); }
+
+/* COMBINED CHART */
+.combined-chart { display: grid; gap: 10px; margin-top: 16px; }
+.c-row { display: flex; align-items: center; gap: 10px; }
+.c-label { font-size: 0.78rem; font-weight: 800; color: var(--navy); width: 120px; flex-shrink: 0; }
+.c-bars { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.c-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.c-bar-label { font-size: 0.65rem; font-weight: 800; width: 14px; color: var(--gray); }
+.c-bar-bg { flex: 1; background: #eef2ff; border-radius: 100px; height: 8px; overflow: hidden; }
+.c-bar-i { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), #00e4d4); transition: width 0.6s ease; }
+.c-bar-a { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--coral), #ff8fa3); transition: width 0.6s ease; }
+.c-pct { font-size: 0.72rem; font-weight: 800; color: var(--purple); width: 36px; text-align: right; }
+
+/* HIDDEN */
+.page { display: none; }
+.page.active { display: block; }
+
+/* SCROLL TABLE WRAPPER */
+.table-scroll { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+/* TOP PICK HIGHLIGHT */
+.top-pick {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--purple) 100%);
+  border-radius: 14px; padding: 18px; color: white; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
+}
+.top-pick .icon { font-size: 2.2rem; }
+.top-pick h3 { font-size: 1rem; font-weight: 900; margin-bottom: 2px; }
+.top-pick p { font-size: 0.82rem; opacity: 0.85; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .holland-grid { grid-template-columns: 1fr; }
+  .container { margin: 0 8px 20px; padding: 16px; }
+}
+</style>
+
+<style>
+.h-item.selected-card{
+ background:#e0f7fa !important;
+ border-left:4px solid #00c4b4 !important;
+ padding:8px;
+ border-radius:10px;
+}
+.fortaleza-item{
+ background:#ecfdf5;padding:10px;margin:6px 0;border-radius:8px;
+ font-weight:700;
+}
+.coherencia-alta{color:#16a34a;font-weight:800;}
+.coherencia-media{color:#d97706;font-weight:800;}
+</style>
+
+</head>
+<body>
+
+<!-- TOKEN GATE -->
+<div id="token-gate" style="position:fixed;inset:0;background:linear-gradient(135deg,#0d1147,#1a1f5e,#2d1b69);display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <div style="background:white;border-radius:24px;padding:40px 32px;max-width:400px;width:90%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+    <div style="font-size:3.5rem;margin-bottom:8px;">🚀</div>
+    <h1 style="font-size:1.8rem;font-weight:900;color:#1a1f5e;margin-bottom:6px;">SOY <span style="color:#00c4b4;">FUTURO</span></h1>
+    <p style="color:#8b92a5;font-size:0.9rem;margin-bottom:24px;line-height:1.6;">Ingresa el código que te dio tu orientadora para comenzar tu evaluación vocacional.</p>
+    <input id="gate-token" type="text" placeholder="Ej: SF-2025-0001" style="width:100%;padding:14px 18px;border:3px solid #e0e4f0;border-radius:14px;font-family:Nunito,sans-serif;font-size:1.1rem;font-weight:900;color:#1a1f5e;text-align:center;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;box-sizing:border-box;" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')validarToken()">
+    <button onclick="validarToken()" style="width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#00c4b4,#6c3eb6);color:white;font-family:Nunito,sans-serif;font-size:1rem;font-weight:900;cursor:pointer;">
+      Entrar ✨
+    </button>
+    <div id="gate-error" style="display:none;color:#ff5e6c;font-size:0.85rem;font-weight:700;margin-top:12px;">❌ Código no válido. Verifica con tu orientadora.</div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:24px;padding:40px 32px;max-width:400px;width:90%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+    <div style="font-size:4rem;margin-bottom:12px;">🎉</div>
+    <h2 style="font-size:1.3rem;font-weight:900;color:#1a1f5e;margin-bottom:10px;">¡Evaluación Enviada!</h2>
+    <p style="color:#8b92a5;font-size:0.9rem;line-height:1.6;margin-bottom:20px;">Tu orientadora recibirá tus resultados y se pondrá en contacto contigo. ¡Gracias por completar la evaluación!</p>
+    <div style="background:#f0fdf4;border-radius:12px;padding:16px;border:2px solid #22c55e;margin-bottom:20px;">
+      <div style="font-size:0.8rem;font-weight:800;color:#166534;margin-bottom:4px;">TU CÓDIGO DE EVALUACIÓN</div>
+      <div id="modal-token" style="font-family:monospace;font-size:1.4rem;font-weight:900;color:#6c3eb6;letter-spacing:3px;">—</div>
+    </div>
+    <p style="color:#8b92a5;font-size:0.82rem;">Guarda este código por si necesitas referenciarlo con tu orientadora.</p>
+  </div>
+</div>
+
+
+<div class="header">
+  <span class="rocket">🚀</span>
+  <h1>SOY <span>FUTURO</span></h1>
+  <p>Taller de Orientación Vocacional — Resultados Interactivos</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" id="tab-intereses" onclick="showPage('intereses')">📊 Intereses</button>
+  <button class="tab" id="tab-aptitudes" onclick="showPage('aptitudes')">🧠 Aptitudes</button>
+  <button class="tab" id="tab-valores" onclick="showPage('valores')">💎 Valores</button>
+  <button class="tab" id="tab-holland" onclick="showPage('holland')">🌀 Holland</button>
+  <button class="tab" id="tab-finalizar" onclick="showPage('finalizar')">✅ Finalizar</button>
+</div>
+
+<div class="container">
+
+  <!-- STUDENT INFO -->
+  <div class="info-bar">
+    <div><label>Nombre</label><input type="text" id="nombre" placeholder="Tu nombre completo"></div>
+    <div><label>Grupo</label><input type="text" id="grupo" placeholder="Ej. 5°A"></div>
+    <div><label>Fecha</label><input type="date" id="fecha"></div>
+    <div><label>Orientador(a)</label><input type="text" id="orientador" placeholder="Nombre del orientador"></div>
+  </div>
+
+  <!-- ==================== PAGE: INTERESES ==================== -->
+  <div id="page-intereses" class="page active">
+    <div class="section-title">📊 Cuestionario de Intereses</div>
+    <div class="section-subtitle">Escala: ¿Qué tanto te gustaría hacer esto? Anota 0–4 en cada actividad según tu categoría.</div>
+    <div class="scale-legend">
+      <div class="scale-item"><div class="scale-badge s4">4</div> Me gusta mucho</div>
+      <div class="scale-item"><div class="scale-badge s3">3</div> Me gusta algo</div>
+      <div class="scale-item"><div class="scale-badge s2">2</div> Indiferente</div>
+      <div class="scale-item"><div class="scale-badge s1">1</div> Me desagrada algo</div>
+      <div class="scale-item"><div class="scale-badge s0">0</div> Me desagrada mucho</div>
+    </div>
+    <div class="table-scroll">
+      <table class="q-table" id="intereses-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Actividad</th>
+            <th>S.S.<span class="cat-head">Servicio Social</span></th>
+            <th>E.P.<span class="cat-head">Ejecutivo Persuasivo</span></th>
+            <th>V.<span class="cat-head">Verbal</span></th>
+            <th>A.P.<span class="cat-head">Artístico-Plástico</span></th>
+            <th>M.S.<span class="cat-head">Musical</span></th>
+            <th>OG.<span class="cat-head">Organización</span></th>
+            <th>CT.<span class="cat-head">Científico</span></th>
+            <th>CL.<span class="cat-head">Cálculo</span></th>
+            <th>M.C.<span class="cat-head">Mecánico-Constructivo</span></th>
+            <th>AL.<span class="cat-head">Aire Libre / D.T.</span></th>
+          </tr>
+        </thead>
+        <tbody id="intereses-body"></tbody>
+        <tfoot>
+          <tr class="totals-row">
+            <td colspan="2" class="activity">SUMA TOTAL</td>
+            <td id="i-sum-0" class="score-cell">0</td>
+            <td id="i-sum-1" class="score-cell">0</td>
+            <td id="i-sum-2" class="score-cell">0</td>
+            <td id="i-sum-3" class="score-cell">0</td>
+            <td id="i-sum-4" class="score-cell">0</td>
+            <td id="i-sum-5" class="score-cell">0</td>
+            <td id="i-sum-6" class="score-cell">0</td>
+            <td id="i-sum-7" class="score-cell">0</td>
+            <td id="i-sum-8" class="score-cell">0</td>
+            <td id="i-sum-9" class="score-cell">0</td>
+          </tr>
+          <tr class="pct-row">
+            <td colspan="2" class="activity" style="color:var(--purple);">% (máx. 24)</td>
+            <td id="i-pct-0">0%</td>
+            <td id="i-pct-1">0%</td>
+            <td id="i-pct-2">0%</td>
+            <td id="i-pct-3">0%</td>
+            <td id="i-pct-4">0%</td>
+            <td id="i-pct-5">0%</td>
+            <td id="i-pct-6">0%</td>
+            <td id="i-pct-7">0%</td>
+            <td id="i-pct-8">0%</td>
+            <td id="i-pct-9">0%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="results-grid" id="intereses-results" style="margin-top:24px;"></div>
+  </div>
+
+  <!-- ==================== PAGE: APTITUDES ==================== -->
+  <div id="page-aptitudes" class="page">
+    <div class="section-title">🧠 Cuestionario de Aptitudes</div>
+    <div class="section-subtitle">Escala: ¿Qué tan apto/a te consideras para cada actividad?</div>
+    <div class="scale-legend">
+      <div class="scale-item"><div class="scale-badge s4">4</div> Muy competente</div>
+      <div class="scale-item"><div class="scale-badge s3">3</div> Competente</div>
+      <div class="scale-item"><div class="scale-badge s2">2</div> Medianamente</div>
+      <div class="scale-item"><div class="scale-badge s1">1</div> Muy poco</div>
+      <div class="scale-item"><div class="scale-badge s0">0</div> Incompetente</div>
+    </div>
+    <div class="table-scroll">
+      <table class="q-table" id="aptitudes-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Actividad</th>
+            <th>S.S.<span class="cat-head">Servicio Social</span></th>
+            <th>E.P.<span class="cat-head">Ejecutivo Persuasivo</span></th>
+            <th>V.<span class="cat-head">Verbal</span></th>
+            <th>A.P.<span class="cat-head">Artístico-Plástico</span></th>
+            <th>M.S.<span class="cat-head">Musical</span></th>
+            <th>OG.<span class="cat-head">Organización</span></th>
+            <th>CT.<span class="cat-head">Científico</span></th>
+            <th>CL.<span class="cat-head">Cálculo</span></th>
+            <th>M.C.<span class="cat-head">Mecánico-Constructivo</span></th>
+            <th>D.T.<span class="cat-head">Destreza Manual</span></th>
+          </tr>
+        </thead>
+        <tbody id="aptitudes-body"></tbody>
+        <tfoot>
+          <tr class="totals-row">
+            <td colspan="2" class="activity">SUMA TOTAL</td>
+            <td id="a-sum-0">0</td><td id="a-sum-1">0</td><td id="a-sum-2">0</td>
+            <td id="a-sum-3">0</td><td id="a-sum-4">0</td><td id="a-sum-5">0</td>
+            <td id="a-sum-6">0</td><td id="a-sum-7">0</td><td id="a-sum-8">0</td>
+            <td id="a-sum-9">0</td>
+          </tr>
+          <tr class="pct-row">
+            <td colspan="2" class="activity" style="color:var(--purple);">% (máx. 24)</td>
+            <td id="a-pct-0">0%</td><td id="a-pct-1">0%</td><td id="a-pct-2">0%</td>
+            <td id="a-pct-3">0%</td><td id="a-pct-4">0%</td><td id="a-pct-5">0%</td>
+            <td id="a-pct-6">0%</td><td id="a-pct-7">0%</td><td id="a-pct-8">0%</td>
+            <td id="a-pct-9">0%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="results-grid" id="aptitudes-results" style="margin-top:24px;"></div>
+  </div>
+
+  <!-- ==================== PAGE: VALORES ==================== -->
+  <div id="page-valores" class="page">
+    <div class="section-title">💎 Mis Valores</div>
+    <div class="section-subtitle">Se mostrarán pares de valores. Haz clic en el que consideres MÁS importante para ti.</div>
+
+    <div class="valores-intro">
+      <p>🧩 <strong>¿Cómo funciona?</strong> Se presentan dos valores a la vez. Elige cuál es más importante para ti en este momento de tu vida. No hay respuestas correctas o incorrectas. Al finalizar, verás cuáles valores ganaron más veces: esos son tus valores dominantes.</p>
+    </div>
+
+    <div class="valores-progress">
+      <span class="v-prog-label">Progreso:</span>
+      <div class="v-prog-bar-bg"><div class="v-prog-bar" id="v-prog-bar"></div></div>
+      <span class="v-prog-count" id="v-prog-count">0 / 0 pares</span>
+    </div>
+
+    <div id="pairs-container"></div>
+
+    <div class="valores-ranking" id="valores-ranking" style="margin-top:24px;display:none;">
+      <h4>🏆 Mis Valores más Importantes</h4>
+      <div id="v-rank-list"></div>
+    </div>
+
+    <div class="results-grid" id="valores-results"></div>
+  </div>
+
+  <!-- ==================== PAGE: HOLLAND ==================== -->
+  <div id="page-holland" class="page">
+    <div class="section-title">🌀 Test de Personalidad Vocacional (Holland RIASEC)</div>
+    <div class="section-subtitle">Marca 1 si la afirmación te describe, 0 si no te describe. Sé honesto/a.</div>
+    <div class="holland-grid" id="holland-grid"></div>
+    <div style="margin-top:20px;">
+      <div class="section-title" style="font-size:1rem;">Mi Perfil Holland</div>
+      <div class="combined-chart" id="holland-chart" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: UNIVERSIDADES ==================== -->
+  <div id="page-universidades" class="page">
+    <div class="section-title">🎓 Universidades de Venezuela</div>
+    <div class="section-subtitle">Explora las instituciones de educación superior disponibles. Recuerda que aunque estudies en una privada, el proceso OPSU es obligatorio.</div>
+
+    <div class="uni-filter-row" id="uni-filter-row">
+      <button class="filter-chip active" onclick="filterUni('all',this)">Todas</button>
+      <button class="filter-chip" onclick="filterUni('publica',this)">🏛️ Públicas</button>
+      <button class="filter-chip" onclick="filterUni('privada',this)">🏫 Privadas</button>
+      <button class="filter-chip" onclick="filterUni('tecnica',this)">⚙️ Técnicas / IUT</button>
+      <button class="filter-chip" onclick="filterUni('yaracuy',this)">📍 Yaracuy / Lara</button>
+    </div>
+
+    <div class="uni-search-bar">
+      <input type="text" id="uni-search" placeholder="🔍 Buscar universidad o carrera..." oninput="renderUnis()">
+      <select id="uni-sort" onchange="renderUnis()">
+        <option value="nombre">A-Z</option>
+        <option value="tipo">Por tipo</option>
+      </select>
+    </div>
+
+    <div class="uni-count-banner" id="uni-count-banner">Mostrando <span id="uni-count">0</span> instituciones</div>
+
+    <div id="unis-list"></div>
+
+    <div style="background:#f9f6ff;border-radius:12px;padding:14px 18px;margin-top:20px;border-left:4px solid var(--teal);">
+      <p style="font-size:0.8rem;font-weight:700;color:var(--navy);">📌 <strong>Fuentes:</strong> Datos de índices académicos basados en el proceso OPSU 2020 (U.E. Padre Delgado, San Felipe, Yaracuy). Listado de universidades privadas complementado con información de <a class="uni-link" href="https://www.cursosycarreras.com.ve" target="_blank">cursosycarreras.com.ve</a>. Los índices pueden variar cada año.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: FINALIZAR ==================== -->
+  <div id="page-finalizar" class="page">
+    <div style="text-align:center;padding:30px 10px;">
+      <div style="font-size:4rem;margin-bottom:16px;">🚀</div>
+      <h2 style="font-size:1.4rem;font-weight:900;color:var(--navy);margin-bottom:10px;">¡Ya casi terminas!</h2>
+      <p style="color:var(--gray);font-size:0.95rem;margin-bottom:28px;line-height:1.6;">Revisa que hayas completado todos los cuestionarios y luego envía tu evaluación. Tu orientadora recibirá tus resultados.</p>
+
+      <div style="background:white;border-radius:16px;padding:20px;border:2px solid #e8eaf6;margin-bottom:24px;text-align:left;">
+        <div style="font-size:0.85rem;font-weight:800;color:var(--navy);margin-bottom:14px;">📋 Estado de tu evaluación:</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div id="check-intereses" style="display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:700;color:var(--gray);">⏳ Intereses</div>
+          <div id="check-aptitudes" style="display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:700;color:var(--gray);">⏳ Aptitudes</div>
+          <div id="check-valores" style="display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:700;color:var(--gray);">⏳ Valores</div>
+          <div id="check-holland" style="display:flex;align-items:center;gap:10px;font-size:0.88rem;font-weight:700;color:var(--gray);">⏳ Holland</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:16px;padding:20px;border:2px solid #e8eaf6;margin-bottom:24px;text-align:left;">
+        <div style="font-size:0.85rem;font-weight:800;color:var(--navy);margin-bottom:10px;">✏️ Reflexión personal (opcional):</div>
+        <textarea id="conclusion-text" style="width:100%;padding:12px;border:2px solid #e0e4f0;border-radius:10px;font-family:Nunito,sans-serif;font-size:0.88rem;font-weight:600;color:var(--navy);resize:vertical;min-height:80px;" placeholder="¿Por qué te interesan esas carreras? ¿Qué quieres lograr?"></textarea>
+        <div style="font-size:0.85rem;font-weight:800;color:var(--navy);margin:12px 0 8px;">🎓 Carreras que más me interesan:</div>
+        <textarea id="careers-text" style="width:100%;padding:12px;border:2px solid #e0e4f0;border-radius:10px;font-family:Nunito,sans-serif;font-size:0.88rem;font-weight:600;color:var(--navy);resize:vertical;min-height:60px;" placeholder="Escribe las carreras que más te atraen..."></textarea>
+      </div>
+
+      <button id="btn-enviar" onclick="enviarEvaluacion()" style="width:100%;padding:18px;border-radius:16px;border:none;background:linear-gradient(135deg,#00c4b4,#6c3eb6);color:white;font-family:Nunito,sans-serif;font-size:1.1rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(108,62,182,0.4);transition:all 0.2s;">
+        📤 Enviar mi Evaluación
+      </button>
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<script>
+// ===== DATA =====
+const CATS = ['S.S.','E.P.','V.','A.P.','M.S.','OG.','CT.','CL.','M.C.','AL.'];
+const CAT_NAMES = ['Servicio Social','Ejecutivo Persuasivo','Verbal','Artístico-Plástico','Musical','Organización','Científico','Cálculo','Mecánico-Constructivo','Aire Libre / Destreza'];
+
+const INTERESES_ITEMS = [
+  [0,'Atender y cuidar enfermos.'],[1,'Intervenir activamente en las discusiones de clase.'],[2,'Escribir cuentos, crónicas o artículos.'],[3,'Dibujar y pintar.'],[4,'Cantar en un coro estudiantil.'],[5,'Llevar en orden tus libros y cuadernos.'],[6,'Conocer y estudiar la estructura de las plantas y de los animales.'],[7,'Resolver cuestiones matemáticas.'],[8,'Armar o desarmar objetos mecánicos.'],[9,'Salir de excursión.'],
+  [0,'Proteger a los muchachos menores del grupo.'],[1,'Ser jefe de un grupo.'],[2,'Leer obras literarias.'],[3,'Moldear el barro, la plastilina o cualquier otro material.'],[4,'Escuchar música clásica.'],[5,'Ordenar y clasificar los libros de una biblioteca.'],[6,'Hacer experimentos en un laboratorio.'],[7,'Resolver problemas de aritmética.'],[8,'Manejar herramientas y maquinaria.'],[9,'Pertenecer a un club de exploradores.'],
+  [0,'Ser miembro de una sociedad de ayuda y asistencia.'],[1,'Dirigir la campaña política para un candidato estudiantil.'],[2,'Hacer versos para una publicación.'],[3,'Encargarte del decorado del lugar para un festival.'],[4,'Aprender a tocar un instrumento musical.'],[5,'Capturar, vaciar información.'],[6,'Investigar el origen de las costumbres de los pueblos.'],[7,'Llevar las cuentas de una institución.'],[8,'Construir objetos o muebles.'],[9,'Trabajar al aire libre, fuera de la ciudad.'],
+  [0,'Enseñar a leer a los analfabetos.'],[1,'Hacer propaganda para la difusión de una idea.'],[2,'Representar un papel en una obra de teatro.'],[3,'Idear y diseñar el escudo de un club o sociedad.'],[4,'Ser miembro de una asociación musical.'],[5,'Ayudar a calificar pruebas.'],[6,'Estudiar y entender las causas de los movimientos sociales.'],[7,'Explicar a otros cómo resolver problemas de matemáticas.'],[8,'Reparar las instalaciones eléctricas, de gas o de plomería en tu casa.'],[9,'Sembrar y plantar en una granja durante las vacaciones.'],
+  [0,'Ayudar a tus compañeros en sus dificultades y preocupaciones.'],[1,'Leer biografías de políticos eminentes.'],[2,'Participar en un concurso de oratoria.'],[3,'Diseñar el vestuario para una función teatral.'],[4,'Leer biografías de músicos eminentes.'],[5,'Encargarte del archivo y los documentos de una sociedad.'],[6,'Leer revistas y libros científicos.'],[7,'Participar en concursos de matemáticas.'],[8,'Proyectar y dirigir alguna construcción.'],[9,'Atender animales en un rancho durante las vacaciones.'],
+  [0,'Ser funcionario al servicio de las clases humildes.'],[1,'Ser experto en relaciones sociales de una gran empresa.'],[2,'Ser escritor en un periódico o empresa editorial.'],[3,'Ser dibujante profesional en una empresa.'],[4,'Ser concertista en una sinfónica.'],[5,'Ser técnico organizador de oficinas.'],[6,'Ser investigador en un laboratorio.'],[7,'Ser experto calculista en una institución.'],[8,'Ser perito mecánico en un taller.'],[9,'Ser técnico cuyas actividades se desempeñan fuera de la ciudad.']
+];
+
+const APTITUDES_ITEMS = [
+  [0,'Tratar y hablar con sensibilidad a las personas.'],[1,'Ser jefe competente de un grupo, equipo o sociedad.'],[2,'Expresarte con facilidad en clase o al platicar con tus amigos.'],[3,'Dibujar casas, objetos, figuras humanas, etc.'],[4,'Cantar en un grupo.'],[5,'Llevar en forma correcta y ordenada los apuntes de clase.'],[6,'Entender principios y experimentos de Biología.'],[7,'Ejecutar con rapidez y exactitud operaciones aritméticas.'],[8,'Armar y componer objetos mecánicos como chapas, timbres, etc.'],[9,'Actividades que requieren destreza manual.'],
+  [0,'Ser miembro activo y útil en un club o sociedad.'],[1,'Organizar y dirigir festivales, encuentros deportivos, excursiones o campañas sociales.'],[2,'Redactar composiciones o artículos periodísticos.'],[3,'Pintar paisajes.'],[4,'Tocar un instrumento musical.'],[5,'Ordenar y clasificar debidamente documentos en una oficina.'],[6,'Entender principios y experimentos de física.'],[7,'Resolver problemas de aritmética.'],[8,'Desarmar, armar y componer objetos complicados.'],[9,'Manejar con habilidad herramientas de carpintería.'],
+  [0,'Colaborar con otros para el bien de la comunidad.'],[1,'Convencer a otros para que hagan lo que crees que deben hacer.'],[2,'Decorar algún mueble.'],[3,'Decorar artísticamente un salón, corredor, escenario o patio para un festival.'],[4,'Distinguir cuando alguien desentona en las canciones o piezas musicales.'],[5,'Entender principios y experimentos de química.'],[6,'Contestar y redactar correctamente oficios y cartas.'],[7,'Resolver rompecabezas numéricos.'],[8,'Resolver rompecabezas de alambre o de madera.'],[9,'Manejar con facilidad herramientas mecánicas como pinzas, llaves, desarmador, etc.'],
+  [0,'Saber escuchar a otros con paciencia y comprender su punto de vista.'],[1,'Dar órdenes a otros con paciencia y comprender su punto de vista.'],[2,'Escribir cuentos, narraciones o historietas.'],[3,'Modelar con barro, plastilina o grabar madera.'],[4,'Entonar correctamente las canciones de moda.'],[5,'Anotar y manejar con exactitud y rapidez nombres, números y otros datos.'],[6,'Entender principios y hechos económicos y sociales.'],[7,'Resolver problemas de álgebra.'],[8,'Armar y componer muebles.'],[9,'Manejar con habilidad pequeñas piezas y herramientas (agujas, joyas, piezas de relojería, etc.).'],
+  [0,'Conversar en las reuniones y fiestas con acierto y naturalidad.'],[1,'Dirigir un grupo o equipo en situaciones difíciles o peligrosas.'],[2,'Distinguir y apreciar la buena literatura.'],[3,'Distinguir y apreciar la buena pintura.'],[4,'Distinguir y apreciar la buena música.'],[5,'Encargarse de recibir, anotar y dar recados sin olvidar detalles importantes.'],[6,'Entender las causas que determinan los acontecimientos históricos.'],[7,'Resolver problemas de geometría.'],[8,'Aprender el funcionamiento de mecanismos complicados como motores, relojes, bombas, etc.'],[9,'Hacer con facilidad trazos geométricos con escuadras, regla T y compás.'],
+  [0,'Actuar con desinterés y condolencia.'],[1,'Corregir a los demás sin ofenderlos.'],[2,'Exponer juicios públicamente sin preocupación por la crítica.'],[3,'Colaborar en la elaboración de un libro sobre el arte en la arquitectura.'],[4,'Dirigir un conjunto musical.'],[5,'Colaborar en el desarrollo de métodos más eficientes de trabajo.'],[6,'Realizar investigaciones científicas con finalidad de buscar la verdad.'],[7,'Enseñar a resolver problemas de Matemáticas.'],[8,'Inducir a las personas a obtener resultados prácticos.'],[9,'Participar en un concurso de modelismo de coches, aviones, barcos, etc.']
+];
+
+const VALORES_LIST = ['Ser rico(a)','Tener amistades duraderas','Tener vida sexual','Tener un buen nombre','Ser recordado(a) favorablemente después de mi muerte','Tener un amor romántico','Ser un(a) gran líder','Tener salud','Ser héroe / heroína','Ser muy útil a los demás','Ser famoso(a)','Ser físicamente atractivo(a)','Ser un(a) genio intelectual','Encontrar aventuras y nuevas experiencias','Ser feliz','Entender el misterio de la vida','Cumplir metas religiosas','Tener paz mental','Lograr aceptación social y pertenencia','Lograr identidad personal'];
+
+const HOLLAND_DATA = {
+  R: { name:'Realista', color:'#22c55e', desc:'Área agropecuaria, ingenierías, mecánica, construcción, tecnología.', items:['Me gustaría trabajar al aire libre o con herramientas y máquinas.','Disfruto reparar aparatos eléctricos o mecánicos.','Prefiero las tareas concretas y prácticas a las abstractas.','Me gusta construir, armar o desensamblar cosas.','Disfruto actividades físicas como carpintería, plomería o mecánica.','Me interesa trabajar con plantas, animales o en el campo.','Prefiero trabajar con objetos más que con ideas o personas.','Disfruto las actividades deportivas o de aventura al aire libre.'] },
+  I: { name:'Investigador', color:'#3b82f6', desc:'Ciencias, investigación, medicina, psicología, computación.', items:['Me gusta investigar cómo y por qué funcionan las cosas.','Disfruto resolver problemas matemáticos o científicos complejos.','Leo revistas o libros de ciencia, tecnología o naturaleza.','Me gusta analizar datos y sacar conclusiones lógicas.','Prefiero trabajar solo/a concentrándome en problemas intelectuales.','Me fascina hacer experimentos o formular hipótesis.','Disfruto estudiar biología, química, física u otras ciencias.','Me interesan los temas de tecnología, astronomía o medicina.'] },
+  A: { name:'Artístico', color:'#a855f7', desc:'Arte, diseño, música, teatro, literatura, arquitectura.', items:['Disfruto pintar, dibujar, esculpir o hacer diseño gráfico.','Me gusta escribir poesía, cuentos o ensayos creativos.','Toco o me gustaría tocar un instrumento musical.','Tengo facilidad para apreciar y crear cosas bellas o expresivas.','Prefiero ambientes de trabajo creativos y flexibles.','Me gusta actuar, bailar o participar en actividades teatrales.','Disfruto diseñar ropa, decorar espacios o hacer fotografía.','La originalidad y la imaginación son mis principales fortalezas.'] },
+  S: { name:'Social', color:'#f59e0b', desc:'Educación, salud, trabajo social, orientación, enfermería.', items:['Disfruto ayudar a personas con problemas personales o emocionales.','Me gusta enseñar, instruir o entrenar a otros.','Prefiero trabajar en equipo o en contacto constante con personas.','Soy empático/a y me importa el bienestar de quienes me rodean.','Disfruto el trabajo voluntario o comunitario.','Me interesa la psicología, la educación o el trabajo social.','Me gusta orientar o aconsejar a amigos o compañeros.','Valoro la justicia social y el desarrollo humano.'] },
+  E: { name:'Emprendedor', color:'#ef4444', desc:'Administración, derecho, ciencias políticas, ventas, liderazgo.', items:['Me gusta dirigir proyectos o liderar equipos.','Disfruto convencer, persuadir o negociar con otros.','Tengo iniciativa para emprender nuevos proyectos o negocios.','Me gustan los retos competitivos y asumir riesgos calculados.','Disfruto hablar en público o hacer presentaciones.','Me interesa la administración, el derecho o las ventas.','Me motiva alcanzar metas ambiciosas y obtener reconocimiento.','Me gusta organizar y motivar a personas hacia un objetivo.'] },
+  O: { name:'Organizador', color:'#06b6d4', desc:'Contabilidad, archivística, programación, finanzas, secretariado.', items:['Disfruto organizar, clasificar y archivar información.','Me gusta trabajar con números, hojas de cálculo o bases de datos.','Prefiero tareas con instrucciones claras y resultados precisos.','Soy ordenado/a, puntual y metódico/a en mis actividades.','Me interesa la contabilidad, administración de oficinas o finanzas.','Prefiero ambientes de trabajo estructurados y predecibles.','Disfruto seguir procedimientos y mantener registros exactos.','Me gusta revisar documentos en busca de errores o inconsistencias.'] }
+};
+
+// Careers combination table (from manual)
+const CAREERS_TABLE = {
+  '2-1':['Ciencias Políticas','Administración Pública','Relaciones Internacionales','Ciencias de la Comunicación','Sociología','Derecho','Trabajo Social','Pedagogía','Psicología','Enfermería','Odontología'],
+  '2-3':['Comercio Exterior','Relaciones Internacionales','Derecho','Letras','Lengua y Literatura','Ciencias de la Comunicación','Turismo','Gastronomía'],
+  '2-6':['Economía','Administración','Administración Pública','Relaciones Internacionales','Contaduría','Computación','Agroindustrial'],
+  '3-1':['Ciencias de la Comunicación','Derecho','Letras Clásicas','Literatura','Enseñanza del Inglés','Turismo','Gastronomía'],
+  '7-1':['Ing. en Alimentos','Optometría','Química Farmacéutica-Biológica','Biología','Odontología','Medicina Veterinaria','Medicina','Enfermería','Psicología','Sociología','Trabajo Social','Pedagogía','Nutrición'],
+  '7-6':['Actuaría','Matemáticas','Matemáticas Aplicadas y Computación','Biología','Química','Ingeniería Química','Geografía','Historia','Informática','Ing. en Computación','Medicina','Odontología'],
+  '8-2':['Economía','Administración','Administración Pública','Contaduría'],
+  '8-6':['Actuaría','Ing. en Computación','Matemáticas','Química','Ing. Química','Ingeniería en Alimentos','Economía','Contaduría','Administración','Geografía','Informática'],
+  '8-7':['Actuaría','Física','Ing. en Computación','Ing. Geofísica','Ing. Mecánica Eléctrica','Matemáticas','Ing. Química','Biología','Informática','Ciencias de la Computación'],
+  '9-8':['Arquitectura','Diseño Industrial','Física','Ing. Civil','Ing. en Computación','Ing. Geofísica','Ing. Mecánica Eléctrica','Ing. Mecánica','Ing. Química'],
+  '4-1':['Artes Visuales','Diseño Gráfico','Comunicación Gráfica','Urbanismo','Arquitectura del Paisaje','Arquitectura'],
+  '10-7':['Ing. Agrícola','Ing. Geológica','Ing. Petrolera','Biología','Medicina Veterinaria y Zootecnia','Geografía'],
+};
+
+// ===== STATE =====
+let state = {
+  intereses: Array(60).fill(''),
+  aptitudes: Array(60).fill(''),
+  valores: Array(20).fill(0),
+  holland: {}
+};
+Object.keys(HOLLAND_DATA).forEach(k => {
+  state.holland[k] = Array(8).fill(0);
+});
+
+// ===== UNIVERSITIES DATA =====
+const UNIVERSIDADES = [
+  // PÚBLICAS - YARACUY / REGIÓN
+  { nombre:'UPTYAB – Univ. Politécnica Territorial de Yaracuy "Arístides Bastidas"', sigla:'UPTYAB', tipo:'publica', region:'yaracuy', ciudad:'San Felipe, Yaracuy', opsu:true, nota:'Antes conocida como IUTY', carreras:['PNF Procesos Químicos','PNF Informática','PNF Enfermería','PNF Higiene y Seg. Laboral','PNF Agroalimentación','PNF Administración','TSU Pecuaria','TSU Recursos Naturales','TSU Alimentación','PNF Fonoaudiología'], ia_min:'70', url:'#' },
+  { nombre:'UNEY – Univ. Nacional Experimental del Yaracuy', sigla:'UNEY', tipo:'publica', region:'yaracuy', ciudad:'San Felipe, Yaracuy', opsu:true, nota:'', carreras:['PNF Diseño Integral Comunitario','PNF Instrumentación y Control','PNF Turismo','PNF C. y Cultura Alimentación','PNF Ciencias del Deporte'], ia_min:'72', url:'#' },
+  { nombre:'UNEFA – Extensión San Felipe', sigla:'UNEFA', tipo:'publica', region:'yaracuy', ciudad:'San Felipe, Yaracuy', opsu:true, nota:'Univ. Nacional Experimental de las Fuerzas Armadas', carreras:['TSU Turismo','TSU Análisis y Diseño de Sistemas','Ing. Agroindustrial','Ing. Agronómica','Lic. Economía Social'], ia_min:'67', url:'#' },
+  // PÚBLICAS - LARA (BARQUISIMETO)
+  { nombre:'UCLA – Univ. Centroccidental Lisandro Alvarado', sigla:'UCLA', tipo:'publica', region:'yaracuy', ciudad:'Barquisimeto, Lara', opsu:true, nota:'', carreras:['Medicina','Psicología','Enfermería','Med. Veterinaria','Ing. Civil','Ing. en Informática','Ing. Telemática','Economía','Contaduría','Administración','Desarrollo Humano','Ing. Agronómica','Urbanismo','Música','Artes Plásticas'], ia_min:'68', url:'#' },
+  { nombre:'UNEXPO – Univ. Nac. Exp. Politécnica "A.J. de Sucre"', sigla:'UNEXPO', tipo:'publica', region:'lara', ciudad:'Barquisimeto, Lara', opsu:true, nota:'', carreras:['Ing. Química','Ing. Eléctrica','Ing. Electrónica','Ing. Mecánica','Ing. Industrial','Ing. Metalúrgica'], ia_min:'97', url:'#' },
+  // PÚBLICAS - CARACAS
+  { nombre:'UCV – Univ. Central de Venezuela', sigla:'UCV', tipo:'publica', region:'caracas', ciudad:'Caracas', opsu:true, nota:'Una de las más prestigiosas del país', carreras:['Medicina','Bioanálisis','Psicología','Arquitectura','Odontología','Med. Veterinaria','Ing. Civil','Ing. Eléctrica','Ing. Industrial','Ing. Química','Comunicación Social','Nutrición','Derecho','Economía','Farmacia'], ia_min:'84', url:'#' },
+  { nombre:'USB – Univ. Simón Bolívar', sigla:'USB', tipo:'publica', region:'caracas', ciudad:'Caracas (Sartenejas)', opsu:true, nota:'Enfoque en ingenierías y ciencias exactas', carreras:['Arquitectura','Ing. de Computación','Ing. de Materiales','Ing. Eléctrica','Ing. Electrónica','Ing. Mecánica','Ing. Química','Lic. Biología','Lic. Física','Lic. Matemática','TSU Comercio Exterior'], ia_min:'87', url:'#' },
+  // PÚBLICAS - MÉRIDA
+  { nombre:'ULA – Univ. de los Andes', sigla:'ULA', tipo:'publica', region:'merida', ciudad:'Mérida', opsu:true, nota:'', carreras:['Medicina','Bioanálisis','Enfermería','Psicología','Arquitectura','Odontología','Farmacia','Ing. Civil','Ing. Eléctrica','Ing. Industrial','Ing. en Sistemas','Ing. Química','Idiomas Modernos','Criminología','Economía','Derecho','Nutrición'], ia_min:'84', url:'#' },
+  // PÚBLICAS - FALCÓN
+  { nombre:'UNEFM – Univ. Nac. Exp. Francisco de Miranda', sigla:'UNEFM', tipo:'publica', region:'falcon', ciudad:'Coro, Falcón', opsu:true, nota:'', carreras:['Educación (múltiples menciones)','Lic. Desarrollo Empresarial','Educación Física','TSU Artes Audiovisuales','Enfermería','Medicina','Ing. Biomédica','Ing. Pesquera'], ia_min:'79', url:'#' },
+  // PÚBLICAS - GUÁRICO
+  { nombre:'UNERG – Univ. Nac. Exp. de los Llanos "R. Gallegos"', sigla:'UNERG', tipo:'publica', region:'guarico', ciudad:'San Juan de los Morros, Guárico', opsu:true, nota:'', carreras:['Medicina','Enfermería','Odontología','Med. Veterinaria','Ing. Civil','Ing. Informática','Comunicación Social','Derecho','Administración','PNF Fisioterapia','PNF Nutrición'], ia_min:'82', url:'#' },
+  // PRIVADAS
+  { nombre:'UCAB – Univ. Católica Andrés Bello', sigla:'UCAB', tipo:'privada', region:'caracas', ciudad:'Caracas (y Guayana)', opsu:false, nota:'Proceso OPSU igual requerido para inscripción', carreras:['Derecho','Ing. Industrial','Relaciones Industriales','Psicología','Comunicación Social','Contaduría','Filosofía','Letras','Trabajo Social','Teología'], ia_min:'—', url:'https://www.ucab.edu.ve' },
+  { nombre:'UNIMET – Univ. Metropolitana', sigla:'UNIMET', tipo:'privada', region:'caracas', ciudad:'Caracas', opsu:false, nota:'', carreras:['Ing. de Sistemas','Ing. Industrial','Administración','Comunicación Social','Derecho','Psicología','Ciencias Actuariales'], ia_min:'—', url:'#' },
+  { nombre:'UAM – Univ. Arturo Michelena', sigla:'UAM', tipo:'privada', region:'carabobo', ciudad:'San Diego, Carabobo', opsu:false, nota:'Modalidad presencial y online disponibles', carreras:['Derecho','Ing. Electrónica','Psicología','Comunicación Social','Contaduría','Lic. Arte','Lic. Arte (Diseño Gráfico)','Fisioterapia','Citotecnología','Histotecnología'], ia_min:'—', url:'#' },
+  { nombre:'UMA – Univ. Monteávila', sigla:'UMA', tipo:'privada', region:'caracas', ciudad:'Caracas', opsu:false, nota:'', carreras:['Comunicación Social','Derecho','Psicología','Educación'], ia_min:'—', url:'#' },
+  { nombre:'USM – Univ. Santa María', sigla:'USM', tipo:'privada', region:'caracas', ciudad:'Caracas', opsu:false, nota:'', carreras:['Derecho','Ing. Civil','Ing. Industrial','Administración','Contaduría'], ia_min:'—', url:'#' },
+  { nombre:'UJAP – Univ. José Antonio Páez', sigla:'UJAP', tipo:'privada', region:'carabobo', ciudad:'Valencia, Carabobo', opsu:false, nota:'', carreras:['Ing. en Informática','Ing. Industrial','Administración','Contaduría','Comunicación Social','Psicología'], ia_min:'—', url:'#' },
+  { nombre:'UCSAR – Univ. Católica Santa Rosa', sigla:'UCSAR', tipo:'privada', region:'caracas', ciudad:'Caracas', opsu:false, nota:'', carreras:['Derecho','Comunicación Social','Educación','Administración'], ia_min:'—', url:'#' },
+  { nombre:'UNY – Univ. Yacambú', sigla:'UNY', tipo:'privada', region:'yaracuy', ciudad:'Cabudare, Lara', opsu:false, nota:'Cercana a Yaracuy', carreras:['Psicología','Derecho','Administración','Contaduría','Ing. en Sistemas'], ia_min:'—', url:'#' },
+  { nombre:'UVM – Univ. Valle del Momboy', sigla:'UVM', tipo:'privada', region:'trujillo', ciudad:'Valera, Trujillo', opsu:false, nota:'', carreras:['Ing. en Sistemas','Administración','Derecho','Psicología'], ia_min:'—', url:'#' },
+  { nombre:'UJMV – Univ. José María Vargas', sigla:'UJMV', tipo:'privada', region:'caracas', ciudad:'Caracas', opsu:false, nota:'Ofrece carreras a distancia (online)', carreras:['Derecho (online)','Lic. Educación Integral (online)','Lic. Educación Preescolar (online)','Lic. Ed. Especial (online)','Ing. Civil: Transporte (online)'], ia_min:'—', url:'#' },
+  // TÉCNICAS / IUT
+  { nombre:'IUTIRLA – IUT Industrial "Rodolfo Loero Arismendi"', sigla:'IUTIRLA', tipo:'tecnica', region:'nueva_esparta', ciudad:'Porlamar, Nueva Esparta', opsu:true, nota:'Mayor cantidad de carreras técnicas registradas', carreras:['TSU Informática','TSU Electricidad','TSU Mecánica','TSU Construcción Civil','TSU Administración'], ia_min:'—', url:'#' },
+  { nombre:'IUTEPAL – IUT "Juan Pablo Pérez Alfonzo"', sigla:'IUTEPAL', tipo:'tecnica', region:'caracas', ciudad:'Caracas', opsu:true, nota:'', carreras:['TSU Informática','TSU Petróleo','TSU Electricidad','TSU Mecánica'], ia_min:'—', url:'#' },
+  { nombre:'IUPMA – IUT Pedagógico "Monseñor Rafael Arias Blanco"', sigla:'IUPMA', tipo:'tecnica', region:'caracas', ciudad:'Caracas', opsu:true, nota:'', carreras:['TSU Educación Preescolar','TSU Educación Básica','TSU Administración Educativa'], ia_min:'—', url:'#' },
+  { nombre:'IUT Henry Pittier', sigla:'iutePHi', tipo:'tecnica', region:'aragua', ciudad:'El Limón, Aragua', opsu:true, nota:'', carreras:['TSU Tecnología Agrícola','TSU Administración'], ia_min:'—', url:'#' },
+  { nombre:'PSM – IUT Politécnico Santiago Mariño', sigla:'PSM', tipo:'tecnica', region:'multiple', ciudad:'Varias sedes', opsu:true, nota:'Múltiples sedes en el país', carreras:['TSU Arquitectura','TSU Ing. Civil','TSU Electricidad','TSU Mecánica','TSU Informática','TSU Industrial'], ia_min:'—', url:'#' },
+];
+
+let uniFilter = 'all';
+
+function filterUni(filter, btn) {
+  uniFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderUnis();
+}
+
+function renderUnis() {
+  const search = (document.getElementById('uni-search')?.value || '').toLowerCase();
+  const sort = document.getElementById('uni-sort')?.value || 'nombre';
+
+  let filtered = UNIVERSIDADES.filter(u => {
+    const matchFilter = uniFilter === 'all' ||
+      (uniFilter === 'publica' && u.tipo === 'publica') ||
+      (uniFilter === 'privada' && u.tipo === 'privada') ||
+      (uniFilter === 'tecnica' && u.tipo === 'tecnica') ||
+      (uniFilter === 'yaracuy' && u.region === 'yaracuy');
+
+    const searchTarget = (u.nombre + ' ' + u.sigla + ' ' + u.carreras.join(' ')).toLowerCase();
+    const matchSearch = !search || searchTarget.includes(search);
+
+    return matchFilter && matchSearch;
+  });
+
+  if (sort === 'nombre') {
+    filtered.sort((a,b) => a.nombre.localeCompare(b.nombre));
+  } else {
+    const tipoOrder = {publica:0,privada:1,tecnica:2};
+    filtered.sort((a,b) => (tipoOrder[a.tipo]||0) - (tipoOrder[b.tipo]||0));
+  }
+
+  const countEl = document.getElementById('uni-count');
+  if (countEl) countEl.textContent = filtered.length;
+
+  const list = document.getElementById('unis-list');
+  if (!list) return;
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);font-weight:700;">No se encontraron instituciones con esos criterios.</div>';
+    return;
+  }
+
+  const tipoLabel = {publica:'PÚBLICA',privada:'PRIVADA',tecnica:'TÉCNICA / IUT'};
+  const tipoClass = {publica:'tipo-publica',privada:'tipo-privada',tecnica:'tipo-tecnica'};
+  const badgeClass = {publica:'badge-publica',privada:'badge-privada',tecnica:'badge-tecnica'};
+
+  list.innerHTML = filtered.map(u => `
+    <div class="uni-card">
+      <div class="uni-header">
+        <div class="uni-badge ${badgeClass[u.tipo]}">${u.sigla}</div>
+        <div>
+          <div class="uni-name">${u.nombre} <span class="uni-tipo-badge ${tipoClass[u.tipo]}">${tipoLabel[u.tipo]}</span></div>
+          <div class="uni-meta">📍 ${u.ciudad}${u.nota ? '  •  ' + u.nota : ''}</div>
+        </div>
+      </div>
+      <div class="uni-carreras">
+        ${u.carreras.map(c => `<span class="carrera-pill">${c}</span>`).join('')}
+      </div>
+      ${u.ia_min !== '—' ? `<div class="uni-opsu-info">📋 Proceso OPSU requerido · IA mínimo referencial desde <strong>${u.ia_min}</strong> (varía por carrera)</div>` : `<div class="uni-opsu-info" style="background:#fff0f0;border-color:var(--coral);color:#c62828;">📌 Universidad Privada — Proceso OPSU igual es requisito de inscripción</div>`}
+    </div>
+  `).join('');
+}
+
+// ===== INIT =====
+function init() {
+  buildTable('intereses-body', INTERESES_ITEMS, 'i', 'intereses');
+  buildTable('aptitudes-body', APTITUDES_ITEMS, 'a', 'aptitudes');
+  buildValores();
+  buildHolland();
+  updateResults();
+  // Set today's date
+  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+}
+
+function buildTable(tbodyId, items, prefix, type) {
+  const tbody = document.getElementById(tbodyId);
+  let rowNum = 1;
+  items.forEach((item, idx) => {
+    const cat = item[0];
+    const text = item[1];
+    const tr = document.createElement('tr');
+    let cells = `<td>${rowNum}</td><td class="activity">${text}</td>`;
+    for (let c = 0; c < 10; c++) {
+      if (c === cat) {
+        cells += `<td class="score-cell"><input type="number" min="0" max="4" class="score-input" id="${prefix}-${idx}-${c}" placeholder="—" oninput="onScore('${type}',${idx},${c},this)"></td>`;
+      } else {
+        cells += `<td class="score-cell"><input type="number" class="score-input disabled" disabled placeholder="—"></td>`;
+      }
+    }
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+    rowNum++;
+  });
+}
+
+function onScore(type, idx, cat, el) {
+  let val = parseInt(el.value);
+  if (isNaN(val)) val = '';
+  if (val !== '' && (val < 0 || val > 4)) { el.value = ''; val = ''; }
+  if (val !== '') el.classList.add('has-val'); else el.classList.remove('has-val');
+  state[type][idx] = val === '' ? '' : val;
+  calcTotals(type);
+  updateResults();
+}
+
+function calcTotals(type) {
+  const items = type === 'intereses' ? INTERESES_ITEMS : APTITUDES_ITEMS;
+  const prefix = type === 'intereses' ? 'i' : 'a';
+  let sums = Array(10).fill(0);
+  items.forEach((item, idx) => {
+    const cat = item[0];
+    const v = state[type][idx];
+    if (v !== '' && !isNaN(v)) sums[cat] += Number(v);
+  });
+  for (let c = 0; c < 10; c++) {
+    const s = document.getElementById(`${prefix}-sum-${c}`);
+    const p = document.getElementById(`${prefix}-pct-${c}`);
+    if (s) s.textContent = sums[c];
+    if (p) p.textContent = Math.round(sums[c]/24*100)+'%';
+  }
+  renderResults(type, sums);
+}
+
+function getSums(type) {
+  const items = type === 'intereses' ? INTERESES_ITEMS : APTITUDES_ITEMS;
+  let sums = Array(10).fill(0);
+  items.forEach((item, idx) => {
+    const cat = item[0];
+    const v = state[type][idx];
+    if (v !== '' && !isNaN(v)) sums[cat] += Number(v);
+  });
+  return sums;
+}
+
+function renderResults(type, sums) {
+  const sorted = sums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  const container = document.getElementById(`${type}-results`);
+  container.innerHTML = '';
+  sorted.forEach((item, rank) => {
+    const pct = Math.round(item.v/24*100);
+    const card = document.createElement('div');
+    card.className = `result-card${rank===0?' top':rank===1?' second':''}`;
+    card.innerHTML = `
+      <div class="cat-code">${CATS[item.i]}</div>
+      <div class="cat-name">${CAT_NAMES[item.i]}</div>
+      ${rank===0?'<div class="crown">🥇</div>':rank===1?'<div class="crown">🥈</div>':rank===2?'<div class="crown">🥉</div>':''}
+      <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+      <div class="pct-num">${pct}%</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function buildValores() {
+  // Generate all unique pairs from 20 values
+  const pairs = [];
+  for (let i = 0; i < VALORES_LIST.length; i++) {
+    for (let j = i + 1; j < VALORES_LIST.length; j++) {
+      pairs.push([i, j]);
+    }
+  }
+  // Shuffle for variety
+  for (let i = pairs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+  }
+  window._valoresPairs = pairs;
+  window._valoresAnswers = {}; // key: "i-j", value: chosen index
+
+  const totalPairs = pairs.length;
+  const progCount = document.getElementById('v-prog-count');
+  if (progCount) progCount.textContent = `0 / ${totalPairs} pares`;
+
+  const container = document.getElementById('pairs-container');
+  container.innerHTML = '';
+  pairs.forEach(([a, b], idx) => {
+    const card = document.createElement('div');
+    card.className = 'pair-card';
+    card.id = `pair-card-${idx}`;
+    card.innerHTML = `
+      <div class="pair-num">PAR ${idx+1} de ${totalPairs}</div>
+      <div class="pair-options">
+        <button class="pair-btn" id="pb-${idx}-${a}" onclick="choosePair(${idx},${a},${b})">${VALORES_LIST[a]}</button>
+        <div class="pair-vs">VS</div>
+        <button class="pair-btn" id="pb-${idx}-${b}" onclick="choosePair(${idx},${b},${a})">${VALORES_LIST[b]}</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function choosePair(pairIdx, chosen, other) {
+  const pairs = window._valoresPairs;
+  const [a, b] = pairs[pairIdx];
+  window._valoresAnswers[pairIdx] = chosen;
+
+  // Update button states
+  const btnA = document.getElementById(`pb-${pairIdx}-${a}`);
+  const btnB = document.getElementById(`pb-${pairIdx}-${b}`);
+  if (btnA && btnB) {
+    btnA.className = 'pair-btn' + (chosen === a ? ' selected' : ' other');
+    btnB.className = 'pair-btn' + (chosen === b ? ' selected' : ' other');
+  }
+  const card = document.getElementById(`pair-card-${pairIdx}`);
+  if (card) card.classList.add('answered');
+
+  // Recalculate scores from answers
+  const scores = Array(20).fill(0);
+  Object.values(window._valoresAnswers).forEach(c => { scores[c]++; });
+  state.valores = scores;
+
+  // Progress
+  const answered = Object.keys(window._valoresAnswers).length;
+  const total = pairs.length;
+  const pct = Math.round(answered/total*100);
+  const bar = document.getElementById('v-prog-bar');
+  const count = document.getElementById('v-prog-count');
+  if (bar) bar.style.width = pct + '%';
+  if (count) count.textContent = `${answered} / ${total} pares`;
+
+  // Show ranking when done
+  const rankDiv = document.getElementById('valores-ranking');
+  if (rankDiv) {
+    rankDiv.style.display = answered > 0 ? 'block' : 'none';
+    const rankList = document.getElementById('v-rank-list');
+    if (rankList) {
+      const sorted = scores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,5);
+      const maxScore = sorted[0]?.v || 1;
+      const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+      rankList.innerHTML = sorted.map((item,rank) => `
+        <div class="v-rank-item">
+          <span class="v-rank-medal">${medals[rank]}</span>
+          <span class="v-rank-name">${VALORES_LIST[item.i]}</span>
+          <div class="v-rank-bar-wrap"><div class="v-rank-bar" style="width:${Math.round(item.v/maxScore*100)}%"></div></div>
+          <span class="v-rank-score">${item.v} pts</span>
+        </div>
+      `).join('');
+    }
+  }
+
+  renderValoresResults();
+  updateResults();
+}
+
+function renderValoresResults() {
+  // Update the ranking panel inside the valores page
+  const rankDiv = document.getElementById('valores-ranking');
+  if (!rankDiv) return;
+  rankDiv.style.display = 'block';
+
+  const rankList = document.getElementById('v-rank-list');
+  if (!rankList) return;
+
+  const sorted = state.valores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,5);
+  const maxScore = sorted[0]?.v || 1;
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+
+  rankList.innerHTML = sorted.map((item, rank) => `
+    <div class="v-rank-item">
+      <span class="v-rank-medal">${medals[rank]}</span>
+      <span class="v-rank-name">${VALORES_LIST[item.i]}</span>
+      <div class="v-rank-bar-wrap">
+        <div class="v-rank-bar" style="width:${Math.round(item.v/maxScore*100)}%"></div>
+      </div>
+      <span class="v-rank-score">${item.v} pts</span>
+    </div>
+  `).join('');
+}
+
+function buildHolland() {
+  const grid = document.getElementById('holland-grid');
+  const chart = document.getElementById('holland-chart');
+  Object.entries(HOLLAND_DATA).forEach(([key, data]) => {
+    const card = document.createElement('div');
+    card.className = 'holland-card';
+    card.id = `hcard-${key}`;
+    // store color on card for dynamic shading
+    card.dataset.color = data.color;
+
+    let itemsHtml = '';
+    data.items.forEach((item, idx) => {
+      itemsHtml += `
+        <div class="h-item" id="hitem-${key}-${idx}">
+          <label style="font-size:0.78rem;color:#2d3561;flex:1;line-height:1.4;">${item}</label>
+          <div class="h-check">
+            <input type="radio" name="h-${key}-${idx}" id="h-${key}-${idx}-1" value="1" onchange="onHolland('${key}',${idx},1)">
+            <label for="h-${key}-${idx}-1" title="Sí me describe" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:900;font-size:0.85rem;border:2px solid;transition:all 0.15s;">✓</label>
+            <input type="radio" name="h-${key}-${idx}" id="h-${key}-${idx}-0" value="0" onchange="onHolland('${key}',${idx},0)">
+            <label for="h-${key}-${idx}-0" title="No me describe" style="background:#ffebee;color:#c62828;border-color:#ef9a9a;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:900;font-size:0.85rem;border:2px solid;transition:all 0.15s;">✗</label>
+          </div>
+        </div>`;
+    });
+
+    card.innerHTML = `
+      <h3 id="hcard-title-${key}" style="color:${data.color};font-size:0.9rem;font-weight:900;margin-bottom:6px;">[${key}] ${data.name}</h3>
+      <p style="font-size:0.78rem;color:var(--gray);line-height:1.5;margin-bottom:12px;">${data.desc}</p>
+      <div class="holland-items">${itemsHtml}</div>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+        <div style="flex:1;background:#eef2ff;border-radius:100px;height:8px;overflow:hidden;">
+          <div id="hbar-inner-${key}" style="height:100%;border-radius:100px;background:${data.color};width:0%;transition:width 0.4s ease;"></div>
+        </div>
+        <span style="font-size:0.8rem;font-weight:900;color:${data.color};min-width:40px;text-align:right;"><span id="h-score-${key}">0</span>/8</span>
+      </div>`;
+    grid.appendChild(card);
+
+    // Chart row in holland-chart section
+    const row = document.createElement('div');
+    row.className = 'c-row';
+    row.innerHTML = `
+      <div class="c-label" style="color:${data.color};">[${key}] ${data.name}</div>
+      <div class="c-bars">
+        <div class="c-bar-wrap">
+          <div class="c-bar-bg"><div class="c-bar-i" id="hbar-${key}" style="width:0%;background:${data.color};"></div></div>
+          <span class="c-pct" id="hpct-${key}">0%</span>
+        </div>
+      </div>`;
+    chart.appendChild(row);
+  });
+}
+
+function onHolland(key, idx, val) {
+  state.holland[key][idx] = val;
+  const score = state.holland[key].reduce((a,b)=>a+b,0);
+
+  // Update score label and mini bar inside card
+  const scoreEl = document.getElementById(`h-score-${key}`);
+  if (scoreEl) scoreEl.textContent = score;
+  const innerBar = document.getElementById(`hbar-inner-${key}`);
+  if (innerBar) innerBar.style.width = (score/8*100)+'%';
+
+  // Update external chart bar
+  const bar = document.getElementById(`hbar-${key}`);
+  const pct = document.getElementById(`hpct-${key}`);
+  if (bar) bar.style.width = (score/8*100)+'%';
+  if (pct) pct.textContent = Math.round(score/8*100)+'%';
+
+  // Shade the individual item row
+  const itemEl = document.getElementById(`hitem-${key}-${idx}`);
+  if (itemEl) {
+    const color = HOLLAND_DATA[key].color;
+    if (val === 1) {
+      itemEl.style.background = hexToRgba(color, 0.10);
+      itemEl.style.borderLeft = `3px solid ${color}`;
+      itemEl.style.borderRadius = '8px';
+      itemEl.style.paddingLeft = '8px';
+    } else {
+      itemEl.style.background = '';
+      itemEl.style.borderLeft = '';
+      itemEl.style.paddingLeft = '';
+    }
+  }
+
+  // Shade the whole card based on score intensity
+  const card = document.getElementById(`hcard-${key}`);
+  if (card) {
+    const color = HOLLAND_DATA[key].color;
+    if (score === 0) {
+      card.style.background = 'white';
+      card.style.borderColor = '#e8eaf6';
+      card.style.boxShadow = '0 4px 12px rgba(0,0,0,0.07)';
+    } else {
+      const intensity = score / 8; // 0..1
+      const bgAlpha = (0.05 + intensity * 0.12).toFixed(2);
+      const borderAlpha = (0.3 + intensity * 0.5).toFixed(2);
+      card.style.background = hexToRgba(color, parseFloat(bgAlpha));
+      card.style.borderColor = hexToRgba(color, parseFloat(borderAlpha));
+      card.style.boxShadow = `0 6px 20px ${hexToRgba(color, 0.18)}`;
+    }
+  }
+
+  updateResults();
+}
+
+// Helper: hex color → rgba string
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function updateResults() {
+  const iSums = getSums('intereses');
+  const aSums = getSums('aptitudes');
+
+  // Combined chart
+  const cc = document.getElementById('combined-chart');
+  if (cc) {
+    cc.innerHTML = '';
+    for (let c = 0; c < 10; c++) {
+      const iPct = Math.round(iSums[c]/24*100);
+      const aPct = Math.round(aSums[c]/24*100);
+      const row = document.createElement('div');
+      row.className = 'c-row';
+      row.innerHTML = `<div class="c-label">${CATS[c]}<br><span style="font-size:0.65rem;color:var(--gray);">${CAT_NAMES[c]}</span></div>
+      <div class="c-bars">
+        <div class="c-bar-wrap"><div class="c-bar-label">I</div><div class="c-bar-bg"><div class="c-bar-i" style="width:${iPct}%"></div></div><span class="c-pct">${iPct}%</span></div>
+        <div class="c-bar-wrap"><div class="c-bar-label">A</div><div class="c-bar-bg"><div class="c-bar-a" style="width:${aPct}%"></div></div><span class="c-pct">${aPct}%</span></div>
+      </div>`;
+      cc.appendChild(row);
+    }
+  }
+
+  // Holland chart in results
+  const hrc = document.getElementById('holland-result-chart');
+  if (hrc) {
+    hrc.innerHTML = '';
+    const scores = Object.entries(HOLLAND_DATA).map(([key, data]) => ({key, data, score: state.holland[key].reduce((a,b)=>a+b,0)}));
+    scores.sort((a,b)=>b.score-a.score);
+    const top3 = scores.slice(0,3).map(s=>s.key).join('');
+    const claveEl = document.getElementById('holland-clave');
+    if (claveEl) claveEl.textContent = top3 || '—';
+    scores.forEach(({key, data, score}) => {
+      const pct = Math.round(score/8*100);
+      const row = document.createElement('div');
+      row.className = 'c-row';
+      row.innerHTML = `<div class="c-label" style="color:${data.color};">[${key}] ${data.name}</div><div class="c-bars"><div class="c-bar-wrap"><div class="c-bar-bg"><div class="c-bar-i" style="width:${pct}%;background:${data.color};"></div></div><span class="c-pct">${pct}%</span></div></div>`;
+      hrc.appendChild(row);
+    });
+  }
+
+  // Top picks
+  const combined = iSums.map((v,i)=>({i, combined: (v + aSums[i])/2, iPct: Math.round(v/24*100), aPct: Math.round(aSums[i]/24*100)}));
+  combined.sort((a,b)=>b.combined-a.combined);
+  const topBanner = document.getElementById('top-pick-banner');
+  if (topBanner && combined[0]) {
+    const t = combined[0];
+    topBanner.innerHTML = `<div class="top-pick"><div class="icon">🏆</div><div><h3>Tu combinación más fuerte: ${CATS[t.i]} — ${CAT_NAMES[t.i]}</h3><p>Interés: ${t.iPct}% · Aptitud: ${t.aPct}%</p></div></div>`;
+  }
+
+  // Summary texts
+  const top3i = [...combined].sort((a,b)=>b.iPct-a.iPct).slice(0,3).map(x=>CAT_NAMES[x.i]).join(', ');
+  const top3a = [...combined].sort((a,b)=>b.aPct-a.aPct).slice(0,3).map(x=>CAT_NAMES[x.i]).join(', ');
+  const riEl = document.getElementById('r-intereses');
+  const raEl = document.getElementById('r-aptitudes');
+  if (riEl) riEl.textContent = top3i || '—';
+  if (raEl) raEl.textContent = top3a || '—';
+
+  // Top valores
+  const vTop = document.getElementById('valores-top');
+  if (vTop) {
+    const sorted = state.valores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+    vTop.innerHTML = sorted.map((item, rank) => `<div class="report-row"><span class="report-label">${['🥇','🥈','🥉'][rank]} Valor ${rank+1}:</span><span class="report-value">${VALORES_LIST[item.i]} <span style="color:var(--purple)">(${item.v} pts)</span></span></div>`).join('');
+    const rvEl = document.getElementById('r-valores');
+    if (rvEl) rvEl.textContent = sorted.slice(0,3).filter(x=>x.v>0).map(x=>VALORES_LIST[x.i]).join(', ') || '—';
+  }
+
+  // Careers
+  const cBody = document.getElementById('careers-body');
+  if (cBody) {
+    const top2 = combined.slice(0,2).map(x=>x.i+1);
+    const key1 = `${top2[0]}-${top2[1]}`;
+    const key2 = `${top2[1]}-${top2[0]}`;
+    let found = CAREERS_TABLE[key1] || CAREERS_TABLE[key2] || null;
+    if (!found) {
+      // Try to find best matching key
+      const allKeys = Object.keys(CAREERS_TABLE);
+      for (const k of allKeys) {
+        const parts = k.split('-').map(Number);
+        if (parts.includes(top2[0]) || parts.includes(top2[1])) { found = CAREERS_TABLE[k]; break; }
+      }
+    }
+    cBody.innerHTML = found ? found.map(c=>`<tr><td>${key1}</td><td>${c}</td></tr>`).join('') : `<tr><td colspan="2" style="color:var(--gray);text-align:center;">Completa los cuestionarios para ver las carreras recomendadas.</td></tr>`;
+  }
+}
+
+// ===== NAVIGATION =====
+function showPage(name) {
+  if (name === 'finalizar') { actualizarChecks(); }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const map = {intereses:0,aptitudes:1,valores:2,holland:3,resultados:4,universidades:5};
+  if (map[name] !== undefined) tabs[map[name]].classList.add('active');
+  if (name==='resultados') updateResults();
+  if (name==='universidades') renderUnis();
+}
+
+// ===== EXPORT: WORD =====
+function downloadWord() {
+  const nombre = document.getElementById('nombre').value || 'Sin nombre';
+  const grupo = document.getElementById('grupo').value || '';
+  const fecha = document.getElementById('fecha').value || '';
+  const iSums = getSums('intereses');
+  const aSums = getSums('aptitudes');
+  const hollandScores = Object.entries(HOLLAND_DATA).map(([k,d])=>({k,name:d.name,score:state.holland[k].reduce((a,b)=>a+b,0)})).sort((a,b)=>b.score-a.score);
+  const topHolland = hollandScores.slice(0,3).map(x=>x.k).join('');
+  const topI = iSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+  const topA = aSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+  const topV = state.valores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3);
+  const conclusion = document.getElementById('conclusion-text').value || '';
+  const careersText = document.getElementById('careers-text').value || '';
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+body{font-family:Arial,sans-serif;margin:40px;color:#1a1f5e;font-size:11pt;}
+h1{color:#6c3eb6;font-size:18pt;border-bottom:3px solid #00c4b4;padding-bottom:8px;}
+h2{color:#1a1f5e;font-size:13pt;margin-top:24px;border-left:4px solid #6c3eb6;padding-left:10px;}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:10pt;}
+th{background:#1a1f5e;color:white;padding:8px;text-align:center;}
+td{padding:6px 8px;border:1px solid #ddd;text-align:center;}
+tr:nth-child(even)td{background:#f0f4ff;}
+.label{font-weight:bold;color:#6c3eb6;}
+.info{background:#f4f6ff;padding:12px;border-radius:8px;margin-bottom:20px;}
+.top{background:#e0f7fa;font-weight:bold;}
+</style>
+<style>
+.h-item.selected-card{
+ background:#e0f7fa !important;
+ border-left:4px solid #00c4b4 !important;
+ padding:8px;
+ border-radius:10px;
+}
+.fortaleza-item{
+ background:#ecfdf5;padding:10px;margin:6px 0;border-radius:8px;
+ font-weight:700;
+}
+.coherencia-alta{color:#16a34a;font-weight:800;}
+.coherencia-media{color:#d97706;font-weight:800;}
+</style>
+
+</head><body>
+
+<!-- TOKEN GATE -->
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBASZAS-aEDtdq9Kgo9Pw-XkdGvHLw6zic",
+  authDomain: "soyfuturo-c2c95.firebaseapp.com",
+  projectId: "soyfuturo-c2c95",
+  storageBucket: "soyfuturo-c2c95.firebasestorage.app",
+  messagingSenderId: "925550832603",
+  appId: "1:925550832603:web:2e3f6e4ef49e2f13ac15fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentDocId = null;
+let currentToken = null;
+
+// Check URL for token param
+const urlParams = new URLSearchParams(window.location.search);
+const urlToken = urlParams.get('token');
+if (urlToken) {
+  document.getElementById('gate-token').value = urlToken.toUpperCase();
+}
+
+window.validarToken = async function() {
+  const token = document.getElementById('gate-token').value.trim().toUpperCase();
+  if (!token) return;
+  const errEl = document.getElementById('gate-error');
+  errEl.style.display = 'none';
+  try {
+    const q = query(collection(db, 'evaluaciones'), where('token', '==', token));
+    const snap = await getDocs(q);
+    if (snap.empty) { errEl.style.display = 'block'; return; }
+    const docSnap = snap.docs[0];
+    const data = docSnap.data();
+    if (data.estado === 'pausado' || data.estado === 'eliminado') {
+      errEl.textContent = '⏸ Esta evaluación está pausada. Contacta a tu orientadora.';
+      errEl.style.display = 'block';
+      return;
+    }
+    currentDocId = docSnap.id;
+    currentToken = token;
+    // Pre-fill name if saved
+    if (data.nombre) document.getElementById('nombre').value = data.nombre;
+    if (data.grupo) document.getElementById('grupo').value = data.grupo;
+    // Mark as in progress
+    await updateDoc(doc(db, 'evaluaciones', docSnap.id), { estado: 'en_progreso', ultimaActividad: serverTimestamp() });
+    document.getElementById('token-gate').style.display = 'none';
+  } catch(e) {
+    console.error(e);
+    errEl.style.display = 'block';
+  }
+};
+
+window.enviarEvaluacion = async function() {
+  if (!currentDocId) return;
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  btn.style.background = '#8b92a5';
+
+  try {
+    const iSums = getSums('intereses');
+    const aSums = getSums('aptitudes');
+    const hollandScores = {};
+    Object.keys(HOLLAND_DATA).forEach(k => {
+      hollandScores[k] = state.holland[k].reduce((a,b)=>a+b,0);
+    });
+    const hollandSorted = Object.entries(hollandScores).sort((a,b)=>b[1]-a[1]);
+    const hollandClave = hollandSorted.slice(0,3).map(x=>x[0]).join('');
+    const nombre = document.getElementById('nombre').value.trim();
+    const grupo = document.getElementById('grupo').value.trim();
+    const conclusion = document.getElementById('conclusion-text').value || '';
+    const carrerasInteres = document.getElementById('careers-text').value || '';
+
+    await updateDoc(doc(db, 'evaluaciones', currentDocId), {
+      estado: 'completado',
+      nombre: nombre || 'Estudiante',
+      grupo: grupo,
+      conclusion, carrerasInteres,
+      intereses: { sumas: iSums, top3: iSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>CAT_NAMES[x.i]) },
+      aptitudes: { sumas: aSums, top3: aSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>CAT_NAMES[x.i]) },
+      valores: { puntajes: state.valores, top3: state.valores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>VALORES_LIST[x.i]) },
+      holland: { puntajes: hollandScores, clave: hollandClave },
+      respuestas: { intereses: state.intereses, aptitudes: state.aptitudes, valores: state.valores, holland: state.holland },
+      fechaTexto: new Date().toLocaleDateString('es-VE'),
+      ultimaActividad: serverTimestamp(),
+    });
+
+    // Show success modal
+    document.getElementById('modal-token').textContent = currentToken;
+    const modal = document.getElementById('success-modal');
+    modal.style.display = 'flex';
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar mi Evaluación';
+    btn.style.background = 'linear-gradient(135deg,#00c4b4,#6c3eb6)';
+    alert('❌ Error al enviar. Verifica tu conexión e intenta de nuevo.');
+    console.error(e);
+  }
+};
+</script>
+</body></html>`;
+
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Orientacion_Vocacional_${nombre.replace(/ /g,'_')}.doc`;
+  a.click();
+}
+
+// ===== EXPORT: EXCEL (CSV) =====
+function downloadExcel() {
+  const nombre = document.getElementById('nombre').value || 'Sin nombre';
+  const grupo = document.getElementById('grupo').value || '';
+  const fecha = document.getElementById('fecha').value || '';
+  const iSums = getSums('intereses');
+  const aSums = getSums('aptitudes');
+
+  let csv = 'SOY FUTURO — Resultados de Orientación Vocacional\n';
+  csv += `Nombre,${nombre},Grupo,${grupo},Fecha,${fecha}\n\n`;
+  csv += 'INTERESES\n';
+  csv += 'Categoría,' + CATS.join(',') + '\n';
+  csv += 'Puntaje,' + iSums.join(',') + '\n';
+  csv += 'Porcentaje,' + iSums.map(v=>Math.round(v/24*100)+'%').join(',') + '\n\n';
+  csv += 'APTITUDES\n';
+  csv += 'Categoría,' + CATS.join(',') + '\n';
+  csv += 'Puntaje,' + aSums.join(',') + '\n';
+  csv += 'Porcentaje,' + aSums.map(v=>Math.round(v/24*100)+'%').join(',') + '\n\n';
+  csv += 'VALORES\n';
+  csv += 'Valor,Puntaje\n';
+  VALORES_LIST.forEach((v,i) => { csv += `"${v}",${state.valores[i]}\n`; });
+  csv += '\nHOLLAND (RIASEC)\n';
+  csv += 'Tipo,Nombre,Puntaje\n';
+  Object.entries(HOLLAND_DATA).forEach(([k,d]) => {
+    const s = state.holland[k].reduce((a,b)=>a+b,0);
+    csv += `${k},"${d.name}",${s}\n`;
+  });
+  csv += '\nRESPUESTAS INTERESES\n';
+  csv += 'Nº,Actividad,Puntaje\n';
+  INTERESES_ITEMS.forEach((item, idx) => {
+    csv += `${idx+1},"${item[1]}",${state.intereses[idx]}\n`;
+  });
+  csv += '\nRESPUESTAS APTITUDES\n';
+  csv += 'Nº,Actividad,Puntaje\n';
+  APTITUDES_ITEMS.forEach((item, idx) => {
+    csv += `${idx+1},"${item[1]}",${state.aptitudes[idx]}\n`;
+  });
+
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM+csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Orientacion_Vocacional_${nombre.replace(/ /g,'_')}.csv`;
+  a.click();
+}
+
+// Print styles
+const style = document.createElement('style');
+style.textContent = `@media print { .tabs,.btn-row,.info-bar { display:none!important; } .page { display:block!important; } .container { margin:0;padding:10px; } body { background:white!important; } }`;
+document.head.appendChild(style);
+
+function actualizarChecks() {
+  const iDone = state.intereses.filter(v=>v!=='').length >= 60;
+  const aDone = state.aptitudes.filter(v=>v!=='').length >= 60;
+  const hDone = Object.values(state.holland).reduce((a,b)=>a+b.filter(v=>v!==0).length,0) >= 48;
+  const vDone = state.valores.some(v=>v>0);
+  const set = (id, done, label) => {
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = done ? `<span style="color:#22c55e;font-size:1.1rem;">✅</span> ${label} — Completado` : `<span style="color:#f59e0b;font-size:1.1rem;">⏳</span> ${label} — Pendiente`;
+    if(el) el.style.color = done ? '#166534' : '#92400e';
+  };
+  set('check-intereses', iDone, 'Cuestionario de Intereses');
+  set('check-aptitudes', aDone, 'Cuestionario de Aptitudes');
+  set('check-valores', vDone, 'Test de Valores');
+  set('check-holland', hDone, 'Test Holland RIASEC');
+}
+
+
+init();
+
+document.addEventListener('change',function(e){
+ const item=e.target.closest('.h-item');
+ if(item){ item.classList.add('selected-card'); }
+});
+
+function generarFortalezasBasicas(){
+ const box=document.getElementById('fortalezas-box');
+ if(!box) return;
+ box.innerHTML=`
+ <div class="fortaleza-item">✅ Capacidad de autoconocimiento</div>
+ <div class="fortaleza-item">✅ Exploración vocacional activa</div>
+ <div class="fortaleza-item">✅ Reflexión sobre intereses y valores</div>`;
+}
+
+function generarCoherenciaBasica(){
+ const box=document.getElementById('coherencia-box');
+ if(!box) return;
+ box.innerHTML='<span class="coherencia-media">La coherencia se calculará al actualizar resultados.</span>';
+}
+
+setTimeout(()=>{
+ generarFortalezasBasicas();
+ generarCoherenciaBasica();
+},1000);
+
+</script>
+
+
+</html>
+</body>

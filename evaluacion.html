@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOY FUTURO — Orientación Vocacional Integral</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a1f5e;
+  --purple: #6c3eb6;
+  --teal: #00c4b4;
+  --coral: #ff5e6c;
+  --yellow: #ffd93d;
+  --light: #f4f6ff;
+  --white: #ffffff;
+  --gray: #8b92a5;
+  --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #0d1147 0%, #1a1f5e 40%, #2d1b69 100%); min-height: 100vh; color: var(--navy); }
+
+/* TOKEN GATE */
+#token-gate { position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0d1147,#1a1f5e,#2d1b69);display:flex;align-items:center;justify-content:center; }
+.gate-box { background:white;border-radius:28px;padding:48px 40px;max-width:440px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+.gate-logo { font-size:3rem;display:block;animation:float 3s ease-in-out infinite;margin-bottom:8px; }
+.gate-box h1 { font-size:2.2rem;font-weight:900;color:var(--navy);margin-bottom:6px; }
+.gate-box h1 span { color:var(--teal); }
+.gate-box p { color:var(--gray);font-size:0.92rem;margin-bottom:32px;line-height:1.6; }
+.gate-input { width:100%;padding:16px 20px;border:3px solid #e0e4f0;border-radius:14px;font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;text-align:center;text-transform:uppercase;letter-spacing:3px;color:var(--navy);margin-bottom:16px;transition:border-color 0.2s; }
+.gate-input:focus { outline:none;border-color:var(--teal); }
+.gate-btn { width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--teal),var(--purple));color:white;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(108,62,182,0.4);transition:all 0.2s; }
+.gate-btn:hover { transform:translateY(-2px);box-shadow:0 12px 32px rgba(108,62,182,0.5); }
+.gate-error { color:var(--coral);font-size:0.85rem;font-weight:700;margin-top:12px;display:none; }
+
+/* SESSION MODAL */
+#session-modal { position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.65);display:none;align-items:center;justify-content:center; }
+.session-box { background:white;border-radius:24px;padding:40px 36px;max-width:420px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4); }
+.session-box h2 { font-size:1.3rem;font-weight:900;color:var(--navy);margin-bottom:10px; }
+.session-box p { color:var(--gray);font-size:0.9rem;margin-bottom:28px;line-height:1.6; }
+.session-btns { display:flex;gap:12px;flex-direction:column; }
+.btn-continue { padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--teal),var(--purple));color:white;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:900;cursor:pointer; }
+.btn-restart { padding:14px;border-radius:12px;border:2px solid #e0e4f0;background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer; }
+
+/* SUCCESS MODAL */
+#success-modal { position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center; }
+.success-box { background:white;border-radius:28px;padding:48px 40px;max-width:440px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+.success-box h2 { font-size:1.8rem;font-weight:900;color:var(--navy);margin:16px 0 12px; }
+.success-box p { color:var(--gray);font-size:0.9rem;line-height:1.6;margin-bottom:20px; }
+.token-display { background:var(--light);border-radius:12px;padding:14px 20px;font-size:1.2rem;font-weight:900;color:var(--navy);font-family:monospace;letter-spacing:3px;margin-bottom:24px; }
+
+/* HEADER */
+.header { background:linear-gradient(135deg,var(--navy),var(--purple));padding:24px 20px 16px;text-align:center;position:relative;overflow:hidden; }
+.header::before { content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.header h1 { font-size:1.9rem;font-weight:900;color:white;letter-spacing:-0.5px; }
+.header h1 span { color:var(--teal); }
+.header p { color:rgba(255,255,255,0.7);font-size:0.88rem;margin-top:4px; }
+.rocket { font-size:1.8rem;display:inline-block;animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* JOURNEY TABS */
+.journey { padding:16px 16px 0;overflow-x:auto;scrollbar-width:none; }
+.journey::-webkit-scrollbar { display:none; }
+.journey-inner { display:flex;gap:0;min-width:max-content;align-items:center;background:rgba(255,255,255,0.08);border-radius:16px 16px 0 0;padding:0 8px; }
+.phase-step { display:flex;align-items:center;gap:6px;padding:11px 13px;cursor:pointer;border-radius:12px 12px 0 0;transition:all 0.2s;white-space:nowrap;border:none;background:none;font-family:'Nunito',sans-serif;font-size:0.77rem;font-weight:800;color:rgba(255,255,255,0.5); }
+.phase-step:hover:not(.locked) { color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.08); }
+.phase-step.active { background:var(--white);color:var(--navy); }
+.phase-step.done { color:var(--teal); }
+.phase-step.locked { cursor:default;opacity:0.35; }
+.step-connector { color:rgba(255,255,255,0.2);font-size:0.68rem;padding:0 2px; }
+
+/* MAIN CONTAINER */
+.container { background:var(--light);border-radius:0 0 16px 16px;margin:0 16px 24px;padding:20px;min-height:60vh; }
+
+/* STUDENT INFO */
+.info-bar { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px;background:var(--navy);padding:14px;border-radius:14px; }
+.info-bar label { color:rgba(255,255,255,0.6);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px; }
+.info-bar input { width:100%;padding:7px 11px;border-radius:8px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.1);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:600; }
+.info-bar input::placeholder { color:rgba(255,255,255,0.3); }
+.info-bar input:focus { outline:none;border-color:var(--teal); }
+
+/* PAGES */
+.phase-page { display:none; }
+.phase-page.active { display:block; }
+
+/* PHASE BANNER */
+.phase-banner { background:linear-gradient(135deg,var(--navy),var(--purple));border-radius:16px;padding:22px 24px;margin-bottom:20px;color:white;position:relative;overflow:hidden; }
+.phase-banner::before { content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.phase-tag { font-size:0.68rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:6px;position:relative; }
+.phase-banner h2 { font-size:1.25rem;font-weight:900;margin-bottom:7px;position:relative; }
+.phase-banner p { font-size:0.83rem;color:rgba(255,255,255,0.72);line-height:1.6;position:relative; }
+
+/* SECTION CARD */
+.section-card { background:white;border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,0.07);border:2px solid #e8eaf6; }
+.section-card h2 { font-size:1rem;font-weight:900;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;gap:8px; }
+.section-card .subtitle { font-size:0.8rem;color:var(--gray);margin-bottom:16px;line-height:1.5; }
+
+/* QUESTION LABELS & TEXTAREAS */
+.q-label { font-size:0.86rem;font-weight:800;color:#2d3561;margin-bottom:6px;margin-top:14px;display:block; }
+.q-label:first-of-type { margin-top:0; }
+.free-textarea { width:100%;padding:11px 13px;border:2px solid #e0e4f0;border-radius:11px;font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:600;color:var(--navy);resize:vertical;min-height:70px;transition:border-color 0.2s;line-height:1.6; }
+.free-textarea:focus { outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,196,180,0.12); }
+.free-textarea.has-val { border-color:#c4b5fd;background:#faf5ff; }
+.free-input { width:100%;padding:11px 13px;border:2px solid #e0e4f0;border-radius:11px;font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:600;color:var(--navy);transition:border-color 0.2s;margin-bottom:12px; }
+.free-input:focus { outline:none;border-color:var(--teal); }
+
+/* SCALES */
+.scale-group { display:flex;flex-direction:column;gap:9px; }
+.scale-row { display:flex;align-items:center;gap:12px;padding:10px 13px;background:#f8f9ff;border-radius:10px;border:2px solid #e8eaf6; }
+.scale-row label.row-label { font-size:0.83rem;font-weight:700;color:var(--navy);flex:1; }
+.scale-radios { display:flex;gap:4px; }
+.scale-radios input[type="radio"] { display:none; }
+.scale-radios label { width:31px;height:31px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:900;border:2px solid #e0e4f0;background:white;color:var(--gray);transition:all 0.15s; }
+.scale-radios input[type="radio"]:checked + label { background:var(--purple);color:white;border-color:var(--purple); }
+.scale-legend-row { display:flex;justify-content:space-between;font-size:0.68rem;font-weight:700;color:var(--gray);padding:0 4px;margin-top:6px; }
+
+/* MOTIVATIONS */
+.motiv-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;margin-bottom:14px; }
+.motiv-item { display:flex;align-items:center;gap:9px;padding:10px 13px;border:2px solid #e8eaf6;border-radius:12px;cursor:pointer;background:white;transition:all 0.17s;font-size:0.83rem;font-weight:700;color:var(--navy); }
+.motiv-item:hover { border-color:var(--teal);background:#f0fffe; }
+.motiv-item.selected { border-color:var(--teal);background:#e0f7fa;color:#006b64; }
+.motiv-check { width:19px;height:19px;border-radius:5px;border:2px solid #c4cde0;display:flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;transition:all 0.15s; }
+.motiv-item.selected .motiv-check { background:var(--teal);border-color:var(--teal);color:white; }
+
+/* NAV BUTTONS */
+.nav-btns { display:flex;gap:12px;margin-top:22px;flex-wrap:wrap; }
+.btn-next { flex:1;min-width:140px;padding:13px 18px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--teal),var(--purple));color:white;font-family:'Nunito',sans-serif;font-size:0.93rem;font-weight:900;cursor:pointer;box-shadow:0 6px 18px rgba(108,62,182,0.3);transition:all 0.2s; }
+.btn-next:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(108,62,182,0.4); }
+.btn-prev { padding:13px 18px;border-radius:12px;border:2px solid #d0d8f0;background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-size:0.93rem;font-weight:800;cursor:pointer;transition:all 0.2s; }
+.btn-prev:hover { border-color:var(--purple);color:var(--purple); }
+
+/* SCALE LEGEND (intereses/aptitudes) */
+.iq-scale-legend { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;background:white;padding:10px 14px;border-radius:10px;border:2px solid #e8eaf6; }
+.sl-item { display:flex;align-items:center;gap:5px;font-size:0.74rem;font-weight:700; }
+.sl-badge { width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:0.68rem;font-weight:900;color:white; }
+.s4{background:#22c55e;}.s3{background:#84cc16;}.s2{background:#f59e0b;}.s1{background:#f97316;}.s0{background:#ef4444;}
+
+/* TABLE */
+.table-scroll { overflow-x:auto;border-radius:10px; }
+.q-table { width:100%;border-collapse:collapse;font-size:0.78rem; }
+.q-table thead th { background:var(--navy);color:white;padding:9px 4px;text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.3px; }
+.q-table thead th:first-child { text-align:left;width:34px; }
+.q-table thead th:nth-child(2) { text-align:left;min-width:175px; }
+.cat-head { font-size:0.58rem;display:block;font-weight:600;opacity:0.75; }
+.q-table tbody tr:nth-child(even) { background:#f0f4ff; }
+.q-table tbody tr:hover { background:#e8f4fd; }
+.q-table td { padding:6px 4px;vertical-align:middle; }
+.q-table td:first-child { text-align:center;color:var(--gray);font-weight:700;font-size:0.7rem; }
+.q-table td.activity { font-weight:600;color:#2d3561; }
+.q-table td.score-cell { text-align:center; }
+.score-input { width:34px;height:30px;border:2px solid #d0d8f0;border-radius:7px;text-align:center;font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:800;color:var(--navy);background:white;transition:all 0.15s;-moz-appearance:textfield; }
+.score-input::-webkit-outer-spin-button,.score-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.score-input:focus { outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,196,180,0.2); }
+.score-input.disabled { background:#f0f4ff;color:#b0b8d0;cursor:not-allowed; }
+.score-input.has-val { border-color:var(--purple);background:#f3eeff; }
+.totals-row { background:var(--navy) !important; }
+.totals-row td { color:white;font-weight:900;font-size:0.78rem;padding:9px 4px; }
+.totals-row td.activity { color:var(--teal); }
+.pct-row { background:#eef2ff !important; }
+.pct-row td { font-weight:800;color:var(--purple);font-size:0.78rem; }
+
+/* LOCKED RESULTS NOTICE */
+.locked-notice { background:linear-gradient(135deg,#1a1f5e,#2d1b69);color:white;border-radius:11px;padding:13px 16px;font-size:0.8rem;font-weight:700;text-align:center;margin-top:16px;display:flex;align-items:center;gap:9px;justify-content:center; }
+
+/* VALORES */
+.valores-intro { background:linear-gradient(135deg,#f3eeff,#e0f7fa);border-radius:13px;padding:13px 17px;margin-bottom:16px;border-left:4px solid var(--purple); }
+.valores-intro p { font-size:0.82rem;color:var(--navy);font-weight:600;line-height:1.6; }
+.valores-progress { background:white;border-radius:11px;padding:11px 15px;margin-bottom:16px;border:2px solid #e8eaf6;display:flex;align-items:center;gap:13px; }
+.v-prog-label { font-size:0.76rem;font-weight:800;color:var(--gray);white-space:nowrap; }
+.v-prog-bar-bg { flex:1;height:10px;background:#eef2ff;border-radius:100px;overflow:hidden; }
+.v-prog-bar { height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:100px;transition:width 0.4s ease;width:0%; }
+.v-prog-count { font-size:0.82rem;font-weight:900;color:var(--purple);white-space:nowrap; }
+.pair-card { background:white;border-radius:14px;padding:17px;border:2px solid #e8eaf6;margin-bottom:13px;box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:all 0.2s; }
+.pair-card.answered { border-color:var(--teal); }
+.pair-num { font-size:0.68rem;font-weight:800;color:var(--gray);margin-bottom:9px;letter-spacing:0.5px; }
+.pair-options { display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center; }
+.pair-vs { text-align:center;font-size:0.7rem;font-weight:900;color:var(--gray); }
+.pair-btn { border:2px solid #e0e4f0;border-radius:11px;padding:11px 12px;background:white;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:700;color:var(--navy);text-align:center;transition:all 0.17s;line-height:1.3; }
+.pair-btn:hover { border-color:var(--purple);background:#f3eeff;transform:translateY(-1px); }
+.pair-btn.selected { border-color:var(--teal);background:#e0f7fa;color:#006b64;font-weight:900; }
+.pair-btn.other { opacity:0.38; }
+
+/* HOLLAND */
+.holland-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px; }
+.holland-card { background:white;border-radius:13px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,0.07);border:2px solid #e8eaf6; }
+.h-item { display:flex;align-items:center;gap:8px;margin-bottom:7px;padding:4px 0; }
+.h-item label.h-label { font-size:0.76rem;font-weight:600;color:#2d3561;flex:1;line-height:1.4; }
+.h-check { display:flex;gap:4px; }
+.h-check label { display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:0.78rem;font-weight:800;border:2px solid;transition:all 0.15s; }
+.h-check input[type="radio"] { display:none; }
+
+/* CHECK ITEMS */
+.check-item { display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;font-size:0.86rem;font-weight:700;background:white;border:2px solid #e8eaf6;margin-bottom:8px;transition:border-color 0.2s; }
+
+/* SEND */
+.btn-enviar { width:100%;padding:17px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--teal),var(--purple));color:white;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(108,62,182,0.4);transition:all 0.2s;margin-top:20px; }
+.btn-enviar:hover { transform:translateY(-2px);box-shadow:0 12px 32px rgba(108,62,182,0.5); }
+
+@media (max-width:600px) {
+  .pair-options { grid-template-columns:1fr; }
+  .pair-vs { display:none; }
+  .holland-grid { grid-template-columns:1fr; }
+  .container { padding:14px; }
+  .gate-box { padding:36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOKEN GATE -->
+<div id="token-gate">
+  <div class="gate-box">
+    <span class="gate-logo">🚀</span>
+    <h1>SOY <span>FUTURO</span></h1>
+    <p>Plataforma de Orientación Vocacional Integral.<br>Ingresa el código de acceso proporcionado por tu orientadora.</p>
+    <input type="text" id="gate-token" class="gate-input" placeholder="ABC-12345" maxlength="10">
+    <button class="gate-btn" onclick="validarToken()">Entrar ✨</button>
+    <div class="gate-error" id="gate-error">❌ Código inválido o evaluación no disponible.</div>
+  </div>
+</div>
+
+<!-- SESSION RECOVERY -->
+<div id="session-modal">
+  <div class="session-box">
+    <div style="font-size:2.5rem;margin-bottom:8px;">📂</div>
+    <h2>¡Encontramos tu progreso!</h2>
+    <p>Tenemos una evaluación guardada para ti. ¿Deseas continuar desde donde la dejaste o comenzar de nuevo?</p>
+    <div class="session-btns">
+      <button class="btn-continue" onclick="continueSession()">▶️ Continuar donde la dejé</button>
+      <button class="btn-restart" onclick="restartSession()">🔄 Comenzar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal">
+  <div class="success-box">
+    <div style="font-size:3rem;">🎉</div>
+    <h2>¡Evaluación enviada!</h2>
+    <p>Tu orientadora recibirá toda tu información. ¡Excelente trabajo en este proceso de autoconocimiento!</p>
+    <div class="token-display" id="modal-token">—</div>
+    <p style="font-size:0.78rem;color:var(--gray);">Guarda este código como referencia.</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="rocket">🚀</span>
+  <h1>SOY <span>FUTURO</span></h1>
+  <p>Taller Integral de Orientación Vocacional</p>
+</div>
+
+<!-- JOURNEY TABS -->
+<div class="journey">
+  <div class="journey-inner">
+    <button class="phase-step active" id="step-historia" onclick="goPhase('historia')"><span>📖</span> Mi Historia</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-mundo" onclick="goPhase('mundo')"><span>🌍</span> Mi Mundo</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-motivaciones" onclick="goPhase('motivaciones')"><span>🔥</span> Motivaciones</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-intereses" onclick="goPhase('intereses')"><span>📊</span> Intereses</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-aptitudes" onclick="goPhase('aptitudes')"><span>🧠</span> Aptitudes</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-valores" onclick="goPhase('valores')"><span>💎</span> Valores</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-holland" onclick="goPhase('holland')"><span>🌀</span> Holland</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-futuro" onclick="goPhase('futuro')"><span>⭐</span> Mi Futuro</button>
+    <span class="step-connector">›</span>
+    <button class="phase-step locked" id="step-finalizar" onclick="goPhase('finalizar')"><span>✅</span> Finalizar</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- INFO BAR -->
+  <div class="info-bar">
+    <div><label>Nombre completo</label><input type="text" id="nombre" placeholder="Tu nombre" oninput="triggerSave()"></div>
+    <div><label>Grupo / Sección</label><input type="text" id="grupo" placeholder="Ej. 5°A" oninput="triggerSave()"></div>
+    <div><label>Fecha</label><input type="date" id="fecha"></div>
+    <div><label>Orientadora</label><input type="text" id="orientador" placeholder="Nombre" oninput="triggerSave()"></div>
+  </div>
+
+  <!-- ============ FASE 1: MI HISTORIA ============ -->
+  <div id="page-historia" class="phase-page active">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 1 · Mi Historia</div>
+      <h2>Cuéntanos quién eres 📖</h2>
+      <p>Antes de cualquier prueba, queremos conocerte. No hay respuestas correctas ni incorrectas — solo las tuyas.</p>
+    </div>
+
+    <div class="section-card">
+      <h2>🧍 ¿Quién Soy?</h2>
+      <span class="q-label">¿Cómo te describirías en cinco palabras?</span>
+      <textarea class="free-textarea" id="h-q1" placeholder="Ej: creativo, curioso, responsable, empático, soñador..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué es lo que más te gusta de ti?</span>
+      <textarea class="free-textarea" id="h-q2" placeholder="Tus fortalezas, lo que te hace especial..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué te hace sentir orgulloso/a?</span>
+      <textarea class="free-textarea" id="h-q3" placeholder="Logros, momentos, cosas que has hecho bien..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué cualidades reconocen otras personas en ti?</span>
+      <textarea class="free-textarea" id="h-q4" placeholder="Lo que tus amigos, familia o profesores dicen de ti..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué te gustaría mejorar de ti mismo/a?</span>
+      <textarea class="free-textarea" id="h-q5" placeholder="Áreas de crecimiento personal..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>👦 Mi Infancia</h2>
+      <span class="q-label">¿Qué te gustaba hacer cuando eras niño/a?</span>
+      <textarea class="free-textarea" id="h-i1" placeholder="Juegos, actividades, pasatiempos..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué soñabas ser cuando crecieras?</span>
+      <textarea class="free-textarea" id="h-i2" placeholder="Tus sueños de infancia..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué recuerdo feliz de tu infancia conservas con más cariño?</span>
+      <textarea class="free-textarea" id="h-i3" placeholder="Un momento especial, una experiencia, una persona..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>💫 Experiencias que me Formaron</h2>
+      <span class="q-label">¿Cuál ha sido uno de los mejores momentos de tu vida?</span>
+      <textarea class="free-textarea" id="h-e1" placeholder="Descríbelo con detalle..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Cuál ha sido uno de los momentos más difíciles que has superado?</span>
+      <textarea class="free-textarea" id="h-e2" placeholder="¿Qué aprendiste de esa experiencia?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué reto importante has superado? ¿Qué aprendiste?</span>
+      <textarea class="free-textarea" id="h-e3" placeholder="Un reto académico, personal, familiar..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>🌟 Personas Importantes</h2>
+      <span class="q-label">¿Quién ha influido más en tu vida? ¿Qué admiras de esa persona?</span>
+      <textarea class="free-textarea" id="h-p1" placeholder="Familiar, maestro, amigo, personaje público..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿A quién admiras actualmente y por qué?</span>
+      <textarea class="free-textarea" id="h-p2" placeholder="¿Qué tienen ellos/as que te inspira?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>🏫 Mi Vida Escolar</h2>
+      <span class="q-label">¿Cuáles son tus materias favoritas y por qué?</span>
+      <textarea class="free-textarea" id="h-s1" placeholder="¿Qué materias disfrutas más? ¿Qué las hace especiales?" rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué actividades extracurriculares realizas o has realizado?</span>
+      <textarea class="free-textarea" id="h-s2" placeholder="Deportes, artes, clubes, voluntariados..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Cuál ha sido tu mayor logro académico o escolar?</span>
+      <textarea class="free-textarea" id="h-s3" placeholder="Un proyecto, una calificación, un reconocimiento..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-next" onclick="advancePhase('mundo')">Continuar → Mi Mundo</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 2: MI MUNDO ============ -->
+  <div id="page-mundo" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 2 · Mi Mundo</div>
+      <h2>Tu contexto también te define 🌍</h2>
+      <p>El entorno en que vivimos moldea nuestras decisiones. Cuéntanos sobre tu familia, tu escuela y lo que te mueve.</p>
+    </div>
+
+    <div class="section-card">
+      <h2>👨‍👩‍👧 Mi Familia</h2>
+      <p class="subtitle">Indica del 1 (totalmente en desacuerdo) al 5 (totalmente de acuerdo).</p>
+      <div class="scale-group" id="familia-scales"></div>
+    </div>
+
+    <div class="section-card">
+      <h2>📚 Mi Escuela</h2>
+      <p class="subtitle">¿Cómo te sientes en tu ambiente escolar?</p>
+      <div class="scale-group" id="escuela-scales"></div>
+    </div>
+
+    <div class="section-card">
+      <h2>🎯 Influencias en mis Decisiones</h2>
+      <p class="subtitle">¿Cuánto influyen en tus decisiones vocacionales? (1 = nada, 5 = muchísimo)</p>
+      <div class="scale-group" id="influencias-scales"></div>
+    </div>
+
+    <div class="section-card">
+      <h2>💭 Reflexión sobre mi Futuro</h2>
+      <span class="q-label">¿Qué es lo que más te preocupa sobre tu futuro?</span>
+      <textarea class="free-textarea" id="m-r1" placeholder="Tus miedos, dudas, incertidumbres..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué es lo que más te emociona sobre tu futuro?</span>
+      <textarea class="free-textarea" id="m-r2" placeholder="Tus esperanzas, sueños, ilusiones..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué obstáculos percibes actualmente para lograr tus metas?</span>
+      <textarea class="free-textarea" id="m-r3" placeholder="Económicos, familiares, personales..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('historia')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('motivaciones')">Continuar → Motivaciones</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 3: MOTIVACIONES ============ -->
+  <div id="page-motivaciones" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 3 · Mis Motivaciones</div>
+      <h2>¿Qué te impulsa? 🔥</h2>
+      <p>Conocer tus motivaciones profundas es clave para elegir una carrera que te llene de verdad.</p>
+    </div>
+
+    <div class="section-card">
+      <h2>⚡ Selecciona tus 5 motivaciones más importantes</h2>
+      <p class="subtitle">Las que más te mueven, las que sientes que guían tus decisiones.</p>
+      <div class="motiv-grid" id="motivaciones-grid"></div>
+      <div id="motiv-count" style="font-size:0.8rem;font-weight:800;color:var(--gray);text-align:right;margin-top:6px;">0 / 5 seleccionadas</div>
+    </div>
+
+    <div class="section-card">
+      <h2>💬 Reflexión Vocacional</h2>
+      <span class="q-label">¿Qué significa para ti el éxito?</span>
+      <textarea class="free-textarea" id="mot-r1" placeholder="En tus propias palabras, ¿cuándo considerarías que has tenido éxito?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué significa para ti una vida feliz?</span>
+      <textarea class="free-textarea" id="mot-r2" placeholder="¿Qué elementos no pueden faltar en tu vida ideal?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué te gustaría aportar al mundo con tu trabajo?</span>
+      <textarea class="free-textarea" id="mot-r3" placeholder="¿Qué impacto quieres tener en las personas o en el mundo?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Cómo imaginas tu vida ideal en 10 años?</span>
+      <textarea class="free-textarea" id="mot-r4" placeholder="Describe cómo sería un día normal en tu vida ideal..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('mundo')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('intereses')">Continuar → Mis Intereses</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 4: INTERESES ============ -->
+  <div id="page-intereses" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 4 · Mis Talentos — Intereses</div>
+      <h2>Cuestionario de Intereses 📊</h2>
+      <p>¿Qué tanto te gustaría realizar cada actividad? Sé honesto/a. No hay respuestas buenas ni malas.</p>
+    </div>
+    <div class="iq-scale-legend">
+      <div class="sl-item"><div class="sl-badge s4">4</div> Me gusta mucho</div>
+      <div class="sl-item"><div class="sl-badge s3">3</div> Me gusta algo</div>
+      <div class="sl-item"><div class="sl-badge s2">2</div> Indiferente</div>
+      <div class="sl-item"><div class="sl-badge s1">1</div> Me desagrada algo</div>
+      <div class="sl-item"><div class="sl-badge s0">0</div> Me desagrada mucho</div>
+    </div>
+    <div class="table-scroll">
+      <table class="q-table" id="intereses-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Actividad</th>
+            <th>S.S.<span class="cat-head">Servicio Social</span></th>
+            <th>E.P.<span class="cat-head">Ejecutivo Persuasivo</span></th>
+            <th>V.<span class="cat-head">Verbal</span></th>
+            <th>A.P.<span class="cat-head">Artístico-Plástico</span></th>
+            <th>M.S.<span class="cat-head">Musical</span></th>
+            <th>OG.<span class="cat-head">Organización</span></th>
+            <th>CT.<span class="cat-head">Científico</span></th>
+            <th>CL.<span class="cat-head">Cálculo</span></th>
+            <th>M.C.<span class="cat-head">Mecánico-Const.</span></th>
+            <th>AL.<span class="cat-head">Aire Libre / D.T.</span></th>
+          </tr>
+        </thead>
+        <tbody id="intereses-body"></tbody>
+        <tfoot>
+          <tr class="totals-row">
+            <td colspan="2" class="activity">SUMA TOTAL</td>
+            <td id="i-sum-0">0</td><td id="i-sum-1">0</td><td id="i-sum-2">0</td><td id="i-sum-3">0</td><td id="i-sum-4">0</td>
+            <td id="i-sum-5">0</td><td id="i-sum-6">0</td><td id="i-sum-7">0</td><td id="i-sum-8">0</td><td id="i-sum-9">0</td>
+          </tr>
+          <tr class="pct-row">
+            <td colspan="2" class="activity" style="color:var(--purple);">% (máx. 24)</td>
+            <td id="i-pct-0">0%</td><td id="i-pct-1">0%</td><td id="i-pct-2">0%</td><td id="i-pct-3">0%</td><td id="i-pct-4">0%</td>
+            <td id="i-pct-5">0%</td><td id="i-pct-6">0%</td><td id="i-pct-7">0%</td><td id="i-pct-8">0%</td><td id="i-pct-9">0%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="locked-notice">🔒 Los resultados detallados se mostrarán al finalizar toda la evaluación</div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('motivaciones')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('aptitudes')">Continuar → Aptitudes</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 5: APTITUDES ============ -->
+  <div id="page-aptitudes" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 5 · Mis Talentos — Aptitudes</div>
+      <h2>Cuestionario de Aptitudes 🧠</h2>
+      <p>¿Qué tan capaz te sientes para realizar cada actividad? Reflexiona con honestidad.</p>
+    </div>
+    <div class="iq-scale-legend">
+      <div class="sl-item"><div class="sl-badge s4">4</div> Muy competente</div>
+      <div class="sl-item"><div class="sl-badge s3">3</div> Competente</div>
+      <div class="sl-item"><div class="sl-badge s2">2</div> Medianamente</div>
+      <div class="sl-item"><div class="sl-badge s1">1</div> Muy poco</div>
+      <div class="sl-item"><div class="sl-badge s0">0</div> Incompetente</div>
+    </div>
+    <div class="table-scroll">
+      <table class="q-table" id="aptitudes-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Actividad</th>
+            <th>S.S.<span class="cat-head">Servicio Social</span></th>
+            <th>E.P.<span class="cat-head">Ejecutivo Persuasivo</span></th>
+            <th>V.<span class="cat-head">Verbal</span></th>
+            <th>A.P.<span class="cat-head">Artístico-Plástico</span></th>
+            <th>M.S.<span class="cat-head">Musical</span></th>
+            <th>OG.<span class="cat-head">Organización</span></th>
+            <th>CT.<span class="cat-head">Científico</span></th>
+            <th>CL.<span class="cat-head">Cálculo</span></th>
+            <th>M.C.<span class="cat-head">Mecánico-Const.</span></th>
+            <th>D.T.<span class="cat-head">Destreza Manual</span></th>
+          </tr>
+        </thead>
+        <tbody id="aptitudes-body"></tbody>
+        <tfoot>
+          <tr class="totals-row">
+            <td colspan="2" class="activity">SUMA TOTAL</td>
+            <td id="a-sum-0">0</td><td id="a-sum-1">0</td><td id="a-sum-2">0</td><td id="a-sum-3">0</td><td id="a-sum-4">0</td>
+            <td id="a-sum-5">0</td><td id="a-sum-6">0</td><td id="a-sum-7">0</td><td id="a-sum-8">0</td><td id="a-sum-9">0</td>
+          </tr>
+          <tr class="pct-row">
+            <td colspan="2" class="activity" style="color:var(--purple);">% (máx. 24)</td>
+            <td id="a-pct-0">0%</td><td id="a-pct-1">0%</td><td id="a-pct-2">0%</td><td id="a-pct-3">0%</td><td id="a-pct-4">0%</td>
+            <td id="a-pct-5">0%</td><td id="a-pct-6">0%</td><td id="a-pct-7">0%</td><td id="a-pct-8">0%</td><td id="a-pct-9">0%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="locked-notice">🔒 Los resultados detallados se mostrarán al finalizar toda la evaluación</div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('intereses')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('valores')">Continuar → Valores</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 6: VALORES ============ -->
+  <div id="page-valores" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 6 · Mis Talentos — Valores</div>
+      <h2>Mis Valores 💎</h2>
+      <p>Elige entre pares de valores cuál es más importante para ti en este momento. No hay respuestas correctas.</p>
+    </div>
+    <div class="valores-intro">
+      <p>🧩 <strong>¿Cómo funciona?</strong> Se presentan dos valores a la vez. Elige cuál es más importante para ti ahora. Al finalizar, descubrirás tus valores dominantes.</p>
+    </div>
+    <div class="valores-progress">
+      <span class="v-prog-label">Progreso:</span>
+      <div class="v-prog-bar-bg"><div class="v-prog-bar" id="v-prog-bar"></div></div>
+      <span class="v-prog-count" id="v-prog-count">0 / 0 pares</span>
+    </div>
+    <div id="pairs-container"></div>
+    <div class="locked-notice" style="margin-top:16px;">🔒 El ranking de valores se revelará al finalizar</div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('aptitudes')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('holland')">Continuar → Holland RIASEC</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 7: HOLLAND ============ -->
+  <div id="page-holland" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 7 · Mis Talentos — Perfil Holland</div>
+      <h2>Perfil de Personalidad Vocacional (RIASEC) 🌀</h2>
+      <p>Marca ✓ en las afirmaciones que te describen y ✗ en las que no. Sé completamente honesto/a.</p>
+    </div>
+    <div class="holland-grid" id="holland-grid"></div>
+    <div class="locked-notice" style="margin-top:20px;">🔒 Tu perfil Holland se revelará al finalizar la evaluación</div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('valores')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('futuro')">Continuar → Mi Futuro</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 8: MI FUTURO ============ -->
+  <div id="page-futuro" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 8 · Mi Futuro</div>
+      <h2>Diseña tu futuro ⭐</h2>
+      <p>Llegamos a la parte más emocionante. Cuéntanos tus sueños, tus planes, lo que imaginas para tu vida.</p>
+    </div>
+
+    <div class="section-card">
+      <h2>🚀 Mis Sueños</h2>
+      <span class="q-label">¿Qué te gustaría lograr en los próximos 5 años?</span>
+      <textarea class="free-textarea" id="f-s1" placeholder="Metas académicas, personales, profesionales..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué te gustaría lograr en los próximos 10 años?</span>
+      <textarea class="free-textarea" id="f-s2" placeholder="¿Dónde te imaginas en tu vida adulta?" rows="3" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">Si no existieran límites económicos ni barreras, ¿a qué te dedicarías?</span>
+      <textarea class="free-textarea" id="f-s3" placeholder="Déjate llevar. Sin ninguna restricción..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>🎓 Exploración Profesional</h2>
+      <span class="q-label">¿Qué carreras o profesiones te llaman la atención?</span>
+      <textarea class="free-textarea" id="f-c1" placeholder="Todas las que se te ocurran, sin filtros..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué carreras definitivamente NO elegirías?</span>
+      <textarea class="free-textarea" id="f-c2" placeholder="Las que no van contigo..." rows="2" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">¿Qué profesiones admiras? ¿Por qué las admiras?</span>
+      <textarea class="free-textarea" id="f-c3" placeholder="No necesariamente las que tú elegirías, sino las que te parecen valiosas..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="section-card">
+      <h2>🗺️ Proyecto de Vida</h2>
+      <p class="subtitle">Completa estas frases con lo primero que venga a tu mente.</p>
+      <span class="q-label">Me gustaría vivir en:</span>
+      <input type="text" class="free-input" id="f-pv1" placeholder="Ciudad, país, ambiente..." oninput="triggerSave()">
+      <span class="q-label">Me gustaría trabajar en:</span>
+      <input type="text" class="free-input" id="f-pv2" placeholder="Tipo de lugar, sector, ambiente..." oninput="triggerSave()">
+      <span class="q-label">Me gustaría aprender:</span>
+      <input type="text" class="free-input" id="f-pv3" placeholder="Habilidades, idiomas, artes, ciencias..." oninput="triggerSave()">
+      <span class="q-label">Me gustaría contribuir con:</span>
+      <input type="text" class="free-input" id="f-pv4" placeholder="Una causa, una comunidad, una misión..." oninput="triggerSave()">
+      <span class="q-label">Me gustaría ser recordado/a por:</span>
+      <input type="text" class="free-input" id="f-pv5" placeholder="Tu legado..." oninput="triggerSave()">
+    </div>
+
+    <div class="section-card">
+      <h2>✉️ Carta a mi Yo Futuro</h2>
+      <p class="subtitle">Escríbete una carta a ti mismo/a dentro de 10 años. ¿Qué esperas haber logrado? ¿Qué consejo te darías?</p>
+      <textarea class="free-textarea" id="f-carta" placeholder="Querido/a yo del futuro..." rows="7" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goPhase('holland')">← Atrás</button>
+      <button class="btn-next" onclick="advancePhase('finalizar')">Continuar → Finalizar</button>
+    </div>
+  </div>
+
+  <!-- ============ FASE 9: FINALIZAR ============ -->
+  <div id="page-finalizar" class="phase-page">
+    <div class="phase-banner">
+      <div class="phase-tag">Fase 9 · Finalizar</div>
+      <h2>¡Ya casi terminas! ✅</h2>
+      <p>Revisa que hayas completado todas las secciones y luego envía tu evaluación a tu orientadora.</p>
+    </div>
+
+    <div class="section-card">
+      <h2>📋 Estado de tu evaluación</h2>
+      <div id="check-historia" class="check-item">⏳ Mi Historia</div>
+      <div id="check-mundo" class="check-item">⏳ Mi Mundo</div>
+      <div id="check-motivaciones" class="check-item">⏳ Mis Motivaciones</div>
+      <div id="check-intereses" class="check-item">⏳ Cuestionario de Intereses</div>
+      <div id="check-aptitudes" class="check-item">⏳ Cuestionario de Aptitudes</div>
+      <div id="check-valores" class="check-item">⏳ Test de Valores</div>
+      <div id="check-holland" class="check-item">⏳ Perfil Holland RIASEC</div>
+      <div id="check-futuro" class="check-item">⏳ Mi Futuro</div>
+    </div>
+
+    <div class="section-card">
+      <h2>✏️ Reflexión Final</h2>
+      <span class="q-label">¿Por qué te interesan esas carreras? ¿Qué quieres lograr?</span>
+      <textarea class="free-textarea" id="conclusion-text" placeholder="Tu reflexión personal sobre este proceso de autoconocimiento..." rows="4" oninput="saveText(this);triggerSave()"></textarea>
+      <span class="q-label">Carreras que más me interesan:</span>
+      <textarea class="free-textarea" id="careers-text" placeholder="Lista las carreras que más te atraen..." rows="3" oninput="saveText(this);triggerSave()"></textarea>
+    </div>
+
+    <div class="nav-btns" style="margin-bottom:0;">
+      <button class="btn-prev" onclick="goPhase('futuro')">← Atrás</button>
+    </div>
+    <button id="btn-enviar" class="btn-enviar" onclick="enviarEvaluacion()">📤 Enviar mi Evaluación Completa</button>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ======================================================
+// DATA
+// ======================================================
+const CATS = ['S.S.','E.P.','V.','A.P.','M.S.','OG.','CT.','CL.','M.C.','AL.'];
+const CAT_NAMES = ['Servicio Social','Ejecutivo Persuasivo','Verbal','Artístico-Plástico','Musical','Organización','Científico','Cálculo','Mecánico-Constructivo','Aire Libre / Destreza'];
+
+const INTERESES_ITEMS = [
+  [0,'Atender y cuidar enfermos.'],[1,'Intervenir activamente en las discusiones de clase.'],[2,'Escribir cuentos, crónicas o artículos.'],[3,'Dibujar y pintar.'],[4,'Cantar en un coro estudiantil.'],[5,'Llevar en orden tus libros y cuadernos.'],[6,'Conocer y estudiar la estructura de las plantas y de los animales.'],[7,'Resolver cuestiones matemáticas.'],[8,'Armar o desarmar objetos mecánicos.'],[9,'Salir de excursión.'],
+  [0,'Proteger a los muchachos menores del grupo.'],[1,'Ser jefe de un grupo.'],[2,'Leer obras literarias.'],[3,'Moldear el barro, la plastilina o cualquier otro material.'],[4,'Escuchar música clásica.'],[5,'Ordenar y clasificar los libros de una biblioteca.'],[6,'Hacer experimentos en un laboratorio.'],[7,'Resolver problemas de aritmética.'],[8,'Manejar herramientas y maquinaria.'],[9,'Pertenecer a un club de exploradores.'],
+  [0,'Ser miembro de una sociedad de ayuda y asistencia.'],[1,'Dirigir la campaña política para un candidato estudiantil.'],[2,'Hacer versos para una publicación.'],[3,'Encargarte del decorado del lugar para un festival.'],[4,'Aprender a tocar un instrumento musical.'],[5,'Capturar, vaciar información.'],[6,'Investigar el origen de las costumbres de los pueblos.'],[7,'Llevar las cuentas de una institución.'],[8,'Construir objetos o muebles.'],[9,'Trabajar al aire libre, fuera de la ciudad.'],
+  [0,'Enseñar a leer a los analfabetos.'],[1,'Hacer propaganda para la difusión de una idea.'],[2,'Representar un papel en una obra de teatro.'],[3,'Idear y diseñar el escudo de un club o sociedad.'],[4,'Ser miembro de una asociación musical.'],[5,'Ayudar a calificar pruebas.'],[6,'Estudiar y entender las causas de los movimientos sociales.'],[7,'Explicar a otros cómo resolver problemas de matemáticas.'],[8,'Reparar las instalaciones eléctricas, de gas o de plomería en tu casa.'],[9,'Sembrar y plantar en una granja durante las vacaciones.'],
+  [0,'Ayudar a tus compañeros en sus dificultades y preocupaciones.'],[1,'Leer biografías de políticos eminentes.'],[2,'Participar en un concurso de oratoria.'],[3,'Diseñar el vestuario para una función teatral.'],[4,'Leer biografías de músicos eminentes.'],[5,'Encargarte del archivo y los documentos de una sociedad.'],[6,'Leer revistas y libros científicos.'],[7,'Participar en concursos de matemáticas.'],[8,'Proyectar y dirigir alguna construcción.'],[9,'Atender animales en un rancho durante las vacaciones.'],
+  [0,'Ser funcionario al servicio de las clases humildes.'],[1,'Ser experto en relaciones sociales de una gran empresa.'],[2,'Ser escritor en un periódico o empresa editorial.'],[3,'Ser dibujante profesional en una empresa.'],[4,'Ser concertista en una sinfónica.'],[5,'Ser técnico organizador de oficinas.'],[6,'Ser investigador en un laboratorio.'],[7,'Ser experto calculista en una institución.'],[8,'Ser perito mecánico en un taller.'],[9,'Ser técnico cuyas actividades se desempeñan fuera de la ciudad.']
+];
+
+const APTITUDES_ITEMS = [
+  [0,'Tratar y hablar con sensibilidad a las personas.'],[1,'Ser jefe competente de un grupo, equipo o sociedad.'],[2,'Expresarte con facilidad en clase o al platicar con tus amigos.'],[3,'Dibujar casas, objetos, figuras humanas, etc.'],[4,'Cantar en un grupo.'],[5,'Llevar en forma correcta y ordenada los apuntes de clase.'],[6,'Entender principios y experimentos de Biología.'],[7,'Ejecutar con rapidez y exactitud operaciones aritméticas.'],[8,'Armar y componer objetos mecánicos como chapas, timbres, etc.'],[9,'Actividades que requieren destreza manual.'],
+  [0,'Ser miembro activo y útil en un club o sociedad.'],[1,'Organizar y dirigir festivales, encuentros deportivos, excursiones o campañas sociales.'],[2,'Redactar composiciones o artículos periodísticos.'],[3,'Pintar paisajes.'],[4,'Tocar un instrumento musical.'],[5,'Ordenar y clasificar debidamente documentos en una oficina.'],[6,'Entender principios y experimentos de física.'],[7,'Resolver problemas de aritmética.'],[8,'Desarmar, armar y componer objetos complicados.'],[9,'Manejar con habilidad herramientas de carpintería.'],
+  [0,'Colaborar con otros para el bien de la comunidad.'],[1,'Convencer a otros para que hagan lo que crees que deben hacer.'],[2,'Decorar algún mueble.'],[3,'Decorar artísticamente un salón, corredor, escenario o patio para un festival.'],[4,'Distinguir cuando alguien desentona en las canciones o piezas musicales.'],[5,'Entender principios y experimentos de química.'],[6,'Contestar y redactar correctamente oficios y cartas.'],[7,'Resolver rompecabezas numéricos.'],[8,'Resolver rompecabezas de alambre o de madera.'],[9,'Manejar con facilidad herramientas mecánicas como pinzas, llaves, desarmador, etc.'],
+  [0,'Saber escuchar a otros con paciencia y comprender su punto de vista.'],[1,'Dar órdenes a otros con paciencia y comprender su punto de vista.'],[2,'Escribir cuentos, narraciones o historietas.'],[3,'Modelar con barro, plastilina o grabar madera.'],[4,'Entonar correctamente las canciones de moda.'],[5,'Anotar y manejar con exactitud y rapidez nombres, números y otros datos.'],[6,'Entender principios y hechos económicos y sociales.'],[7,'Resolver problemas de álgebra.'],[8,'Armar y componer muebles.'],[9,'Manejar con habilidad pequeñas piezas y herramientas (agujas, joyas, piezas de relojería, etc.).'],
+  [0,'Conversar en las reuniones y fiestas con acierto y naturalidad.'],[1,'Dirigir un grupo o equipo en situaciones difíciles o peligrosas.'],[2,'Distinguir y apreciar la buena literatura.'],[3,'Distinguir y apreciar la buena pintura.'],[4,'Distinguir y apreciar la buena música.'],[5,'Encargarse de recibir, anotar y dar recados sin olvidar detalles importantes.'],[6,'Entender las causas que determinan los acontecimientos históricos.'],[7,'Resolver problemas de geometría.'],[8,'Aprender el funcionamiento de mecanismos complicados como motores, relojes, bombas, etc.'],[9,'Hacer con facilidad trazos geométricos con escuadras, regla T y compás.'],
+  [0,'Actuar con desinterés y condolencia.'],[1,'Corregir a los demás sin ofenderlos.'],[2,'Exponer juicios públicamente sin preocupación por la crítica.'],[3,'Colaborar en la elaboración de un libro sobre el arte en la arquitectura.'],[4,'Dirigir un conjunto musical.'],[5,'Colaborar en el desarrollo de métodos más eficientes de trabajo.'],[6,'Realizar investigaciones científicas con finalidad de buscar la verdad.'],[7,'Enseñar a resolver problemas de Matemáticas.'],[8,'Inducir a las personas a obtener resultados prácticos.'],[9,'Participar en un concurso de modelismo de coches, aviones, barcos, etc.']
+];
+
+const VALORES_LIST = ['Ser rico(a)','Tener amistades duraderas','Tener vida sexual','Tener un buen nombre','Ser recordado(a) favorablemente después de mi muerte','Tener un amor romántico','Ser un(a) gran líder','Tener salud','Ser héroe / heroína','Ser muy útil a los demás','Ser famoso(a)','Ser físicamente atractivo(a)','Ser un(a) genio intelectual','Encontrar aventuras y nuevas experiencias','Ser feliz','Entender el misterio de la vida','Cumplir metas religiosas','Tener paz mental','Lograr aceptación social y pertenencia','Lograr identidad personal'];
+
+const HOLLAND_DATA = {
+  R:{name:'Realista',color:'#22c55e',desc:'Área agropecuaria, ingenierías, mecánica, construcción, tecnología.',items:['Me gustaría trabajar al aire libre o con herramientas y máquinas.','Disfruto reparar aparatos eléctricos o mecánicos.','Prefiero las tareas concretas y prácticas a las abstractas.','Me gusta construir, armar o desensamblar cosas.','Disfruto actividades físicas como carpintería, plomería o mecánica.','Me interesa trabajar con plantas, animales o en el campo.','Prefiero trabajar con objetos más que con ideas o personas.','Disfruto las actividades deportivas o de aventura al aire libre.']},
+  I:{name:'Investigador',color:'#3b82f6',desc:'Ciencias, investigación, medicina, psicología, computación.',items:['Me gusta investigar cómo y por qué funcionan las cosas.','Disfruto resolver problemas matemáticos o científicos complejos.','Leo revistas o libros de ciencia, tecnología o naturaleza.','Me gusta analizar datos y sacar conclusiones lógicas.','Prefiero trabajar solo/a concentrándome en problemas intelectuales.','Me fascina hacer experimentos o formular hipótesis.','Disfruto estudiar biología, química, física u otras ciencias.','Me interesan los temas de tecnología, astronomía o medicina.']},
+  A:{name:'Artístico',color:'#a855f7',desc:'Arte, diseño, música, teatro, literatura, arquitectura.',items:['Disfruto pintar, dibujar, esculpir o hacer diseño gráfico.','Me gusta escribir poesía, cuentos o ensayos creativos.','Toco o me gustaría tocar un instrumento musical.','Tengo facilidad para apreciar y crear cosas bellas o expresivas.','Prefiero ambientes de trabajo creativos y flexibles.','Me gusta actuar, bailar o participar en actividades teatrales.','Disfruto diseñar ropa, decorar espacios o hacer fotografía.','La originalidad y la imaginación son mis principales fortalezas.']},
+  S:{name:'Social',color:'#f59e0b',desc:'Educación, salud, trabajo social, orientación, enfermería.',items:['Disfruto ayudar a personas con problemas personales o emocionales.','Me gusta enseñar, instruir o entrenar a otros.','Prefiero trabajar en equipo o en contacto constante con personas.','Soy empático/a y me importa el bienestar de quienes me rodean.','Disfruto el trabajo voluntario o comunitario.','Me interesa la psicología, la educación o el trabajo social.','Me gusta orientar o aconsejar a amigos o compañeros.','Valoro la justicia social y el desarrollo humano.']},
+  E:{name:'Emprendedor',color:'#ef4444',desc:'Administración, derecho, ciencias políticas, ventas, liderazgo.',items:['Me gusta dirigir proyectos o liderar equipos.','Disfruto convencer, persuadir o negociar con otros.','Tengo iniciativa para emprender nuevos proyectos o negocios.','Me gustan los retos competitivos y asumir riesgos calculados.','Disfruto hablar en público o hacer presentaciones.','Me interesa la administración, el derecho o las ventas.','Me motiva alcanzar metas ambiciosas y obtener reconocimiento.','Me gusta organizar y motivar a personas hacia un objetivo.']},
+  O:{name:'Organizador',color:'#06b6d4',desc:'Contabilidad, archivística, programación, finanzas, secretariado.',items:['Disfruto organizar, clasificar y archivar información.','Me gusta trabajar con números, hojas de cálculo o bases de datos.','Prefiero tareas con instrucciones claras y resultados precisos.','Soy ordenado/a, puntual y metódico/a en mis actividades.','Me interesa la contabilidad, administración de oficinas o finanzas.','Prefiero ambientes de trabajo estructurados y predecibles.','Disfruto seguir procedimientos y mantener registros exactos.','Me gusta revisar documentos en busca de errores o inconsistencias.']}
+};
+
+const MOTIVACIONES_LIST = [
+  {id:'ayudar',label:'Ayudar a personas',icon:'🤝'},{id:'resolver',label:'Resolver problemas',icon:'🔧'},
+  {id:'crear',label:'Crear cosas nuevas',icon:'🎨'},{id:'investigar',label:'Investigar',icon:'🔬'},
+  {id:'liderar',label:'Liderar',icon:'👑'},{id:'ensenar',label:'Enseñar',icon:'📚'},
+  {id:'innovar',label:'Innovar',icon:'💡'},{id:'emprender',label:'Emprender',icon:'🚀'},
+  {id:'aprender',label:'Aprender constantemente',icon:'🎓'},{id:'reconocimiento',label:'Obtener reconocimiento',icon:'🏆'},
+  {id:'estabilidad',label:'Tener estabilidad',icon:'🏡'},{id:'dinero',label:'Generar buenos ingresos',icon:'💰'},
+  {id:'impacto',label:'Impactar positivamente',icon:'🌟'},{id:'viajar',label:'Viajar y explorar',icon:'✈️'},
+  {id:'equipo',label:'Trabajar en equipo',icon:'👥'},{id:'independencia',label:'Independencia',icon:'🦅'},
+  {id:'seguridad',label:'Seguridad',icon:'🛡️'},{id:'libertad',label:'Libertad creativa',icon:'🌈'},
+  {id:'crecimiento',label:'Crecimiento personal',icon:'🌱'},{id:'arte',label:'Expresión artística',icon:'🎭'}
+];
+
+const FAMILIA_ITEMS = [
+  {id:'fam1',label:'Mi familia me apoya en mis decisiones'},
+  {id:'fam2',label:'Mi familia escucha mis opiniones'},
+  {id:'fam3',label:'Puedo hablar de mis preocupaciones en casa'},
+  {id:'fam4',label:'Mi familia confía en mí y en mis capacidades'},
+  {id:'fam5',label:'Me siento libre para expresar mis ideas en casa'}
+];
+const ESCUELA_ITEMS = [
+  {id:'esc1',label:'Me siento motivado/a para estudiar'},
+  {id:'esc2',label:'Disfruto aprender cosas nuevas'},
+  {id:'esc3',label:'Me siento capaz académicamente'},
+  {id:'esc4',label:'Participo activamente en clase'},
+  {id:'esc5',label:'Estoy satisfecho/a con mi desempeño escolar'}
+];
+const INFLUENCIAS_ITEMS = [
+  {id:'inf1',label:'Padres / Representantes'},
+  {id:'inf2',label:'Hermanos(as)'},
+  {id:'inf3',label:'Amigos(as)'},
+  {id:'inf4',label:'Profesores(as)'},
+  {id:'inf5',label:'Redes sociales / Influencers'},
+  {id:'inf6',label:'Situación económica familiar'}
+];
+
+// ======================================================
+// STATE
+// ======================================================
+let state = {
+  intereses: Array(60).fill(''),
+  aptitudes: Array(60).fill(''),
+  valores: Array(20).fill(0),
+  holland: {},
+  motivaciones: [],
+  textFields: {},
+  scales: {}
+};
+Object.keys(HOLLAND_DATA).forEach(k => { state.holland[k] = Array(8).fill(0); });
+
+let unlockedPhases = new Set(['historia']);
+
+// ======================================================
+// NAVIGATION
+// ======================================================
+function goPhase(name) {
+  if (!unlockedPhases.has(name)) return;
+  document.querySelectorAll('.phase-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.phase-step').forEach(s => { s.classList.remove('active'); });
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+  const step = document.getElementById('step-' + name);
+  if (step) step.classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'finalizar') actualizarChecks();
+}
+
+function advancePhase(next) {
+  unlockedPhases.add(next);
+  const stepEl = document.getElementById('step-' + next);
+  if (stepEl) { stepEl.classList.remove('locked'); }
+  // mark previous as done
+  const allPhases = ['historia','mundo','motivaciones','intereses','aptitudes','valores','holland','futuro','finalizar'];
+  const idx = allPhases.indexOf(next);
+  if (idx > 0) {
+    const prev = allPhases[idx - 1];
+    const prevStep = document.getElementById('step-' + prev);
+    if (prevStep && !prevStep.classList.contains('active')) prevStep.classList.add('done');
+  }
+  goPhase(next);
+  triggerSave();
+}
+
+// ======================================================
+// SCALE GROUPS
+// ======================================================
+function buildScaleGroup(containerId, items) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'scale-row';
+    let radios = '';
+    for (let i = 1; i <= 5; i++) {
+      radios += `<input type="radio" name="${item.id}" id="${item.id}-${i}" value="${i}"><label for="${item.id}-${i}">${i}</label>`;
+    }
+    row.innerHTML = `<label class="row-label">${item.label}</label><div class="scale-radios">${radios}</div>`;
+    container.appendChild(row);
+    row.querySelectorAll('input[type="radio"]').forEach(r => {
+      r.addEventListener('change', () => { state.scales[item.id] = parseInt(r.value); triggerSave(); });
+    });
+  });
+}
+
+// ======================================================
+// MOTIVACIONES
+// ======================================================
+function buildMotivaciones() {
+  const grid = document.getElementById('motivaciones-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  MOTIVACIONES_LIST.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'motiv-item';
+    div.id = 'motiv-' + m.id;
+    div.innerHTML = `<div class="motiv-check" id="motiv-chk-${m.id}"></div><span>${m.icon} ${m.label}</span>`;
+    div.addEventListener('click', () => toggleMotivacion(m.id));
+    grid.appendChild(div);
+  });
+}
+
+function toggleMotivacion(id) {
+  const el = document.getElementById('motiv-' + id);
+  const chk = document.getElementById('motiv-chk-' + id);
+  const idx = state.motivaciones.indexOf(id);
+  if (idx === -1) {
+    if (state.motivaciones.length >= 5) {
+      const cnt = document.getElementById('motiv-count');
+      if (cnt) { cnt.style.color = 'var(--coral)'; setTimeout(() => cnt.style.color = 'var(--gray)', 1500); }
+      return;
+    }
+    state.motivaciones.push(id);
+    if (el) el.classList.add('selected');
+    if (chk) chk.textContent = '✓';
+  } else {
+    state.motivaciones.splice(idx, 1);
+    if (el) el.classList.remove('selected');
+    if (chk) chk.textContent = '';
+  }
+  const cnt = document.getElementById('motiv-count');
+  if (cnt) {
+    cnt.textContent = state.motivaciones.length + ' / 5 seleccionadas';
+    cnt.style.color = state.motivaciones.length === 5 ? 'var(--green)' : 'var(--gray)';
+  }
+  triggerSave();
+}
+
+// ======================================================
+// QUESTIONNAIRE TABLES
+// ======================================================
+function buildTable(tbodyId, items, prefix, type) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  let rowNum = 1;
+  items.forEach((item, idx) => {
+    const cat = item[0]; const text = item[1];
+    const tr = document.createElement('tr');
+    let cells = `<td>${rowNum}</td><td class="activity">${text}</td>`;
+    for (let c = 0; c < 10; c++) {
+      if (c === cat) {
+        cells += `<td class="score-cell"><input type="number" min="0" max="4" class="score-input" id="${prefix}-${idx}-${c}" placeholder="—" oninput="onScore('${type}',${idx},${c},this)"></td>`;
+      } else {
+        cells += `<td class="score-cell"><input type="number" class="score-input disabled" disabled placeholder="—"></td>`;
+      }
+    }
+    tr.innerHTML = cells; tbody.appendChild(tr); rowNum++;
+  });
+}
+
+function onScore(type, idx, cat, el) {
+  let val = parseInt(el.value);
+  if (isNaN(val)) val = '';
+  if (val !== '' && (val < 0 || val > 4)) { el.value = ''; val = ''; }
+  el.classList.toggle('has-val', val !== '');
+  state[type][idx] = val === '' ? '' : val;
+  calcTotals(type);
+  triggerSave();
+}
+
+function calcTotals(type) {
+  const items = type === 'intereses' ? INTERESES_ITEMS : APTITUDES_ITEMS;
+  const prefix = type === 'intereses' ? 'i' : 'a';
+  let sums = Array(10).fill(0);
+  items.forEach((item, idx) => {
+    const v = state[type][idx];
+    if (v !== '' && !isNaN(v)) sums[item[0]] += Number(v);
+  });
+  for (let c = 0; c < 10; c++) {
+    const s = document.getElementById(prefix + '-sum-' + c);
+    const p = document.getElementById(prefix + '-pct-' + c);
+    if (s) s.textContent = sums[c];
+    if (p) p.textContent = Math.round(sums[c]/24*100) + '%';
+  }
+}
+
+function getSums(type) {
+  const items = type === 'intereses' ? INTERESES_ITEMS : APTITUDES_ITEMS;
+  let sums = Array(10).fill(0);
+  items.forEach((item, idx) => {
+    const v = state[type][idx];
+    if (v !== '' && !isNaN(v)) sums[item[0]] += Number(v);
+  });
+  return sums;
+}
+
+// ======================================================
+// VALORES
+// ======================================================
+function buildValores() {
+  const pairs = [];
+  for (let i = 0; i < VALORES_LIST.length; i++)
+    for (let j = i+1; j < VALORES_LIST.length; j++) pairs.push({a:i, b:j});
+  for (let i = pairs.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [pairs[i],pairs[j]] = [pairs[j],pairs[i]];
+  }
+  window._valoresPairs = pairs;
+  window._valoresAnswers = {};
+  const progCount = document.getElementById('v-prog-count');
+  if (progCount) progCount.textContent = '0 / ' + pairs.length + ' pares';
+  renderPairCards(pairs, {});
+}
+
+function renderPairCards(pairs, answers) {
+  const container = document.getElementById('pairs-container');
+  if (!container) return;
+  container.innerHTML = '';
+  pairs.forEach(({a,b}, idx) => {
+    const card = document.createElement('div');
+    card.className = 'pair-card'; card.id = 'pair-card-' + idx;
+    const chosen = answers[idx];
+    const aClass = chosen !== undefined ? (chosen===a ? 'pair-btn selected':'pair-btn other') : 'pair-btn';
+    const bClass = chosen !== undefined ? (chosen===b ? 'pair-btn selected':'pair-btn other') : 'pair-btn';
+    if (chosen !== undefined) card.classList.add('answered');
+    card.innerHTML = `<div class="pair-num">PAR ${idx+1} de ${pairs.length}</div>
+      <div class="pair-options">
+        <button class="${aClass}" id="pb-${idx}-${a}" onclick="choosePair(${idx},${a},${b})">${VALORES_LIST[a]}</button>
+        <div class="pair-vs">VS</div>
+        <button class="${bClass}" id="pb-${idx}-${b}" onclick="choosePair(${idx},${b},${a})">${VALORES_LIST[b]}</button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function choosePair(pairIdx, chosen, other) {
+  const {a,b} = window._valoresPairs[pairIdx];
+  window._valoresAnswers[pairIdx] = chosen;
+  const btnA = document.getElementById('pb-'+pairIdx+'-'+a);
+  const btnB = document.getElementById('pb-'+pairIdx+'-'+b);
+  if (btnA) btnA.className = 'pair-btn'+(chosen===a?' selected':' other');
+  if (btnB) btnB.className = 'pair-btn'+(chosen===b?' selected':' other');
+  const card = document.getElementById('pair-card-'+pairIdx);
+  if (card) card.classList.add('answered');
+  const scores = Array(20).fill(0);
+  Object.values(window._valoresAnswers).forEach(c => { scores[c]++; });
+  state.valores = scores;
+  const answered = Object.keys(window._valoresAnswers).length;
+  const total = window._valoresPairs.length;
+  const bar = document.getElementById('v-prog-bar');
+  const count = document.getElementById('v-prog-count');
+  if (bar) bar.style.width = Math.round(answered/total*100)+'%';
+  if (count) count.textContent = answered+' / '+total+' pares';
+  triggerSave();
+}
+
+// ======================================================
+// HOLLAND
+// ======================================================
+function buildHolland() {
+  const grid = document.getElementById('holland-grid');
+  if (!grid) return;
+  Object.entries(HOLLAND_DATA).forEach(([key, data]) => {
+    const card = document.createElement('div');
+    card.className = 'holland-card'; card.id = 'hcard-' + key;
+    let itemsHtml = '';
+    data.items.forEach((item, idx) => {
+      itemsHtml += `<div class="h-item" id="hitem-${key}-${idx}">
+        <label class="h-label">${item}</label>
+        <div class="h-check">
+          <input type="radio" name="h-${key}-${idx}" id="h-${key}-${idx}-1" value="1" onchange="onHolland('${key}',${idx},1)">
+          <label for="h-${key}-${idx}-1" title="Sí me describe" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">✓</label>
+          <input type="radio" name="h-${key}-${idx}" id="h-${key}-${idx}-0" value="0" onchange="onHolland('${key}',${idx},0)">
+          <label for="h-${key}-${idx}-0" title="No me describe" style="background:#ffebee;color:#c62828;border-color:#ef9a9a;">✗</label>
+        </div>
+      </div>`;
+    });
+    card.innerHTML = `<h3 style="color:${data.color};font-size:0.86rem;font-weight:900;margin-bottom:5px;">[${key}] ${data.name}</h3>
+      <p style="font-size:0.74rem;color:var(--gray);line-height:1.5;margin-bottom:11px;">${data.desc}</p>
+      <div>${itemsHtml}</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:9px;">
+        <div style="flex:1;background:#eef2ff;border-radius:100px;height:7px;overflow:hidden;">
+          <div id="hbar-${key}" style="height:100%;border-radius:100px;background:${data.color};width:0%;transition:width 0.4s;"></div>
+        </div>
+        <span style="font-size:0.76rem;font-weight:900;color:${data.color};min-width:36px;text-align:right;"><span id="h-score-${key}">0</span>/8</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function onHolland(key, idx, val) {
+  state.holland[key][idx] = val;
+  const score = state.holland[key].reduce((a,b)=>a+b,0);
+  const scoreEl = document.getElementById('h-score-'+key);
+  if (scoreEl) scoreEl.textContent = score;
+  const bar = document.getElementById('hbar-'+key);
+  if (bar) bar.style.width = (score/8*100)+'%';
+  const itemEl = document.getElementById('hitem-'+key+'-'+idx);
+  if (itemEl) {
+    const color = HOLLAND_DATA[key].color;
+    if (val === 1) {
+      itemEl.style.background = hexToRgba(color, 0.10);
+      itemEl.style.borderLeft = '3px solid '+color;
+      itemEl.style.borderRadius = '7px';
+      itemEl.style.paddingLeft = '8px';
+    } else {
+      itemEl.style.cssText = '';
+    }
+  }
+  const card = document.getElementById('hcard-'+key);
+  if (card && score > 0) {
+    const intensity = score/8;
+    card.style.background = hexToRgba(HOLLAND_DATA[key].color, 0.05+intensity*0.10);
+    card.style.borderColor = hexToRgba(HOLLAND_DATA[key].color, 0.3+intensity*0.5);
+  } else if (card && score === 0) {
+    card.style.background = '';
+    card.style.borderColor = '';
+  }
+  triggerSave();
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return 'rgba('+r+','+g+','+b+','+alpha+')';
+}
+
+// ======================================================
+// TEXT SAVE
+// ======================================================
+function saveText(el) {
+  if (el.id) state.textFields[el.id] = el.value;
+}
+
+// ======================================================
+// COMPLETION CHECKS
+// ======================================================
+function actualizarChecks() {
+  const textCount = Object.values(state.textFields).filter(v => v && v.trim().length > 5).length;
+  const scaleCount = Object.values(state.scales).filter(v => v).length;
+  const iDone = state.intereses.filter(v=>v!=='').length >= 30;
+  const aDone = state.aptitudes.filter(v=>v!=='').length >= 30;
+  const hDone = Object.values(state.holland).reduce((a,b)=>a+b.filter(v=>v!==0).length,0) >= 20;
+  const vDone = state.valores.some(v=>v>0);
+  const fDone = ['f-s1','f-s2','f-carta'].some(id => state.textFields[id] && state.textFields[id].length > 5);
+
+  const set = (id, done, label) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = done
+      ? `<span style="color:#22c55e;font-size:1rem;">✅</span> <span style="color:#166534;">${label} — Completado</span>`
+      : `<span style="color:#f59e0b;font-size:1rem;">⏳</span> <span style="color:#92400e;">${label} — Pendiente</span>`;
+    el.style.borderColor = done ? '#bbf7d0' : '#e8eaf6';
+  };
+  set('check-historia', textCount >= 3, 'Mi Historia');
+  set('check-mundo', scaleCount >= 5, 'Mi Mundo');
+  set('check-motivaciones', state.motivaciones.length >= 1, 'Motivaciones');
+  set('check-intereses', iDone, 'Intereses');
+  set('check-aptitudes', aDone, 'Aptitudes');
+  set('check-valores', vDone, 'Valores');
+  set('check-holland', hDone, 'Holland RIASEC');
+  set('check-futuro', fDone, 'Mi Futuro');
+}
+
+// ======================================================
+// INIT
+// ======================================================
+function init() {
+  buildTable('intereses-body', INTERESES_ITEMS, 'i', 'intereses');
+  buildTable('aptitudes-body', APTITUDES_ITEMS, 'a', 'aptitudes');
+  buildValores();
+  buildHolland();
+  buildScaleGroup('familia-scales', FAMILIA_ITEMS);
+  buildScaleGroup('escuela-scales', ESCUELA_ITEMS);
+  buildScaleGroup('influencias-scales', INFLUENCIAS_ITEMS);
+  buildMotivaciones();
+  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+}
+init();
+
+// Placeholder — overridden by Firebase module
+window.triggerSave = function() {};
+</script>
+
+<!-- ============ FIREBASE MODULE ============ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBASZAS-aEDtdq9Kgo9Pw-XkdGvHLw6zic",
+  authDomain: "soyfuturo-c2c95.firebaseapp.com",
+  projectId: "soyfuturo-c2c95",
+  storageBucket: "soyfuturo-c2c95.firebasestorage.app",
+  messagingSenderId: "925550832603",
+  appId: "1:925550832603:web:2e3f6e4ef49e2f13ac15fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentDocId = null;
+let currentToken = null;
+let autoSaveTimer = null;
+let _savedBorrador = null;
+
+// ── Save indicator ──────────────────────────────────────
+const saveIndicator = document.createElement('div');
+saveIndicator.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:9997;background:rgba(26,31,94,0.93);color:white;padding:8px 14px;border-radius:100px;font-family:Nunito,sans-serif;font-size:0.75rem;font-weight:700;display:none;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,0.3);transition:opacity 0.4s;';
+document.body.appendChild(saveIndicator);
+
+function showSave(msg, color='#00c4b4') {
+  saveIndicator.style.display = 'flex';
+  saveIndicator.style.opacity = '1';
+  saveIndicator.innerHTML = '<span style="color:'+color+'">'+msg+'</span>';
+}
+function hideSave() {
+  saveIndicator.style.opacity = '0';
+  setTimeout(() => { saveIndicator.style.display = 'none'; }, 400);
+}
+
+// ── Collect all text fields ─────────────────────────────
+function collectTextFields() {
+  const tf = {};
+  document.querySelectorAll('.free-textarea, .free-input').forEach(el => {
+    if (el.id && el.value.trim()) tf[el.id] = el.value;
+  });
+  return tf;
+}
+
+function collectScales() {
+  const sc = {};
+  document.querySelectorAll('.scale-radios input[type="radio"]:checked').forEach(r => {
+    sc[r.name] = parseInt(r.value);
+  });
+  return sc;
+}
+
+function buildBorrador() {
+  return {
+    intereses: state.intereses,
+    aptitudes: state.aptitudes,
+    valores: state.valores,
+    holland: state.holland,
+    valoresPairs: window._valoresPairs || [],
+    valoresAnswers: window._valoresAnswers || {},
+    motivaciones: state.motivaciones,
+    textFields: collectTextFields(),
+    scales: collectScales(),
+    nombre: document.getElementById('nombre').value,
+    grupo: document.getElementById('grupo').value,
+    orientador: document.getElementById('orientador').value,
+    conclusion: document.getElementById('conclusion-text')?.value || '',
+    carrerasInteres: document.getElementById('careers-text')?.value || '',
+    unlockedPhases: Array.from(unlockedPhases),
+    savedAt: new Date().toISOString()
+  };
+}
+
+// ── Autosave ─────────────────────────────────────────────
+window.triggerSave = function() {
+  if (!currentDocId) return;
+  clearTimeout(autoSaveTimer);
+  showSave('⏳ Guardando...');
+  autoSaveTimer = setTimeout(async () => {
+    try {
+      await updateDoc(doc(db, 'evaluaciones', currentDocId), {
+        borrador: buildBorrador(),
+        ultimaActividad: serverTimestamp()
+      });
+      showSave('✅ Guardado');
+      setTimeout(hideSave, 2000);
+    } catch(e) {
+      showSave('⚠️ Error al guardar', '#ff5e6c');
+      setTimeout(hideSave, 3000);
+    }
+  }, 1500);
+};
+
+// Periodic backup every 30s
+setInterval(() => { if (currentDocId) window.triggerSave(); }, 30000);
+
+// ── Restore progress ──────────────────────────────────────
+function restoreProgress(b) {
+  if (!b) return;
+
+  if (b.intereses) state.intereses = b.intereses;
+  if (b.aptitudes) state.aptitudes = b.aptitudes;
+  if (b.valores) state.valores = b.valores;
+  if (b.holland) state.holland = b.holland;
+  if (b.motivaciones) state.motivaciones = b.motivaciones;
+
+  // Info bar
+  if (b.nombre) document.getElementById('nombre').value = b.nombre;
+  if (b.grupo) document.getElementById('grupo').value = b.grupo;
+  if (b.orientador) document.getElementById('orientador').value = b.orientador;
+  if (b.conclusion) { const el = document.getElementById('conclusion-text'); if(el) el.value = b.conclusion; }
+  if (b.carrerasInteres) { const el = document.getElementById('careers-text'); if(el) el.value = b.carrerasInteres; }
+
+  // Text fields
+  if (b.textFields) {
+    Object.entries(b.textFields).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) { el.value = val; if (val) el.classList.add('has-val'); state.textFields[id] = val; }
+    });
+  }
+
+  // Scales
+  if (b.scales) {
+    Object.entries(b.scales).forEach(([name, val]) => {
+      const r = document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+      if (r) r.checked = true;
+      state.scales[name] = val;
+    });
+  }
+
+  // Motivaciones
+  if (b.motivaciones && b.motivaciones.length > 0) {
+    b.motivaciones.forEach(id => {
+      const el = document.getElementById('motiv-'+id);
+      const chk = document.getElementById('motiv-chk-'+id);
+      if (el) el.classList.add('selected');
+      if (chk) chk.textContent = '✓';
+    });
+    const cnt = document.getElementById('motiv-count');
+    if (cnt) cnt.textContent = b.motivaciones.length + ' / 5 seleccionadas';
+  }
+
+  // Intereses
+  if (b.intereses) {
+    b.intereses.forEach((val, idx) => {
+      if (val === '' || val === null || val === undefined) return;
+      const el = document.getElementById('i-'+idx+'-'+INTERESES_ITEMS[idx][0]);
+      if (el) { el.value = val; el.classList.add('has-val'); }
+    });
+    calcTotals('intereses');
+  }
+
+  // Aptitudes
+  if (b.aptitudes) {
+    b.aptitudes.forEach((val, idx) => {
+      if (val === '' || val === null || val === undefined) return;
+      const el = document.getElementById('a-'+idx+'-'+APTITUDES_ITEMS[idx][0]);
+      if (el) { el.value = val; el.classList.add('has-val'); }
+    });
+    calcTotals('aptitudes');
+  }
+
+  // Holland
+  if (b.holland) {
+    Object.entries(b.holland).forEach(([key, arr]) => {
+      arr.forEach((val, idx) => {
+        if (!val) return;
+        const r = document.querySelector('input[name="h-'+key+'-'+idx+'"][value="1"]');
+        if (r) { r.checked = true; onHolland(key, idx, 1); }
+      });
+    });
+  }
+
+  // Valores pairs
+  if (b.valoresPairs && b.valoresPairs.length > 0) {
+    window._valoresPairs = b.valoresPairs;
+    window._valoresAnswers = b.valoresAnswers || {};
+    renderPairCards(b.valoresPairs, window._valoresAnswers);
+    const answered = Object.keys(window._valoresAnswers).length;
+    const total = b.valoresPairs.length;
+    const bar = document.getElementById('v-prog-bar');
+    const cnt = document.getElementById('v-prog-count');
+    if (bar) bar.style.width = Math.round(answered/total*100)+'%';
+    if (cnt) cnt.textContent = answered+' / '+total+' pares';
+    const scores = Array(20).fill(0);
+    Object.values(window._valoresAnswers).forEach(c => { scores[c]++; });
+    state.valores = scores;
+  }
+
+  // Unlocked phases
+  if (b.unlockedPhases) {
+    b.unlockedPhases.forEach(ph => {
+      unlockedPhases.add(ph);
+      const el = document.getElementById('step-'+ph);
+      if (el) el.classList.remove('locked');
+    });
+    // Navigate to last unlocked phase
+    const allPhases = ['historia','mundo','motivaciones','intereses','aptitudes','valores','holland','futuro','finalizar'];
+    const last = b.unlockedPhases[b.unlockedPhases.length - 1];
+    if (last) goPhase(last);
+  }
+
+  showSave('📂 Progreso restaurado', '#ffd93d');
+  setTimeout(hideSave, 3000);
+}
+
+// ── Login ─────────────────────────────────────────────────
+async function loginWithToken(token) {
+  const q = query(collection(db, 'evaluaciones'), where('token', '==', token));
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  const docSnap = snap.docs[0];
+  const data = docSnap.data();
+  if (data.estado === 'pausado' || data.estado === 'eliminado') return 'pausado';
+  currentDocId = docSnap.id;
+  currentToken = token;
+  if (data.nombre) document.getElementById('nombre').value = data.nombre;
+  if (data.grupo) document.getElementById('grupo').value = data.grupo;
+  await updateDoc(doc(db,'evaluaciones',docSnap.id), { estado:'en_progreso', ultimaActividad: serverTimestamp() });
+  document.getElementById('token-gate').style.display = 'none';
+  if (data.borrador) {
+    _savedBorrador = data.borrador;
+    const modal = document.getElementById('session-modal');
+    if (modal) modal.style.display = 'flex';
+  }
+  return 'ok';
+}
+
+// ── Session recovery actions ──────────────────────────────
+window.continueSession = function() {
+  document.getElementById('session-modal').style.display = 'none';
+  if (_savedBorrador) setTimeout(() => restoreProgress(_savedBorrador), 100);
+};
+
+window.restartSession = function() {
+  document.getElementById('session-modal').style.display = 'none';
+  _savedBorrador = null;
+  state.intereses = Array(60).fill('');
+  state.aptitudes = Array(60).fill('');
+  state.valores = Array(20).fill(0);
+  Object.keys(HOLLAND_DATA).forEach(k => { state.holland[k] = Array(8).fill(0); });
+  state.motivaciones = [];
+  state.textFields = {};
+  state.scales = {};
+  unlockedPhases = new Set(['historia']);
+  document.querySelectorAll('.phase-step').forEach(s => {
+    s.classList.remove('active','done');
+    if (s.id !== 'step-historia') s.classList.add('locked');
+  });
+  goPhase('historia');
+};
+
+// ── URL auto-login ────────────────────────────────────────
+const urlToken = new URLSearchParams(window.location.search).get('token');
+if (urlToken) {
+  document.getElementById('gate-token').value = urlToken.toUpperCase();
+  loginWithToken(urlToken.toUpperCase()).catch(console.error);
+}
+
+// ── Manual token ──────────────────────────────────────────
+window.validarToken = async function() {
+  const token = document.getElementById('gate-token').value.trim().toUpperCase();
+  if (!token) return;
+  const errEl = document.getElementById('gate-error');
+  errEl.style.display = 'none';
+  const btn = document.querySelector('#token-gate button');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Verificando...'; }
+  try {
+    const result = await loginWithToken(token);
+    if (!result) {
+      errEl.textContent = '❌ Código inválido. Verifica con tu orientadora.';
+      errEl.style.display = 'block';
+    } else if (result === 'pausado') {
+      errEl.textContent = '⏸ Esta evaluación está pausada. Contacta a tu orientadora.';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = '❌ Error de conexión. Intenta de nuevo.';
+    errEl.style.display = 'block';
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Entrar ✨'; }
+  }
+};
+
+// ── Final submit ──────────────────────────────────────────
+window.enviarEvaluacion = async function() {
+  if (!currentDocId) return;
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  btn.style.background = '#8b92a5';
+  try {
+    const iSums = getSums('intereses');
+    const aSums = getSums('aptitudes');
+    const hollandScores = {};
+    Object.keys(HOLLAND_DATA).forEach(k => { hollandScores[k] = state.holland[k].reduce((a,b)=>a+b,0); });
+    const hollandClave = Object.entries(hollandScores).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]).join('');
+    const tf = collectTextFields();
+    const sc = collectScales();
+    const nombre = document.getElementById('nombre').value.trim();
+
+    await updateDoc(doc(db,'evaluaciones',currentDocId), {
+      estado: 'completado',
+      nombre: nombre || 'Estudiante',
+      grupo: document.getElementById('grupo').value.trim(),
+      orientador: document.getElementById('orientador').value.trim(),
+      conclusion: document.getElementById('conclusion-text')?.value || '',
+      carrerasInteres: document.getElementById('careers-text')?.value || '',
+      // Tests (preserved exactly)
+      intereses: { sumas: iSums, top3: iSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>CAT_NAMES[x.i]) },
+      aptitudes: { sumas: aSums, top3: aSums.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>CAT_NAMES[x.i]) },
+      valores: { puntajes: state.valores, top3: state.valores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v).slice(0,3).map(x=>VALORES_LIST[x.i]) },
+      holland: { puntajes: hollandScores, clave: hollandClave },
+      // New phases — stored as dedicated fields for admin panel
+      historia: Object.fromEntries(Object.entries(tf).filter(([k])=>k.startsWith('h-'))),
+      mundo: { reflexion: Object.fromEntries(Object.entries(tf).filter(([k])=>k.startsWith('m-'))), escalas: sc },
+      motivaciones: { seleccionadas: state.motivaciones, reflexion: Object.fromEntries(Object.entries(tf).filter(([k])=>k.startsWith('mot-'))) },
+      futuro: Object.fromEntries(Object.entries(tf).filter(([k])=>k.startsWith('f-'))),
+      // Raw responses
+      respuestas: { intereses: state.intereses, aptitudes: state.aptitudes, valores: state.valores, holland: state.holland },
+      fechaTexto: new Date().toLocaleDateString('es-VE'),
+      ultimaActividad: serverTimestamp(),
+      borrador: null
+    });
+
+    document.getElementById('modal-token').textContent = currentToken;
+    document.getElementById('success-modal').style.display = 'flex';
+  } catch(e) {
+    console.error(e);
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar mi Evaluación Completa';
+    btn.style.background = 'linear-gradient(135deg,#00c4b4,#6c3eb6)';
+    alert('❌ Error al enviar. Verifica tu conexión e intenta de nuevo.');
+  }
+};
+</script>
+</body>
+</html>
